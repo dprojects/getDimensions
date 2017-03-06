@@ -2,6 +2,20 @@
 
 This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood parts but has been designed for chipboards 18 mm thickness). This macro creates spreadsheet named "toCut" with all needed things to cut chipboards for your woodworking project.
 
+# Screenshots
+
+Project example (3D model view): 
+
+![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
+
+Project example (objects view):
+
+![screen2](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot2.png)
+
+Automatically generated spreadsheet "toCut" for project above:
+
+![screen3](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3.png)
+
 # Install
 
 1. Create new macro in FreeCAD named e.g. "getDimesions".
@@ -19,7 +33,7 @@ This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood 
 
 * Run macro.
 
-**NOTE**: Now you should have spreadsheet named "toCut" with all needed dimensions.
+**NOTE**: Now you should have spreadsheet named "toCut" with all needed dimensions. If you have already "toCut" spreadsheet it will be overwritten (read: updated).
 
 Maybe someone will make any YouTube video tutorial about it?
 
