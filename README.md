@@ -57,6 +57,13 @@ FreeCAD not support direct printing for spreadsheets. So you have to:
 * Polish version (originally designed): [getDimesions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py)
 * English version (ported): [getDimesionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py)
 
+# Contact
+
+Please add all comments and questions in FreeCAD forum topic related to this project available at: 
+[https://forum.freecadweb.org/viewtopic.php?f=22&t=21127](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127)
+
+You can also send me private message on FreeCAD forum. Maybe I will set up dedicated website for this project in the future, who knows.
+
 # License
 
 MIT
