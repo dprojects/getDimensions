@@ -2,8 +2,6 @@
 
 This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood parts but has been designed for chipboards 18 mm thickness). This macro creates spreadsheet named "toCut" with all needed things to cut chipboards for your woodworking project.
 
-# Screenshots
-
 Project example (3D model view): 
 
 ![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
@@ -16,10 +14,15 @@ Automatically generated spreadsheet "toCut" for project above:
 
 ![screen3](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3.png)
 
+# Download
+
+* Polish version (originally designed): [getDimesions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py)
+* English version (ported): [getDimesionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py)
+
 # Install
 
-1. Create new macro in FreeCAD named e.g. "getDimesions".
-2. Copy exact language version of macro (e.g. getDimesionsEN.py) and paste it to your new empty macro.
+1. Create new macro in FreeCAD named e.g. "getDimensions".
+2. Copy exact language version of macro (e.g. getDimensionsEN.py) and paste it to your new empty macro.
 
 # Usage
 
@@ -39,12 +42,12 @@ Maybe someone will make any YouTube video tutorial about it?
 
 # Printing
 
-FreeCAD not support direct printing for spreadsheets. So you have to:
+FreeCAD not support direct printing for spreadsheets ([issue: #0002957](http://freecadweb.org/tracker/view.php?id=2957)). So you have to:
 
-1. Export your spreadsheet to csv.
-2. Copy the csv data to LibreOffice.
+1. Export your spreadsheet to CSV.
+2. Copy the CSV data to LibreOffice.
 3. Convert text with tabulators in LibreOffice to the table.
-4. (optional) Make some corrections (add mm and adjust table columns).
+4. Make some corrections (add mm and adjust table columns).
 5. Print it.
 6. Go and cut your chipboards to market or any other woodworking service that provide wood cutting :-)
 
@@ -52,10 +55,24 @@ FreeCAD not support direct printing for spreadsheets. So you have to:
 
 * Special characters (Polish) for chipboards (object cube names) not supported.
 
-# Available versions
+# Additional features
 
-* Polish version (originally designed): [getDimesions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py)
-* English version (ported): [getDimesionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py)
+### Support for arrays
+
+This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)). 
+
+Project example (3D model view): 
+
+![screen4](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot4.png)
+
+Project example (objects view):
+
+![screen5](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot5.png)
+
+Automatically generated spreadsheet "toCut" for project above:
+
+![screen6](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot6.png)
+
 
 # Contact
 
