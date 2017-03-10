@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import FreeCAD,Draft,Spreadsheet
 
+# create spreadsheet and prepere it for data
 if FreeCAD.ActiveDocument.getObject("toCut"):
 	FreeCAD.ActiveDocument.removeObject("toCut")
 
@@ -10,7 +11,7 @@ result.mergeCells('B1:D1')
 
 result.set( 'A1', 'Typ' )
 result.set( 'B1', 'Wymiary' )
-result.set( 'E1', 'Rodzaj' )
+result.set( 'E1', 'Grubość' )
 result.set( 'F1', 'Sztuki' )
 result.set( 'G1', 'Metry kwadratowe' )
 
@@ -20,12 +21,15 @@ result.setStyle( 'A1:G1', 'bold', 'add')
 result.setAlignment( 'A1:G1', 'top', 'keep' )
 result.setAlignment( 'A1:G1', 'center', 'keep' )
 
+# scan all objects and count chipboards (cubes)
 objs = FreeCAD.ActiveDocument.Objects
 
 quantity = dict()
 sqmSum = dict()
 
 for obj in objs:
+
+	# support for cube objects		
 	if obj.isDerivedFrom("Part::Box"):
 		
 		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
@@ -36,6 +40,22 @@ for obj in objs:
 		else:
 			quantity[key] = 1
 
+	# support for array objects with cube as base
+	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
+
+		# the main box cube will be added in next loop
+		arrayQuantity = obj.NumberPolar + obj.NumberX + obj.NumberY + obj.NumberZ - 4
+
+		keyArr = [ str(obj.Base.Length), str(obj.Base.Width), str(obj.Base.Height) ]
+		keyArr.sort()
+		key = "x".join(keyArr)
+		if key in quantity:
+			quantity[key] = quantity[key] + arrayQuantity
+		else:
+			quantity[key] = arrayQuantity
+
+
+# check what we have...
 sqm = 0
 i = 1
 
@@ -66,6 +86,7 @@ for obj in objs:
 		
 		sqm = (quantity[key] * size1 * size2 / 1000000).Value
 
+		# ...and add to spreadsheet
 		result.set( 'A'+str(i), str(obj.Label) )
 		result.set( 'B'+str(i), str(size1) )
 		result.set( 'C'+str(i), 'x' )
@@ -74,6 +95,7 @@ for obj in objs:
 		result.set( 'F'+str(i), str(quantity[key]) )
 		result.set( 'G'+str(i), str(sqm) )
 
+		# recalculate and add partial square meters
 		del quantity[key]
 		key = str(thick)
 
@@ -82,6 +104,7 @@ for obj in objs:
 		else:
 			sqmSum[key] = sqm
 
+# add to spreadsheet summary for square meters
 i = i + 1
 
 for key in sqmSum.keys():
@@ -90,6 +113,7 @@ for key in sqmSum.keys():
 	result.set( 'E'+str(i), str(key) )
 	result.set( 'G'+str(i), str(sqmSum[key]) )
 
+# final decoration
 result.setForeground( 'A2:G'+str(i), (0,0,0) )
 result.setBackground( 'A2:G'+str(i), (1,1,1) )
 		
@@ -109,4 +133,5 @@ result.setAlignment( 'D2:D'+str(i), 'right', 'keep' )
 result.setAlignment( 'F2:F'+str(i), 'center', 'keep' )
 result.setAlignment( 'G2:G'+str(i), 'right', 'keep' )
 
+# refresh document
 App.ActiveDocument.recompute()
