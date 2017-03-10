@@ -119,7 +119,6 @@ result.setBackground( 'A2:G'+str(i), (1,1,1) )
 		
 result.setStyle( 'A2:A'+str(i), 'bold', 'add')
 
-
 result.setColumnWidth( 'A', 135 )
 result.setColumnWidth( 'B', 80 )
 result.setColumnWidth( 'C', 40 )
