@@ -16,8 +16,8 @@ Automatically generated spreadsheet "toCut" for project above:
 
 # Download
 
-* Polish version (originally designed): [getDimesions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py)
-* English version (ported): [getDimesionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py)
+* [getDimensions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py) - originally designed Polish version.
+* [getDimensionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py) - ported English version.
 
 # Install
 
