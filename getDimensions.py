@@ -44,7 +44,10 @@ for obj in objs:
 	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
 
 		# the main box cube will be added in next loop
-		arrayQuantity = obj.NumberX * obj.NumberY * obj.NumberZ - 1
+		if obj.ArrayType == "polar":
+			arrayQuantity = obj.NumberPolar - 1
+		else:
+			arrayQuantity = obj.NumberX * obj.NumberY * obj.NumberZ - 1
 
 		keyArr = [ str(obj.Base.Length), str(obj.Base.Width), str(obj.Base.Height) ]
 		keyArr.sort()
