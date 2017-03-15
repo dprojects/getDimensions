@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
+
+# FreeCAD macro for woodworking
+# Author: Darek L (aka dprojects)
+# Version: 4.0
+# Latest version: https://github.com/dprojects/getDimensions
+
 import FreeCAD,Draft,Spreadsheet
+
+# language translation (change this if there is no your language version available)
+sLang1 = 'Name'
+sLang2 = 'Dimensions'
+sLang3 = 'Thickness'
+sLang4 = 'Quantity'
+sLang5 = 'Square meters'
+sLang6 = 'Summary'
 
 # create spreadsheet and prepere it for data
 if FreeCAD.ActiveDocument.getObject("toCut"):
@@ -9,11 +23,11 @@ result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
 
 result.mergeCells('B1:D1')
 
-result.set( 'A1', 'Name' )
-result.set( 'B1', 'Dimensions' )
-result.set( 'E1', 'Thickness' )
-result.set( 'F1', 'Quantity' )
-result.set( 'G1', 'Square meters' )
+result.set( 'A1', sLang1 )
+result.set( 'B1', sLang2 )
+result.set( 'E1', sLang3 )
+result.set( 'F1', sLang4 )
+result.set( 'G1', sLang5 )
 
 result.setForeground( 'A1:G1', (0,0,0) )
 result.setBackground( 'A1:G1', (1,1,1) )
@@ -112,7 +126,7 @@ i = i + 1
 
 for key in sqmSum.keys():
 	i = i + 1	
-	result.set( 'A'+str(i), 'Summary' )
+	result.set( 'A'+str(i), sLang6 )
 	result.set( 'E'+str(i), str(key) )
 	result.set( 'G'+str(i), str(sqmSum[key]) )
 
