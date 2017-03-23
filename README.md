@@ -6,6 +6,8 @@ Project example (3D model view):
 
 ![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
 
+### Polish version
+
 Project example (objects view):
 
 ![screen2](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot2.png)
@@ -13,6 +15,16 @@ Project example (objects view):
 Automatically generated spreadsheet "toCut" for project above:
 
 ![screen3](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3.png)
+
+### English version
+
+Project example (objects view):
+
+![screen2en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot2EN.png)
+
+Automatically generated spreadsheet "toCut" for project above:
+
+![screen3en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3EN.png)
 
 # Download
 
