@@ -6,6 +6,8 @@ Project example (3D model view):
 
 ![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
 
+![screen1a](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1a.png)
+
 ### Polish version
 
 Project example (objects view):
