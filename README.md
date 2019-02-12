@@ -2,7 +2,7 @@
 
 This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood parts but has been designed for chipboards 18 mm thickness). This macro creates spreadsheet named "toCut" with all needed things to cut chipboards for your woodworking project.
 
-Project example (3D model view): 
+Project example (3D model view):
 
 ![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
 
@@ -32,6 +32,7 @@ Automatically generated spreadsheet "toCut" for project above:
 
 * [getDimensions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py) - originally designed Polish version.
 * [getDimensionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py) - ported English version.
+* [getDimensionsInches.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsInches.py) - ported to support inches (US metric system).
 
 # Install
 
@@ -45,7 +46,7 @@ Automatically generated spreadsheet "toCut" for project above:
  * Set "Length" to e.g. 500
  * Set "Width" to e.g. 500
  * Set "Height" to e.g. 18
- 
+
 **NOTE**: Now you should have chipboard 500 mm x 500 mm x 18 mm. You can create whatever you like using such chipboards. Even group them in folders.
 
 * Run macro.
@@ -73,9 +74,9 @@ FreeCAD not support direct printing for spreadsheets ([issue: #0002957](http://f
 
 ### Support for arrays
 
-This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)). 
+This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
 
-Project example (3D model view): 
+Project example (3D model view):
 
 ![screen4](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot4.png)
 
@@ -90,7 +91,7 @@ Automatically generated spreadsheet "toCut" for project above:
 
 # Contact
 
-Please add all comments and questions in FreeCAD forum topic related to this project available at: 
+Please add all comments and questions in FreeCAD forum topic related to this project available at:
 [https://forum.freecadweb.org/viewtopic.php?f=22&t=21127](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127)
 
 You can also send me private message on FreeCAD forum. Maybe I will set up dedicated website for this project in the future, who knows.
