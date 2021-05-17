@@ -31,13 +31,11 @@ Automatically generated spreadsheet "toCut" for project above:
 # Download
 
 * [getDimensions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py) - originally designed Polish version.
-* [getDimensionsEN.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsEN.py) - ported English version.
-* [getDimensionsInches.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensionsInches.py) - ported to support inches (US metric system).
 
 # Install
 
 1. Create new macro in FreeCAD named e.g. "getDimensions".
-2. Copy exact language version of macro (e.g. getDimensionsEN.py) and paste it to your new empty macro.
+2. Copy macro (e.g. getDimensions.py) and paste it to your new empty macro.
 
 # Usage
 

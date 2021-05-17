@@ -7,13 +7,55 @@
 
 import FreeCAD,Draft,Spreadsheet
 
-# language translation (change this if there is no your language version available)
-sLang1 = 'Typ'
-sLang2 = 'Wymiary'
-sLang3 = 'Grubość'
-sLang4 = 'Sztuki'
-sLang5 = 'Metry kwadratowe'
-sLang6 = 'Suma'
+# #######################################################
+# SETTINGS ( SET HERE )
+# #######################################################
+
+# set language here
+# "pl" - Polish
+# "en" - English
+sLang = "pl"
+
+# set metric system if needed:
+# "mm" - milli meter
+# "m" - meter 
+# "in" - inch
+sUnits = 'mm'
+
+# set squar area units:
+# "mm" - milli meter
+# "m"  - meter 
+# "in" - inch
+sSquareArea = 'm'
+
+# #######################################################
+# MAIN CODE ( NOT CHANGE HERE )
+# #######################################################
+
+if sLang  == "pl":
+    vLang1 = 'Element'
+    vLang2 = 'Wymiary'
+    vLang3 = 'Grubość'
+    vLang4 = 'Sztuki'
+    
+    if sSquareArea == "m":
+        vLang5 = 'Metry kwadratowe'
+    else:
+        vLang5 = 'Obszar'
+        
+    vLang6 = 'Suma'
+else:
+    vLang1 = 'Name'
+    vLang2 = 'Dimensions'
+    vLang3 = 'Thickness'
+    vLang4 = 'Quantity'
+
+    if sSquareArea == "m":
+        vLang5 = 'Square meters'
+    else:
+        vLang5 = 'Square area'
+
+    vLang6 = 'Summary'
 
 # create spreadsheet and prepere it for data
 if FreeCAD.ActiveDocument.getObject("toCut"):
@@ -23,11 +65,11 @@ result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
 
 result.mergeCells('B1:D1')
 
-result.set( 'A1', sLang1 )
-result.set( 'B1', sLang2 )
-result.set( 'E1', sLang3 )
-result.set( 'F1', sLang4 )
-result.set( 'G1', sLang5 )
+result.set( 'A1', vLang1 )
+result.set( 'B1', vLang2 )
+result.set( 'E1', vLang3 )
+result.set( 'F1', vLang4 )
+result.set( 'G1', vLang5 )
 
 result.setForeground( 'A1:G1', (0,0,0) )
 result.setBackground( 'A1:G1', (1,1,1) )
@@ -101,17 +143,25 @@ for obj in objs:
 			size2 = obj.Width
 			thick = obj.Height
 		
-		sqm = (quantity[key] * size1 * size2 / 1000000).Value
-
+		if sSquareArea == "m":
+			sqm = ( (quantity[key] * size1.getValueAs('mm') * size2.getValueAs('mm')) / 1000000).Value
+		else:
+			sqm = quantity[key] * size1.getValueAs(sUnits) * size2.getValueAs(sUnits)
+		
 		# ...and add to spreadsheet
-		result.set( 'A'+str(i), str(obj.Label) )
-		result.set( 'B'+str(i), str(size1) )
+		result.set( 'A'+str(i), "'"+str(obj.Label) )
+		result.set( 'B'+str(i), "'"+str(size1) )
 		result.set( 'C'+str(i), 'x' )
-		result.set( 'D'+str(i), str(size2) )
-		result.set( 'E'+str(i), str(thick) )
-		result.set( 'F'+str(i), str(quantity[key]) )
-		result.set( 'G'+str(i), str(sqm) )
+		result.set( 'D'+str(i), "'"+str(size2) )
+		result.set( 'E'+str(i), "'"+str(thick) )
+		result.set( 'F'+str(i), "'"+str(quantity[key]) )
+		result.set( 'G'+str(i), "'"+str(sqm) )
 
+		# set metric system
+		result.setDisplayUnit('B'+str(i), sUnits)		
+		result.setDisplayUnit('D'+str(i), sUnits)
+		result.setDisplayUnit('E'+str(i), sUnits)
+		
 		# recalculate and add partial square meters
 		del quantity[key]
 		key = str(thick)
@@ -126,9 +176,11 @@ i = i + 1
 
 for key in sqmSum.keys():
 	i = i + 1	
-	result.set( 'A'+str(i), sLang6 )
-	result.set( 'E'+str(i), str(key) )
-	result.set( 'G'+str(i), str(sqmSum[key]) )
+	result.set( 'A'+str(i), vLang6 )
+	result.set( 'E'+str(i), "'"+str(key) )
+	result.set( 'G'+str(i), "'"+str(sqmSum[key]) )
+	result.setDisplayUnit('E'+str(i), sUnits)	
+	
 
 # final decoration
 result.setForeground( 'A2:G'+str(i), (0,0,0) )
@@ -144,11 +196,18 @@ result.setColumnWidth( 'E', 100 )
 result.setColumnWidth( 'F', 100 )
 result.setColumnWidth( 'G', 160 )
 
+
+result.setAlignment( 'A1:A'+str(i), 'left', 'keep' )
 result.setAlignment( 'B2:B'+str(i), 'right', 'keep' )
-result.setAlignment( 'C2:C'+str(i), 'right', 'keep' )
-result.setAlignment( 'D2:D'+str(i), 'right', 'keep' )
-result.setAlignment( 'F2:F'+str(i), 'center', 'keep' )
-result.setAlignment( 'G2:G'+str(i), 'right', 'keep' )
+result.setAlignment( 'C1:C'+str(i), 'center', 'keep' )
+result.setAlignment( 'D1:D'+str(i), 'right', 'keep' )
+result.setAlignment( 'E1:E'+str(i), 'right', 'keep' )
+result.setAlignment( 'F1:F'+str(i), 'right', 'keep' )
+result.setAlignment( 'G1:G'+str(i), 'right', 'keep' )
+
+result.setAlignment( 'B1:B1', 'center', 'keep' )
+result.setAlignment( 'C1:C1', 'center', 'keep' )
+result.setAlignment( 'D1:D1', 'center', 'keep' )
 
 # refresh document
 App.ActiveDocument.recompute()
