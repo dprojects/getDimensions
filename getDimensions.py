@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 4.0
+# Version: 5.0
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD,Draft,Spreadsheet
@@ -11,20 +11,20 @@ import FreeCAD,Draft,Spreadsheet
 # SETTINGS ( SET HERE )
 # #######################################################
 
-# set language here
+# set language:
 # "pl" - Polish
 # "en" - English
 sLang = "pl"
 
-# set metric system if needed:
-# "mm" - milli meter
-# "m" - meter 
+# set metric system:
+# "mm" - millimeter
+# "m" - meter
 # "in" - inch
 sUnits = 'mm'
 
 # set squar area units:
-# "mm" - milli meter
-# "m"  - meter 
+# "m"  - meter
+# "mm" - millimeter
 # "in" - inch
 sSquareArea = 'm'
 
@@ -32,17 +32,20 @@ sSquareArea = 'm'
 # MAIN CODE ( NOT CHANGE HERE )
 # #######################################################
 
+# setting variables - autoconfig
 if sLang  == "pl":
     vLang1 = 'Element'
     vLang2 = 'Wymiary'
     vLang3 = 'Grubość'
     vLang4 = 'Sztuki'
     
+    if sSquareArea == "mm":
+        vLang5 = 'Milimetry kwadratowe'
     if sSquareArea == "m":
         vLang5 = 'Metry kwadratowe'
-    else:
-        vLang5 = 'Obszar'
-        
+    if sSquareArea == "in":
+        vLang5 = 'Cale kwadratowe'        
+
     vLang6 = 'Suma'
 else:
     vLang1 = 'Name'
@@ -50,10 +53,12 @@ else:
     vLang3 = 'Thickness'
     vLang4 = 'Quantity'
 
+    if sSquareArea == "mm":
+        vLang5 = 'Square millimeters'
     if sSquareArea == "m":
         vLang5 = 'Square meters'
-    else:
-        vLang5 = 'Square area'
+    if sSquareArea == "in":
+        vLang5 = 'Square inches'        
 
     vLang6 = 'Summary'
 
@@ -143,10 +148,8 @@ for obj in objs:
 			size2 = obj.Width
 			thick = obj.Height
 		
-		if sSquareArea == "m":
-			sqm = ( (quantity[key] * size1.getValueAs('mm') * size2.getValueAs('mm')) / 1000000).Value
-		else:
-			sqm = quantity[key] * size1.getValueAs(sUnits) * size2.getValueAs(sUnits)
+		# calculate square area
+		sqm = quantity[key] * size1.getValueAs(sSquareArea) * size2.getValueAs(sSquareArea)
 		
 		# ...and add to spreadsheet
 		result.set( 'A'+str(i), "'"+str(obj.Label) )
@@ -180,13 +183,13 @@ for key in sqmSum.keys():
 	result.set( 'E'+str(i), "'"+str(key) )
 	result.set( 'G'+str(i), "'"+str(sqmSum[key]) )
 	result.setDisplayUnit('E'+str(i), sUnits)	
-	
+
 
 # final decoration
 result.setForeground( 'A2:G'+str(i), (0,0,0) )
 result.setBackground( 'A2:G'+str(i), (1,1,1) )
 		
-result.setStyle( 'A2:A'+str(i), 'bold', 'add')
+#result.setStyle( 'A2:A'+str(i), 'bold', 'add')
 
 result.setColumnWidth( 'A', 135 )
 result.setColumnWidth( 'B', 80 )
@@ -195,7 +198,6 @@ result.setColumnWidth( 'D', 80 )
 result.setColumnWidth( 'E', 100 )
 result.setColumnWidth( 'F', 100 )
 result.setColumnWidth( 'G', 160 )
-
 
 result.setAlignment( 'A1:A'+str(i), 'left', 'keep' )
 result.setAlignment( 'B2:B'+str(i), 'right', 'keep' )
