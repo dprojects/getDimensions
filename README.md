@@ -4,38 +4,37 @@ This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood 
 
 Project example (3D model view):
 
-![screen1](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1.png)
+![screen001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot001.png)
 
-![screen1a](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot1a.png)
+![screen002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot002.png)
 
 ### Polish version
 
 Project example (objects view):
 
-![screen2](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot2.png)
+![screen003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot003.png)
 
 Automatically generated spreadsheet "toCut" for project above:
 
-![screen3](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3.png)
+![screen004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot004.png)
 
 ### English version
 
 Project example (objects view):
 
-![screen2en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot2EN.png)
+![screen005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot005.png)
 
 Automatically generated spreadsheet "toCut" for project above:
 
-![screen3en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot3EN.png)
+![screen006](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot006.png)
 
 # Download
 
-* [getDimensions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py) - originally designed Polish version.
+* You can get this macro here: [getDimensions.py](https://raw.githubusercontent.com/dprojects/getDimensions/master/getDimensions.py)
 
 # Install
 
-1. Create new macro in FreeCAD named e.g. "getDimensions".
-2. Copy macro (e.g. getDimensions.py) and paste it to your new empty macro.
+Just open the macro under the FreeCAD.
 
 # Usage
 
@@ -64,6 +63,8 @@ FreeCAD not support direct printing for spreadsheets ([issue: #0002957](http://f
 5. Print it.
 6. Go and cut your chipboards to market or any other woodworking service that provide wood cutting :-)
 
+**NOTE**: You can also use the TechDraw. Just place the spreadsheet there and print. 
+
 # Make a note
 
 * Special characters (Polish) for chipboards (object cube names) not supported.
@@ -76,16 +77,37 @@ This macro supports arrays made of cube (thanks [jaisejames](https://forum.freec
 
 Project example (3D model view):
 
-![screen4](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot4.png)
+![screen007](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot007.png)
 
 Project example (objects view):
 
-![screen5](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot5.png)
+![screen008](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot008.png)
 
 Automatically generated spreadsheet "toCut" for project above:
 
-![screen6](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshot6.png)
+![screen009](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot009.png)
 
+### Support for square millimeters
+
+![screen010](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot010.png)
+
+### Support for square meters
+
+![screen011](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot011.png)
+
+### Support for square inches
+
+![screen012](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot012.png)
+
+### Support for custom settings
+
+![screen013](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot013.png)
+
+![screen014](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot014.png)
+
+![screen015](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot015.png)
+
+![screen016](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot016.png)
 
 # Contact
 

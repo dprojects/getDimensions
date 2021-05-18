@@ -22,7 +22,7 @@ sLang = "pl"
 # "in" - inch
 sUnits = 'mm'
 
-# set squar area units:
+# set square area units:
 # "m"  - meter
 # "mm" - millimeter
 # "in" - inch
@@ -197,7 +197,7 @@ result.setColumnWidth( 'C', 40 )
 result.setColumnWidth( 'D', 80 )
 result.setColumnWidth( 'E', 100 )
 result.setColumnWidth( 'F', 100 )
-result.setColumnWidth( 'G', 160 )
+result.setColumnWidth( 'G', 180 )
 
 result.setAlignment( 'A1:A'+str(i), 'left', 'keep' )
 result.setAlignment( 'B2:B'+str(i), 'right', 'keep' )
