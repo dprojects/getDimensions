@@ -54,7 +54,7 @@ Maybe someone will make any YouTube video tutorial about it?
 
 # Printing
 
-FreeCAD not support direct printing for spreadsheets ([issue: #0002957](http://freecadweb.org/tracker/view.php?id=2957)). So you have to:
+FreeCAD not support direct printing for spreadsheets ([issue: #0002957](https://tracker.freecadweb.org/view.php?id=2957)). So you have to:
 
 1. Export your spreadsheet to CSV.
 2. Copy the CSV data to LibreOffice.
