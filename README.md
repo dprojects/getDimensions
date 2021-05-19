@@ -61,13 +61,17 @@ FreeCAD not support direct printing for spreadsheets ([issue: #0002957](http://f
 3. Convert text with tabulators in LibreOffice to the table.
 4. Make some corrections (add mm and adjust table columns).
 5. Print it.
-6. Go and cut your chipboards to market or any other woodworking service that provide wood cutting :-)
+6. Go and cut Your chipboards on Your own or to market or any other woodworking service that provide wood cutting :-)
 
-**NOTE**: You can also use the TechDraw. Just place the spreadsheet there and print. 
+FreeCAD has new feature named TechDraw. So the macro has been updated to support the new FreeCAD feature. 
+Now the TechDraw page is automatically created and it is named "toPrint". So now You can print directly from the 
+page named "toPrint" or just export this page to pdf file and print it later. 
 
-# Make a note
+![screen017](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot017.png)
 
-* Special characters (Polish) for chipboards (object cube names) not supported.
+This spreadsheet "toCut" is placed at the top of the A4 blank template, so the print not waste Your ink:
+
+![screen018](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot018.png)
 
 # Additional features
 
@@ -108,6 +112,10 @@ Automatically generated spreadsheet "toCut" for project above:
 ![screen015](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot015.png)
 
 ![screen016](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot016.png)
+
+# Not supported
+
+* Special characters (Polish) for chipboards (object cube names) not supported.
 
 # Contact
 

@@ -122,6 +122,8 @@ for obj in objs:
 # check what we have...
 sqm = 0
 i = 1
+# calculate rows for later TechDraw print, first row for header
+vRows = 1
 
 for obj in objs:
 
@@ -159,6 +161,7 @@ for obj in objs:
 		result.set( 'E'+str(i), "'"+str(thick) )
 		result.set( 'F'+str(i), "'"+str(quantity[key]) )
 		result.set( 'G'+str(i), "'"+str(sqm) )
+		vRows = vRows + 1
 
 		# set metric system
 		result.setDisplayUnit('B'+str(i), sUnits)		
@@ -176,6 +179,8 @@ for obj in objs:
 
 # add to spreadsheet summary for square meters
 i = i + 1
+# add empty line separator
+vRows = vRows + 1
 
 for key in sqmSum.keys():
 	i = i + 1	
@@ -183,7 +188,7 @@ for key in sqmSum.keys():
 	result.set( 'E'+str(i), "'"+str(key) )
 	result.set( 'G'+str(i), "'"+str(sqmSum[key]) )
 	result.setDisplayUnit('E'+str(i), sUnits)	
-
+	vRows = vRows + 1
 
 # final decoration
 result.setForeground( 'A2:G'+str(i), (0,0,0) )
@@ -212,4 +217,27 @@ result.setAlignment( 'C1:C1', 'center', 'keep' )
 result.setAlignment( 'D1:D1', 'center', 'keep' )
 
 # refresh document
+App.ActiveDocument.recompute()
+
+# remove existing toPrint page
+if FreeCAD.ActiveDocument.getObject("toPrint"):
+	App.getDocument("Index").removeObject("toPrint")
+
+# create TechDraw page for print
+App.activeDocument().addObject('TechDraw::DrawPage','toPrint')
+App.activeDocument().addObject('TechDraw::DrawSVGTemplate','Template')
+App.activeDocument().Template.Template = '/usr/share/freecad/Mod/TechDraw/Templates/A4_Portrait_blank.svg'
+App.activeDocument().toPrint.Template = App.activeDocument().Template
+
+# add spreadsheet to TechDraw page
+App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet','Sheet')
+App.activeDocument().Sheet.Source = App.activeDocument().toCut
+App.activeDocument().toPrint.addView(App.activeDocument().Sheet)
+
+# add decoration to the table
+FreeCAD.getDocument("Index").getObject("Sheet").X = 105.00
+FreeCAD.getDocument("Index").getObject("Sheet").Y = 260.00
+FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G"+str(vRows)
+
+# reload to see changes
 App.ActiveDocument.recompute()
