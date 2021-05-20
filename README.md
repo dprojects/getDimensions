@@ -127,7 +127,7 @@ You can create any TechDraw view You want just by toggle visibility items or gro
 
 This feature has been designed for different colors of chipboards at the same furniture, the square meters 
 has different prices then. So You do not have to create different FreeCAD project with different colors only 
-at the same furniture. You can just toggle visibilty, create TechDraw view with macro, print and then 
+at the same furniture. You can just toggle visibility, create TechDraw view with macro, print and then 
 toggle visibility for different group of items, generate TechDraw view with macro again and print.
 
 # Not supported
