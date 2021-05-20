@@ -235,7 +235,7 @@ if FreeCAD.ActiveDocument.getObject("toPrint"):
 # create TechDraw page for print
 App.activeDocument().addObject('TechDraw::DrawPage','toPrint')
 App.activeDocument().addObject('TechDraw::DrawSVGTemplate','Template')
-App.activeDocument().Template.Template = '/usr/share/freecad/Mod/TechDraw/Templates/A4_Portrait_blank.svg'
+App.activeDocument().Template.Template = App.getResourceDir()+'Mod/TechDraw/Templates/A4_Portrait_blank.svg'
 App.activeDocument().toPrint.Template = App.activeDocument().Template
 
 # add spreadsheet to TechDraw page
