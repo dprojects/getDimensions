@@ -28,6 +28,11 @@ sUnits = 'mm'
 # "in" - inch
 sSquareArea = 'm'
 
+# toggle visibility:
+# "on" - the feature is on and hidden items (visibility = false) will be skipped
+# "off" - all items are calculated, like it was before
+sVisible = 'on'
+
 # #######################################################
 # MAIN CODE ( NOT CHANGE HERE )
 # #######################################################
@@ -87,12 +92,16 @@ objs = FreeCAD.ActiveDocument.Objects
 
 quantity = dict()
 sqmSum = dict()
-
+ 
 for obj in objs:
+
+	if sVisible == "on":
+		if FreeCADGui.ActiveDocument.getObject( obj.Name ).Visibility == False:
+			continue
 
 	# support for cube objects		
 	if obj.isDerivedFrom("Part::Box"):
-		
+	
 		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
 		keyArr.sort()
 		key = "x".join(keyArr)

@@ -113,9 +113,27 @@ Automatically generated spreadsheet "toCut" for project above:
 
 ![screen016](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot016.png)
 
+### Support for Toggle Visibility
+
+If the feature "Toggle Visibility" is set to "on", 
+
+![screen013](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot013.png)
+
+You can create any TechDraw view You want just by toggle visibility items or group of items. 
+
+![screen019](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot019.png)
+
+![screen020](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot020.png)
+
+This feature has been designed for different colors of chipboards at the same furniture, the square meters 
+has different prices then. So You do not have to create different FreeCAD project with different colors only 
+at the same furniture. You can just toggle visibilty, create TechDraw view with macro, print and then 
+toggle visibility for different group of items, generate TechDraw view with macro again and print.
+
 # Not supported
 
-* Special characters (Polish) for chipboards (object cube names) not supported.
+* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change 
+the names later manually in spreadsheet and the TechDraw view will be automatically updated with new names. 
 
 # Contact
 
