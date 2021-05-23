@@ -4,11 +4,11 @@ This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions 
 
 ### TechDraw report example in English language:
 
-![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_en.png)]
+![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_en.png)
 
 ### TechDraw report example in Polish language:
 
-![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_pl.png)]
+![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_pl.png)
 
 # Main features
 
