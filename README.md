@@ -1,32 +1,24 @@
 # Description
 
-This is FreeCAD macro that gets chipboards dimensions to cut (or any other wood parts but has been designed for chipboards 18 mm thickness). This macro creates spreadsheet named "toCut" with all needed things to cut chipboards for your woodworking project.
+This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions to cut or any other wood parts but has been designed for chipboards 18 mm of thickness. This macro creates spreadsheet named "toCut" and also TechDraw page "toPrint" with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know how many same elements You need to cut and You can easily calculate costs per square area.
 
-Project example (3D model view):
+### TechDraw report example in English language:
 
-![screen001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot001.png)
+![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_en.png)]
 
-![screen002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot002.png)
+### TechDraw report example in Polish language:
 
-### Polish version
+![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_pl.png)]
 
-Project example (objects view):
+# Main features
 
-![screen003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot003.png)
-
-Automatically generated spreadsheet "toCut" for project above:
-
-![screen004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot004.png)
-
-### English version
-
-Project example (objects view):
-
-![screen005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot005.png)
-
-Automatically generated spreadsheet "toCut" for project above:
-
-![screen006](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot006.png)
+* Support for English and Polish languages.
+* Elements can be listed in millimeters, meters or inches.
+* Square area can be listed in millimeters, meters or inches.
+* Group elements by thickness.
+* Toggle Visibility Feature allow turn off elements or even group of elements (folder).
+* Summary By Colors Feature allow to group elements by colors to make costs more visible for each color.
+* Support for arrays made of cube.
 
 # Download
 
@@ -38,97 +30,82 @@ Just open the macro under the FreeCAD.
 
 # Usage
 
-* Create chipboards:
- * Go to FreeCAD -> Part -> Create a cube solid -> Cube data (tab):
- * Set "Length" to e.g. 500
- * Set "Width" to e.g. 500
- * Set "Height" to e.g. 18
+### Sample usage - create chipboards:
+
+* Go to FreeCAD -> Part -> Create a cube solid -> Cube data (tab):
+* Set "Length" to e.g. 500
+* Set "Width" to e.g. 500
+* Set "Height" to e.g. 18
 
 **NOTE**: Now you should have chipboard 500 mm x 500 mm x 18 mm. You can create whatever you like using such chipboards. Even group them in folders.
 
 * Run macro.
 
-**NOTE**: Now you should have spreadsheet named "toCut" with all needed dimensions. If you have already "toCut" spreadsheet it will be overwritten (read: updated).
-
-Maybe someone will make any YouTube video tutorial about it?
-
-# Printing
-
-FreeCAD not support direct printing for spreadsheets ([issue: #0002957](https://tracker.freecadweb.org/view.php?id=2957)). So you have to:
-
-1. Export your spreadsheet to CSV.
-2. Copy the CSV data to LibreOffice.
-3. Convert text with tabulators in LibreOffice to the table.
-4. Make some corrections (add mm and adjust table columns).
-5. Print it.
-6. Go and cut Your chipboards on Your own or to market or any other woodworking service that provide wood cutting :-)
-
-FreeCAD has new feature named TechDraw. So the macro has been updated to support the new FreeCAD feature. 
-Now the TechDraw page is automatically created and it is named "toPrint". So now You can print directly from the 
-page named "toPrint" or just export this page to pdf file and print it later. 
-
-![screen017](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot017.png)
-
-This spreadsheet "toCut" is placed at the top of the A4 blank template, so the print not waste Your ink:
-
-![screen018](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot018.png)
-
-# Additional features
-
-### Support for arrays
+### Sample usage - arrays:
 
 This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
 
 Project example (3D model view):
 
-![screen007](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot007.png)
+![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays001.png)
 
 Project example (objects view):
 
-![screen008](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot008.png)
+![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays002.png)
 
 Automatically generated spreadsheet "toCut" for project above:
 
-![screen009](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot009.png)
+![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays003.png)
 
-### Support for square millimeters
+### Sample usage - Toggle Visibility Feature:
 
-![screen010](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot010.png)
+If the feature "Toggle Visibility Feature" is set to "on", 
 
-### Support for square meters
-
-![screen011](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot011.png)
-
-### Support for square inches
-
-![screen012](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot012.png)
-
-### Support for custom settings
-
-![screen013](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot013.png)
-
-![screen014](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot014.png)
-
-![screen015](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot015.png)
-
-![screen016](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot016.png)
-
-### Support for Toggle Visibility
-
-If the feature "Toggle Visibility" is set to "on", 
-
-![screen013](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot013.png)
+![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
 
 You can create any TechDraw view You want just by toggle visibility items or group of items. 
 
-![screen019](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot019.png)
+![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
 
-![screen020](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/screenshot020.png)
+![tvf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf003.png)
 
-This feature has been designed for different colors of chipboards at the same furniture, the square meters 
-has different prices then. So You do not have to create different FreeCAD project with different colors only 
-at the same furniture. You can just toggle visibility, create TechDraw view with macro, print and then 
-toggle visibility for different group of items, generate TechDraw view with macro again and print.
+You can generate different reports at the same furniture project. Just rename the TechDraw page 
+to store it and prevent from overwrite.
+
+### Sample usage - Summary By Colors Feature:
+
+By default the feature "Summary By Colors Feature" is set to "off". So, You have to turn it on:
+
+![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
+
+Also You need to have exact folder tree structure in Your furniture project. The idea behind it is 
+that each element need to has parent folder and also grandparent folder. For exaple element named 
+"Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in 
+grandparent folder (e.g. named "Black color"). See example: 
+
+![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
+
+Now You can generate TechDraw page with the macro:
+
+![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
+
+or for all elements:
+
+![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
+
+![sbcf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf005.png)
+
+# Printing
+
+TechDraw page is automatically created and it is named "toPrint". So now You can print directly from the 
+page named "toPrint" or just export this page to pdf file and print it later. 
+
+# Screenshots
+
+|   |   |   |
+|---|---|---|
+| [![001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png) | [![002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png) | [![003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png) |
+| [![004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png) | [![005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png) | [![006](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png) |
 
 # Not supported
 

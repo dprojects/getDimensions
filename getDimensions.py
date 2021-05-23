@@ -2,10 +2,11 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 5.0
+# Version: 6.0
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD,Draft,Spreadsheet
+
 
 # #######################################################
 # SETTINGS ( SET HERE )
@@ -14,58 +15,75 @@ import FreeCAD,Draft,Spreadsheet
 # set language:
 # "pl" - Polish
 # "en" - English
-sLang = "pl"
+sLang = "en"
 
-# set metric system:
+# set metric system for all elements:
 # "mm" - millimeter
 # "m" - meter
 # "in" - inch
-sUnits = 'mm'
+sUnitsMetric = "in"
 
 # set square area units:
 # "m"  - meter
 # "mm" - millimeter
 # "in" - inch
-sSquareArea = 'm'
+sUnitsArea = "in"
 
-# toggle visibility:
-# "on" - the feature is on and hidden items (visibility = false) will be skipped
-# "off" - all items are calculated, like it was before
-sVisible = 'on'
+# Toggle Visibility Feature:
+# "on" - all hidden items with visibility = false will be skipped
+# "off" - all items will be listed and calculated
+sTVF = "on"
+
+# Summary By Colors Feature:
+# "on" - shows parent folder names and summary by grandparent folder
+# "off" - feature is off, so only labels of elements are listed
+sSBCF = "off"
+
 
 # #######################################################
 # MAIN CODE ( NOT CHANGE HERE )
 # #######################################################
 
+# define function
+def getParentGroup(iLabel):
+	for iGroup in FreeCAD.ActiveDocument.Objects:
+		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
+			for iChild in iGroup.Group:
+				if iChild.Label == iLabel:
+					return iGroup
+
 # setting variables - autoconfig
 if sLang  == "pl":
-    vLang1 = 'Element'
-    vLang2 = 'Wymiary'
-    vLang3 = 'Grubość'
-    vLang4 = 'Sztuki'
+    vLang1 = "Element"
+    vLang2 = "Wymiary"
+    vLang3 = "Grubość"
+    vLang4 = "Sztuki"
     
-    if sSquareArea == "mm":
-        vLang5 = 'Milimetry kwadratowe'
-    if sSquareArea == "m":
-        vLang5 = 'Metry kwadratowe'
-    if sSquareArea == "in":
-        vLang5 = 'Cale kwadratowe'        
+    if sUnitsArea == "mm":
+        vLang5 = "Milimetry kwadratowe"
+    if sUnitsArea == "m":
+        vLang5 = "Metry kwadratowe"
+    if sUnitsArea == "in":
+        vLang5 = "Cale kwadratowe"        
 
-    vLang6 = 'Suma'
+    vLang6 = "Podsumowanie dla koloru elementu"
+    vLang7 = "Podsumowanie dla grubości elementu"    
+
 else:
-    vLang1 = 'Name'
-    vLang2 = 'Dimensions'
-    vLang3 = 'Thickness'
-    vLang4 = 'Quantity'
+    vLang1 = "Name"
+    vLang2 = "Dimensions"
+    vLang3 = "Thickness"
+    vLang4 = "Quantity"
 
-    if sSquareArea == "mm":
-        vLang5 = 'Square millimeters'
-    if sSquareArea == "m":
-        vLang5 = 'Square meters'
-    if sSquareArea == "in":
-        vLang5 = 'Square inches'        
+    if sUnitsArea == "mm":
+        vLang5 = "Square millimeters"
+    if sUnitsArea == "m":
+        vLang5 = "Square meters"
+    if sUnitsArea == "in":
+        vLang5 = "Square inches"        
 
-    vLang6 = 'Summary'
+    vLang6 = "Summary by colors"
+    vLang7 = "Summary by thickness"
 
 # create spreadsheet and prepere it for data
 if FreeCAD.ActiveDocument.getObject("toCut"):
@@ -73,42 +91,52 @@ if FreeCAD.ActiveDocument.getObject("toCut"):
 
 result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
 
-result.mergeCells('B1:D1')
+# set headers
+result.set("A1", vLang1)
+result.set("B1", vLang2)
+result.set("E1", vLang3)
+result.set("F1", vLang4)
+result.set("G1", vLang5)
+result.mergeCells("B1:D1")
 
-result.set( 'A1', vLang1 )
-result.set( 'B1', vLang2 )
-result.set( 'E1', vLang3 )
-result.set( 'F1', vLang4 )
-result.set( 'G1', vLang5 )
 
-result.setForeground( 'A1:G1', (0,0,0) )
-result.setBackground( 'A1:G1', (1,1,1) )
-result.setStyle( 'A1:G1', 'bold', 'add')
-result.setAlignment( 'A1:G1', 'top', 'keep' )
-result.setAlignment( 'A1:G1', 'center', 'keep' )
+# #######################################################
+# Calculation loop
+# #######################################################
 
 # scan all objects and count chipboards (cubes)
 objs = FreeCAD.ActiveDocument.Objects
 
-quantity = dict()
-sqmSum = dict()
- 
+# init data storage
+vQuantity = dict()
+vArea = dict()
+vThick = dict()
+
+if sSBCF == "on":
+	vGroupSqm = dict()
+	vGroupQua = dict()
+
+# build data for later calculation
 for obj in objs:
 
-	if sVisible == "on":
-		if FreeCADGui.ActiveDocument.getObject( obj.Name ).Visibility == False:
+    	# if feature is on, just skip all hidden elements
+	if sTVF == "on":
+		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			continue
 
-	# support for cube objects		
+	# support for cube objects
 	if obj.isDerivedFrom("Part::Box"):
-	
+        
+		# create unique key
 		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
 		keyArr.sort()
 		key = "x".join(keyArr)
-		if key in quantity:
-			quantity[key] = quantity[key] + 1
+
+		# calculate
+		if key in vQuantity:
+			vQuantity[key] = vQuantity[key] + 1
 		else:
-			quantity[key] = 1
+			vQuantity[key] = 1
 
 	# support for array objects with cube as base
 	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
@@ -119,29 +147,34 @@ for obj in objs:
 		else:
 			arrayQuantity = obj.NumberX * obj.NumberY * obj.NumberZ - 1
 
+		# create unique key
 		keyArr = [ str(obj.Base.Length), str(obj.Base.Width), str(obj.Base.Height) ]
 		keyArr.sort()
 		key = "x".join(keyArr)
-		if key in quantity:
-			quantity[key] = quantity[key] + arrayQuantity
+
+		# calculate
+		if key in vQuantity:
+			vQuantity[key] = vQuantity[key] + arrayQuantity
 		else:
-			quantity[key] = arrayQuantity
+			vQuantity[key] = arrayQuantity
 
 
-# check what we have...
+# reset local variables
 sqm = 0
 i = 1
-# calculate rows for later TechDraw print, first row for header
-vRows = 1
 
+# check what we have...
 for obj in objs:
 
 	if obj.isDerivedFrom("Part::Box"):
 		
+		# set unique key for search
 		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
 		keyArr.sort()
 		key = "x".join(keyArr)
-		if not key in quantity:
+
+		# search the key in stored data
+		if not key in vQuantity:
 			continue
 
 		i = i + 1
@@ -160,93 +193,183 @@ for obj in objs:
 			thick = obj.Height
 		
 		# calculate square area
-		sqm = quantity[key] * size1.getValueAs(sSquareArea) * size2.getValueAs(sSquareArea)
+		sqm = vQuantity[key] * size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
 		
 		# ...and add to spreadsheet
-		result.set( 'A'+str(i), "'"+str(obj.Label) )
-		result.set( 'B'+str(i), "'"+str(size1) )
-		result.set( 'C'+str(i), 'x' )
-		result.set( 'D'+str(i), "'"+str(size2) )
-		result.set( 'E'+str(i), "'"+str(thick) )
-		result.set( 'F'+str(i), "'"+str(quantity[key]) )
-		result.set( 'G'+str(i), "'"+str(sqm) )
-		vRows = vRows + 1
+		if sSBCF == "on":
+			
+			# get parent folder (group name)
+			vParent = getParentGroup(obj.Label)
+			vPL = vParent.Label
 
-		# set metric system
-		result.setDisplayUnit('B'+str(i), sUnits)		
-		result.setDisplayUnit('D'+str(i), sUnits)
-		result.setDisplayUnit('E'+str(i), sUnits)
-		
-		# recalculate and add partial square meters
-		del quantity[key]
-		key = str(thick)
+			# add group name to spreadsheet
+			result.set("A"+str(i), "'" + str(vPL))
+			
+			# get grandparent folder
+			vGrand = getParentGroup(vPL)
+			vGL = vGrand.Label
 
-		if key in sqmSum:
-			sqmSum[key] = sqmSum[key] + sqm
+			# store number of items
+			if vGL in vGroupQua:
+				vGroupQua[vGL] = vGroupQua[vGL] + len(vParent.Group)
+			else:
+				vGroupQua[vGL] = len(vParent.Group)
+
+			# store square area
+			if vGL in vGroupSqm:
+				vGroupSqm[vGL] = vGroupSqm[vGL] + sqm
+			else:
+				vGroupSqm[vGL] = sqm
+			
 		else:
-			sqmSum[key] = sqm
+			# add element name to spreadsheet if the feature is off
+			result.set("A"+str(i), "'" + str(obj.Label))
 
-# add to spreadsheet summary for square meters
-i = i + 1
+		# add other values to spreadsheet
+		result.set("B"+str(i), "'" + str(size1.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
+		result.set("C"+str(i), "x")
+		result.set("D"+str(i), "'" + str(size2.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
+		result.set("E"+str(i), "'" + str(thick.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
+		result.set("F"+str(i), "'" + str(vQuantity[key]))
+		result.set("G"+str(i), "'" + str(sqm))
+
+		vQ = vQuantity[key]
+
+		# recalculate and add partial square meters
+		del vQuantity[key]
+		key = str(thick.getValueAs(sUnitsMetric))+" "+sUnitsMetric
+
+		if key in vArea:
+			vArea[key] = vArea[key] + sqm
+		else:
+			vArea[key] = sqm
+
+		if key in vThick:
+			vThick[key] = vThick[key] + vQ
+		else:
+			vThick[key] = vQ
+
+
+# #######################################################
+# Spreadsheet data decoration
+# #######################################################
+
+# colors
+result.setForeground("A1:G"+str(i), (0,0,0))
+result.setBackground("A1:G"+str(i), (1,1,1))
+
+# cell sizes
+result.setColumnWidth("A", 135)
+result.setColumnWidth("B", 80)
+result.setColumnWidth("C", 40)
+result.setColumnWidth("D", 80)
+result.setColumnWidth("E", 100)
+result.setColumnWidth("F", 100)
+result.setColumnWidth("G", 180)
+
+# alignment
+result.setAlignment("A1:A"+str(i), "left", "keep")
+result.setAlignment("B1:B"+str(i), "right", "keep")
+result.setAlignment("C1:C"+str(i), "center", "keep")
+result.setAlignment("D1:D"+str(i), "right", "keep")
+result.setAlignment("E1:E"+str(i), "right", "keep")
+result.setAlignment("F1:F"+str(i), "right", "keep")
+result.setAlignment("G1:G"+str(i), "right", "keep")
+
+# fix for center header text in merged cells
+result.setAlignment("B1:B1", "center", "keep")
+result.setAlignment("C1:C1", "center", "keep")
+result.setAlignment("D1:D1", "center", "keep")
+
+# text header decoration
+result.setStyle("A1:G1", "bold", "add")
+
+
+# #######################################################
+# Spreadsheet summary 
+# #######################################################
+
 # add empty line separator
-vRows = vRows + 1
+i = i + 1
 
-for key in sqmSum.keys():
-	i = i + 1	
-	result.set( 'A'+str(i), vLang6 )
-	result.set( 'E'+str(i), "'"+str(key) )
-	result.set( 'G'+str(i), "'"+str(sqmSum[key]) )
-	result.setDisplayUnit('E'+str(i), sUnits)	
-	vRows = vRows + 1
+# show summary for groups
+if sSBCF == "on":
 
-# final decoration
-result.setForeground( 'A2:G'+str(i), (0,0,0) )
-result.setBackground( 'A2:G'+str(i), (1,1,1) )
+	# add empty line separator
+	i = i + 1
+	
+	# add summary title
+	vCell = "A"+str(i)+":D"+str(i)
+	result.set(vCell, vLang6)
+	result.setStyle(vCell, "bold", "add")
+	result.mergeCells(vCell)
+	result.setAlignment(vCell, "left", "keep")
 		
-#result.setStyle( 'A2:A'+str(i), 'bold', 'add')
+	# add empty line separator
+	i = i + 1
 
-result.setColumnWidth( 'A', 135 )
-result.setColumnWidth( 'B', 80 )
-result.setColumnWidth( 'C', 40 )
-result.setColumnWidth( 'D', 80 )
-result.setColumnWidth( 'E', 100 )
-result.setColumnWidth( 'F', 100 )
-result.setColumnWidth( 'G', 180 )
+	# add values
+	for key in vGroupSqm.keys():
+		result.set("A"+str(i), "'" + str(key))
+		result.set("F"+str(i), "'" + str(vGroupQua[key]))
+		result.set("G"+str(i), "'" + str(vGroupSqm[key]))
+		result.setDisplayUnit("E"+str(i), sUnitsMetric)	
+		result.setAlignment("A"+str(i), "left", "keep")
+		result.setAlignment("F"+str(i), "right", "keep")
+		result.setAlignment("G"+str(i), "right", "keep")
+		i = i + 1
 
-result.setAlignment( 'A1:A'+str(i), 'left', 'keep' )
-result.setAlignment( 'B2:B'+str(i), 'right', 'keep' )
-result.setAlignment( 'C1:C'+str(i), 'center', 'keep' )
-result.setAlignment( 'D1:D'+str(i), 'right', 'keep' )
-result.setAlignment( 'E1:E'+str(i), 'right', 'keep' )
-result.setAlignment( 'F1:F'+str(i), 'right', 'keep' )
-result.setAlignment( 'G1:G'+str(i), 'right', 'keep' )
+# add empty line separator
+i = i + 1
 
-result.setAlignment( 'B1:B1', 'center', 'keep' )
-result.setAlignment( 'C1:C1', 'center', 'keep' )
-result.setAlignment( 'D1:D1', 'center', 'keep' )
+# add summary title for thickness
+vCell = "A"+str(i)+":D"+str(i)
+result.set(vCell, vLang7)
+result.setStyle(vCell, "bold", "add")
+result.mergeCells(vCell)
+result.setAlignment(vCell, "left", "keep")
 
-# refresh document
-App.ActiveDocument.recompute()
+# add empty line separator
+i = i + 1
+
+# add summary values for thickness	
+for key in vArea.keys():
+	result.set("E"+str(i), "'" + str(key))
+	result.set("F"+str(i), "'" + str(vThick[key]))
+	result.set("G"+str(i), "'" + str(vArea[key]))
+	result.setAlignment("E"+str(i), "right", "keep")
+	result.setAlignment("F"+str(i), "right", "keep")
+	result.setAlignment("G"+str(i), "right", "keep")
+	i = i + 1
+
+
+# #######################################################
+# TechDraw part
+# #######################################################
 
 # remove existing toPrint page
 if FreeCAD.ActiveDocument.getObject("toPrint"):
 	App.getDocument("Index").removeObject("toPrint")
 
 # create TechDraw page for print
-App.activeDocument().addObject('TechDraw::DrawPage','toPrint')
-App.activeDocument().addObject('TechDraw::DrawSVGTemplate','Template')
-App.activeDocument().Template.Template = App.getResourceDir()+'Mod/TechDraw/Templates/A4_Portrait_blank.svg'
+App.activeDocument().addObject("TechDraw::DrawPage","toPrint")
+App.activeDocument().addObject("TechDraw::DrawSVGTemplate","Template")
+App.activeDocument().Template.Template = App.getResourceDir()+"Mod/TechDraw/Templates/A4_Portrait_blank.svg"
 App.activeDocument().toPrint.Template = App.activeDocument().Template
 
 # add spreadsheet to TechDraw page
-App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet','Sheet')
+App.activeDocument().addObject("TechDraw::DrawViewSpreadsheet","Sheet")
 App.activeDocument().Sheet.Source = App.activeDocument().toCut
 App.activeDocument().toPrint.addView(App.activeDocument().Sheet)
 
 # add decoration to the table
 FreeCAD.getDocument("Index").getObject("Sheet").X = 105.00
-FreeCAD.getDocument("Index").getObject("Sheet").Y = 260.00
-FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G"+str(vRows)
+FreeCAD.getDocument("Index").getObject("Sheet").Y = 200.00
+FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G"+str(i)
 
-# reload to see changes
+
+# #######################################################
+# Reload to see changes
+# #######################################################
+
 App.ActiveDocument.recompute()
