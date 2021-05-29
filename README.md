@@ -18,6 +18,7 @@ This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions 
 * Group elements by thickness.
 * Toggle Visibility Feature allow turn off elements or even group of elements (folder).
 * Summary By Colors Feature allow to group elements by colors to make costs more visible for each color.
+* Summary for edge size.
 * Support for arrays made of cube.
 
 # Download

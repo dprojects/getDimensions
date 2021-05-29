@@ -31,8 +31,9 @@ sUnitsArea = "in"
 
 # Toggle Visibility Feature:
 # "on" - all hidden items with visibility = false will be skipped
+# "edge" - hidden elements will not be added to edge size only
 # "off" - all items will be listed and calculated
-sTVF = "on"
+sTVF = "edge"
 
 # Summary By Colors Feature:
 # "on" - shows parent folder names and summary by grandparent folder
@@ -67,7 +68,8 @@ if sLang  == "pl":
         vLang5 = "Cale kwadratowe"        
 
     vLang6 = "Podsumowanie dla koloru elementu"
-    vLang7 = "Podsumowanie dla grubości elementu"    
+    vLang7 = "Podsumowanie dla grubości elementu"
+    vLang8 = "Długość obrzeża"
 
 else:
     vLang1 = "Name"
@@ -84,6 +86,7 @@ else:
 
     vLang6 = "Summary by colors"
     vLang7 = "Summary by thickness"
+    vLang8 = "Edge size"
 
 # create spreadsheet and prepere it for data
 if FreeCAD.ActiveDocument.getObject("toCut"):
@@ -162,6 +165,7 @@ for obj in objs:
 # reset local variables
 sqm = 0
 i = 1
+vEdgeSize = 0
 
 # check what we have...
 for obj in objs:
@@ -194,6 +198,16 @@ for obj in objs:
 		
 		# calculate square area
 		sqm = vQuantity[key] * size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
+
+		# calculate edge size
+		vSkip = 0
+		if sTVF == "edge":
+			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
+				vSkip = 1	
+
+		if vSkip == 0:
+			vEdge = (2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)
+			vEdgeSize = vEdgeSize + (vQuantity[key] * vEdge)
 		
 		# ...and add to spreadsheet
 		if sSBCF == "on":
@@ -203,7 +217,7 @@ for obj in objs:
 			vPL = vParent.Label
 
 			# add group name to spreadsheet
-			result.set("A"+str(i), "'" + str(vPL))
+			result.set("A" + str(i), "'" + str(vPL))
 			
 			# get grandparent folder
 			vGrand = getParentGroup(vPL)
@@ -223,21 +237,21 @@ for obj in objs:
 			
 		else:
 			# add element name to spreadsheet if the feature is off
-			result.set("A"+str(i), "'" + str(obj.Label))
+			result.set("A" + str(i), "'" + str(obj.Label))
 
 		# add other values to spreadsheet
-		result.set("B"+str(i), "'" + str(size1.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
-		result.set("C"+str(i), "x")
-		result.set("D"+str(i), "'" + str(size2.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
-		result.set("E"+str(i), "'" + str(thick.getValueAs(sUnitsMetric))+" "+sUnitsMetric)
-		result.set("F"+str(i), "'" + str(vQuantity[key]))
-		result.set("G"+str(i), "'" + str(sqm))
+		result.set("B" + str(i), "'" + str(size1.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
+		result.set("C" + str(i), "x")
+		result.set("D" + str(i), "'" + str(size2.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
+		result.set("E" + str(i), "'" + str(thick.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
+		result.set("F" + str(i), "'" + str(vQuantity[key]))
+		result.set("G" + str(i), "'" + str(sqm))
 
 		vQ = vQuantity[key]
 
 		# recalculate and add partial square meters
 		del vQuantity[key]
-		key = str(thick.getValueAs(sUnitsMetric))+" "+sUnitsMetric
+		key = str(thick.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 
 		if key in vArea:
 			vArea[key] = vArea[key] + sqm
@@ -255,8 +269,8 @@ for obj in objs:
 # #######################################################
 
 # colors
-result.setForeground("A1:G"+str(i), (0,0,0))
-result.setBackground("A1:G"+str(i), (1,1,1))
+result.setForeground("A1:G" + str(i), (0,0,0))
+result.setBackground("A1:G" + str(i), (1,1,1))
 
 # cell sizes
 result.setColumnWidth("A", 135)
@@ -268,13 +282,13 @@ result.setColumnWidth("F", 100)
 result.setColumnWidth("G", 180)
 
 # alignment
-result.setAlignment("A1:A"+str(i), "left", "keep")
-result.setAlignment("B1:B"+str(i), "right", "keep")
-result.setAlignment("C1:C"+str(i), "center", "keep")
-result.setAlignment("D1:D"+str(i), "right", "keep")
-result.setAlignment("E1:E"+str(i), "right", "keep")
-result.setAlignment("F1:F"+str(i), "right", "keep")
-result.setAlignment("G1:G"+str(i), "right", "keep")
+result.setAlignment("A1:A" + str(i), "left", "keep")
+result.setAlignment("B1:B" + str(i), "right", "keep")
+result.setAlignment("C1:C" + str(i), "center", "keep")
+result.setAlignment("D1:D" + str(i), "right", "keep")
+result.setAlignment("E1:E" + str(i), "right", "keep")
+result.setAlignment("F1:F" + str(i), "right", "keep")
+result.setAlignment("G1:G" + str(i), "right", "keep")
 
 # fix for center header text in merged cells
 result.setAlignment("B1:B1", "center", "keep")
@@ -299,10 +313,10 @@ if sSBCF == "on":
 	i = i + 1
 	
 	# add summary title
-	vCell = "A"+str(i)+":D"+str(i)
+	vCell = "A" + str(i) + ":D" + str(i)
+	result.mergeCells(vCell)
 	result.set(vCell, vLang6)
 	result.setStyle(vCell, "bold", "add")
-	result.mergeCells(vCell)
 	result.setAlignment(vCell, "left", "keep")
 		
 	# add empty line separator
@@ -310,23 +324,22 @@ if sSBCF == "on":
 
 	# add values
 	for key in vGroupSqm.keys():
-		result.set("A"+str(i), "'" + str(key))
-		result.set("F"+str(i), "'" + str(vGroupQua[key]))
-		result.set("G"+str(i), "'" + str(vGroupSqm[key]))
-		result.setDisplayUnit("E"+str(i), sUnitsMetric)	
-		result.setAlignment("A"+str(i), "left", "keep")
-		result.setAlignment("F"+str(i), "right", "keep")
-		result.setAlignment("G"+str(i), "right", "keep")
+		result.set("A" + str(i), "'" + str(key))
+		result.set("F" + str(i), "'" + str(vGroupQua[key]))
+		result.set("G" + str(i), "'" + str(vGroupSqm[key]))
+		result.setAlignment("A" + str(i), "left", "keep")
+		result.setAlignment("F" + str(i), "right", "keep")
+		result.setAlignment("G" + str(i), "right", "keep")
 		i = i + 1
 
 # add empty line separator
 i = i + 1
 
 # add summary title for thickness
-vCell = "A"+str(i)+":D"+str(i)
+vCell = "A" + str(i) + ":D" + str(i)
+result.mergeCells(vCell)
 result.set(vCell, vLang7)
 result.setStyle(vCell, "bold", "add")
-result.mergeCells(vCell)
 result.setAlignment(vCell, "left", "keep")
 
 # add empty line separator
@@ -334,18 +347,50 @@ i = i + 1
 
 # add summary values for thickness	
 for key in vArea.keys():
-	result.set("E"+str(i), "'" + str(key))
-	result.set("F"+str(i), "'" + str(vThick[key]))
-	result.set("G"+str(i), "'" + str(vArea[key]))
-	result.setAlignment("E"+str(i), "right", "keep")
-	result.setAlignment("F"+str(i), "right", "keep")
-	result.setAlignment("G"+str(i), "right", "keep")
+	result.set("E" + str(i), "'" + str(key))
+	result.set("F" + str(i), "'" + str(vThick[key]))
+	result.set("G" + str(i), "'" + str(vArea[key]))
+	result.setAlignment("E" + str(i), "right", "keep")
+	result.setAlignment("F" + str(i), "right", "keep")
+	result.setAlignment("G" + str(i), "right", "keep")
 	i = i + 1
+
+# add empty line separator
+i = i + 1
+
+# add summary for edge size
+vCell = "A" + str(i)
+result.mergeCells(vCell)
+result.set(vCell, vLang8)
+result.setStyle(vCell, "bold", "add")
+result.setAlignment(vCell, "left", "keep")
+
+vCell = "B" + str(i) + ":D" + str(i)
+result.mergeCells(vCell)
+result.set(vCell, "'" + str(vEdgeSize) + " " + sUnitsMetric)
+result.setAlignment(vCell, "right", "keep")
+
+
+# #######################################################
+# Code link
+# #######################################################
+
+# add empty line separator
+i = i + 3
+
+# add link 
+vCell = "A" + str(i) + ":G" + str(i)
+result.mergeCells(vCell)
+result.set(vCell, "Generated by FreeCAD macro: github.com/dprojects/getDimensions")
+result.setAlignment(vCell, "left", "keep")
 
 
 # #######################################################
 # TechDraw part
 # #######################################################
+
+# add empty line to spreadsheet to fix merged cells at TechDraw page
+i = i + 1
 
 # remove existing toPrint page
 if FreeCAD.ActiveDocument.getObject("toPrint"):
@@ -354,7 +399,7 @@ if FreeCAD.ActiveDocument.getObject("toPrint"):
 # create TechDraw page for print
 App.activeDocument().addObject("TechDraw::DrawPage","toPrint")
 App.activeDocument().addObject("TechDraw::DrawSVGTemplate","Template")
-App.activeDocument().Template.Template = App.getResourceDir()+"Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+App.activeDocument().Template.Template = App.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
 App.activeDocument().toPrint.Template = App.activeDocument().Template
 
 # add spreadsheet to TechDraw page
@@ -365,7 +410,7 @@ App.activeDocument().toPrint.addView(App.activeDocument().Sheet)
 # add decoration to the table
 FreeCAD.getDocument("Index").getObject("Sheet").X = 105.00
 FreeCAD.getDocument("Index").getObject("Sheet").Y = 200.00
-FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G"+str(i)
+FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G" + str(i)
 
 
 # #######################################################
