@@ -96,6 +96,28 @@ or for all elements:
 
 ![sbcf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf005.png)
 
+### Sample usage - Summary for Edge Size Feature:
+
+By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have 
+to be turned on. But in the real world the edge size that needs to be covered is very often 
+much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, 
+just make Your project Tree for better visibility management e.g.:
+
+![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
+
+Set Your "Toggle Visibility Feature" to "edge":
+
+![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
+
+Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
+
+![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
+
+and run the macro:
+
+![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf004.png)
+
+
 # Printing
 
 TechDraw page is automatically created and it is named "toPrint". So now You can print directly from the 
@@ -108,7 +130,7 @@ page named "toPrint" or just export this page to pdf file and print it later.
 | [![001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png) | [![002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png) | [![003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png) |
 | [![004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png) | [![005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png) | [![006](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png) |
 
-# Not supported
+# Known issues
 
 * Special characters (Polish) for chipboards (object cube names) not supported. However, You can change 
 the names later manually in spreadsheet and the TechDraw view will be automatically updated with new names. 
@@ -117,8 +139,6 @@ the names later manually in spreadsheet and the TechDraw view will be automatica
 
 Please add all comments and questions in FreeCAD forum topic related to this project available at:
 [https://forum.freecadweb.org/viewtopic.php?f=22&t=21127](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127)
-
-You can also send me private message on FreeCAD forum. Maybe I will set up dedicated website for this project in the future, who knows.
 
 # License
 
