@@ -58,43 +58,62 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
 * This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
 * Project example (3D model view):
-![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays001.png)
+
+    ![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays001.png)
+
 * Project example (objects view):
-![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays002.png)
+
+    ![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays002.png)
+
 * Automatically generated spreadsheet "toCut" for project above:
-![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays003.png)
+    
+    ![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays003.png)
 
 ### Toggle Visibility Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "on".
 * Now You can create any TechDraw view You want just by toggle visibility items or group of items.
-![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
-![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
-You can generate different reports at the same furniture project. Just rename the TechDraw page to store it and prevent from overwrite.
+
+    ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
+
+    ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
+
+* You can generate different reports at the same furniture project. Just rename the TechDraw page to store it and prevent from overwrite.
 
 ### Summary By Colors Feature:
 
 * Search "Summary By Colors Feature" part in the "default settings" section in the macro code.
 * Set "sSBCF" variable to "on".
-* You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "Black color"). See example: 
-![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
+* You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "Black color"). See example:
+
+    ![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
+    
 * Now You can generate TechDraw page with the macro:
-![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
+
+    ![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
+    
 * or for all elements:
-![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
-![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
+
+    ![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
+    
+    ![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
 
 ### Summary for Edge Size Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "edge".
 * By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have to be turned on. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, just make Your project Tree for better visibility management e.g.:
-![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
+
+    ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
+    
 * Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
-![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
+
+    ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
+    
 * and run the macro:
-![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
+    
+    ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
 
 # Screenshots
 
