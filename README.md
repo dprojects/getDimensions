@@ -29,6 +29,10 @@ This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions 
 
 Just open the macro under the FreeCAD.
 
+# Default settings
+
+![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ds001.png)
+
 # Usage
 
 ### Sample usage - create chipboards:
@@ -60,62 +64,59 @@ Automatically generated spreadsheet "toCut" for project above:
 
 ### Sample usage - Toggle Visibility Feature:
 
-If the feature "Toggle Visibility Feature" is set to "on", 
+* Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
+* Set "sTVF" variable to "on".
+* Now You can create any TechDraw view You want just by toggle visibility items or group of items.
 
 ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
 
-You can create any TechDraw view You want just by toggle visibility items or group of items. 
-
 ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
-
-![tvf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf003.png)
 
 You can generate different reports at the same furniture project. Just rename the TechDraw page 
 to store it and prevent from overwrite.
 
 ### Sample usage - Summary By Colors Feature:
 
-By default the feature "Summary By Colors Feature" is set to "off". So, You have to turn it on:
-
-![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
-
-Also You need to have exact folder tree structure in Your furniture project. The idea behind it is 
+* Search "Summary By Colors Feature" part in the "default settings" section in the macro code.
+* Set "sSBCF" variable to "on".
+* You need to have exact folder tree structure in Your furniture project. The idea behind it is 
 that each element need to has parent folder and also grandparent folder. For exaple element named 
 "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in 
 grandparent folder (e.g. named "Black color"). See example: 
 
-![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
+![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
 
 Now You can generate TechDraw page with the macro:
 
-![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
+![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
 
 or for all elements:
 
+![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
+
 ![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
 
-![sbcf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf005.png)
-
 ### Sample usage - Summary for Edge Size Feature:
+
+* Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
+* Set "sTVF" variable to "edge".
 
 By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have 
 to be turned on. But in the real world the edge size that needs to be covered is very often 
 much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, 
-just make Your project Tree for better visibility management e.g.:
+just 
+
+* make Your project Tree for better visibility management e.g.:
 
 ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
 
-Set Your "Toggle Visibility Feature" to "edge":
+* Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
 
 ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
 
-Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
+* and run the macro:
 
 ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
-
-and run the macro:
-
-![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf004.png)
 
 
 # Printing
