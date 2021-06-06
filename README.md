@@ -33,9 +33,7 @@ Just open the macro under the FreeCAD.
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ds001.png)
 
-# Usage
-
-### Sample usage - create chipboards:
+# Usage - quickstart
 
 * Go to FreeCAD -> Part -> Create a cube solid -> Cube data (tab):
 * Set "Length" to e.g. 500
@@ -46,83 +44,57 @@ Just open the macro under the FreeCAD.
 
 * Run macro.
 
-### Sample usage - arrays:
+# Printing
 
-This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
+TechDraw page is automatically created and it is named "toPrint". You can print directly from the page named "toPrint" or just export this page to pdf file and print it later. 
 
-Project example (3D model view):
+# Known issues
 
+* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change the names later manually in spreadsheet and the TechDraw view will be automatically updated with new names. 
+
+# Features
+
+### Arrays:
+
+* This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
+* Project example (3D model view):
 ![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays001.png)
-
-Project example (objects view):
-
+* Project example (objects view):
 ![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays002.png)
-
-Automatically generated spreadsheet "toCut" for project above:
-
+* Automatically generated spreadsheet "toCut" for project above:
 ![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays003.png)
 
-### Sample usage - Toggle Visibility Feature:
+### Toggle Visibility Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "on".
 * Now You can create any TechDraw view You want just by toggle visibility items or group of items.
-
 ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
-
 ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
+You can generate different reports at the same furniture project. Just rename the TechDraw page to store it and prevent from overwrite.
 
-You can generate different reports at the same furniture project. Just rename the TechDraw page 
-to store it and prevent from overwrite.
-
-### Sample usage - Summary By Colors Feature:
+### Summary By Colors Feature:
 
 * Search "Summary By Colors Feature" part in the "default settings" section in the macro code.
 * Set "sSBCF" variable to "on".
-* You need to have exact folder tree structure in Your furniture project. The idea behind it is 
-that each element need to has parent folder and also grandparent folder. For exaple element named 
-"Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in 
-grandparent folder (e.g. named "Black color"). See example: 
-
+* You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "Black color"). See example: 
 ![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
-
-Now You can generate TechDraw page with the macro:
-
+* Now You can generate TechDraw page with the macro:
 ![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
-
-or for all elements:
-
+* or for all elements:
 ![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
-
 ![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
 
-### Sample usage - Summary for Edge Size Feature:
+### Summary for Edge Size Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "edge".
-
-By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have 
-to be turned on. But in the real world the edge size that needs to be covered is very often 
-much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, 
-just 
-
-* make Your project Tree for better visibility management e.g.:
-
+* By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have to be turned on. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, just make Your project Tree for better visibility management e.g.:
 ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
-
 * Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
-
 ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
-
 * and run the macro:
-
 ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
-
-
-# Printing
-
-TechDraw page is automatically created and it is named "toPrint". So now You can print directly from the 
-page named "toPrint" or just export this page to pdf file and print it later. 
 
 # Screenshots
 
@@ -130,11 +102,6 @@ page named "toPrint" or just export this page to pdf file and print it later.
 |---|---|---|
 | [![001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/001.png) | [![002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/002.png) | [![003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/003.png) |
 | [![004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/004.png) | [![005](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/005.png) | [![006](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/matrix/006.png) |
-
-# Known issues
-
-* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change 
-the names later manually in spreadsheet and the TechDraw view will be automatically updated with new names. 
 
 # Contact
 
