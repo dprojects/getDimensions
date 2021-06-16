@@ -6,6 +6,8 @@ This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions 
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_en.png)
 
+![engroup](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_en_group.png)
+
 ### TechDraw report example in Polish language:
 
 ![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/lang_pl.png)
@@ -17,7 +19,7 @@ This is FreeCAD macro that read FreeCAD 3D model and gets chipboards dimensions 
 * Square area can be listed in millimeters, meters or inches.
 * Group elements by thickness.
 * Toggle Visibility Feature allow turn off elements or even group of elements (folder).
-* Summary By Colors Feature allow to group elements by colors to make costs more visible for each color.
+* Label Type Feature allow to create different reports.
 * Summary for edge size.
 * Support for arrays made of cube.
 
@@ -65,55 +67,68 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
     ![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays002.png)
 
-* Automatically generated spreadsheet "toCut" for project above:
+* Automatically generated report "toPrint" for project above:
     
     ![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays003.png)
+    
+    ![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/arrays004.png)
 
 ### Toggle Visibility Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "on".
-* Now You can create any TechDraw view You want just by toggle visibility items or group of items.
+* Now You can create any report You want just by toggle visibility items or group of items.
 
     ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf001.png)
 
     ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/tvf002.png)
 
-* You can generate different reports at the same furniture project. Just rename the TechDraw page to store it and prevent from overwrite.
+* You can generate different reports at the same furniture project. Just rename the TechDraw page "toPrint" to store it and prevent from overwrite.
 
-### Summary By Colors Feature:
+### Label Type Feature:
 
-* Search "Summary By Colors Feature" part in the "default settings" section in the macro code.
-* Set "sSBCF" variable to "on".
-* You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "Black color"). See example:
+* Search "Label Type Feature" part in the "default settings" section in the macro code.
+* Set "sLTF" variable to exact value You want.
 
-    ![sbcf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf001.png)
+###### Create name list
+
+* To create list of names just set "sLTF" variable to "n" and run macro: 
+
+    ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf001.png)
+
+###### Create quantity report
+
+To create quantity report just set "sLTF" variable to "q" and run macro:
+
+    ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf002.png)
+
+###### Create group report    
+
+* For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
+
+    ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf003.png)
     
-* Now You can generate TechDraw page with the macro:
+* Now You can generate TechDraw page "toPrint" with the macro:
 
-    ![sbcf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf002.png)
+    ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf004.png)
     
-* or for all elements:
-
-    ![sbcf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf003.png)
-    
-    ![sbcf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sbcf004.png)
-
 ### Summary for Edge Size Feature:
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "edge".
-* By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have to be turned on. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip "Back" or "HDF" parts to calculate costs better. To do it, just make Your project Tree for better visibility management e.g.:
+* By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have to be turned on. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do it, just make Your project Tree for better visibility management, e.g. You can do it for Array as well:
 
     ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf001.png)
     
-* Turn off parts You do not want to calculate (e.g. press "space" on "HDF" group):
-
     ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf002.png)
     
-* and run the macro:
-    
+* Turn off parts You do not want to calculate (e.g. press "space" on "Array" group):
+
     ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf003.png)
+    
+* and run the macro (the edge size is different now):
+    
+    ![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/sesf004.png)
 
 # Screenshots
 

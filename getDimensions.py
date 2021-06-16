@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 6.0
+# Version: 7.0
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD,Draft,Spreadsheet
@@ -35,23 +35,273 @@ sUnitsArea = "in"
 # "off" - all items will be listed and calculated
 sTVF = "edge"
 
-# Summary By Colors Feature:
-# "on" - shows parent folder names and summary by grandparent folder
-# "off" - feature is off, so only labels of elements are listed
-sSBCF = "off"
+# Label Type Feature:
+# "n" - show name of the element first for each group
+# "q" - show quantity first for each group
+# "g" - show group name first for each group (grandparent or parent folder)
+sLTF = "q"
 
 
 # #######################################################
-# MAIN CODE ( NOT CHANGE HERE )
+# Autoconfig (NOT CHANGE HERE)
 # #######################################################
 
-# define function
+# get all objects
+objs = FreeCAD.ActiveDocument.Objects
+
+# init database for edge
+vEdgeSize = 0 # edge size
+
+# init database by sizes
+vSizesQ = dict() # quantity
+vSizesA = dict() # area
+
+# init database by thickness
+vThickQ = dict() # quantity
+vThickA = dict() # area
+
+# init data storage by groups
+if sLTF == "g":
+	vGroupQ = dict() # quantity
+	vGroupA = dict() # area
+
+if sLTF == "n":
+	vNameQ = dict() # quantity
+	vNameA = dict() # area
+
+
+# #######################################################
+# Functions
+# #######################################################
+
+# #######################################################
 def getParentGroup(iLabel):
 	for iGroup in FreeCAD.ActiveDocument.Objects:
 		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
 			for iChild in iGroup.Group:
 				if iChild.Label == iLabel:
 					return iGroup
+	return ""
+
+
+# #######################################################
+def getKey(iObj, iType):
+
+	# create key string with thickness first
+
+	if iObj.Length.Value < 30:
+		key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+	elif iObj.Width.Value < 30:
+		key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+	else:
+		key = str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		key += ":"
+		key += str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+	# key for sizes database
+	if iType == "size":
+		return str(key)
+
+	# key for group database
+	elif iType == "name":	
+		key = str(key) + ":" + str(iObj.Label)
+		return str(key)
+
+	# key for thickness database
+	elif iType == "thick":
+		if iObj.Length.Value < 30:
+			key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		elif iObj.Width.Value < 30:
+			key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		else:
+			key = str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+	# key for group database
+	elif iType == "group":	
+		
+		# get parent folder (group name)
+		vParent = getParentGroup(iObj.Label)
+		
+		if vParent != "":		
+			vPL = vParent.Label
+			
+			# get grandparent folder
+			vGrand = getParentGroup(vPL)
+
+			if vGrand != "":
+				key = str(key) + ":" + str(vGrand.Label)
+			else:	
+				key = str(key) + ":" + str(vPL)
+		else:
+			key = str(key) + ":[...]"
+
+	return str(key)
+
+
+# #######################################################
+def getArea(iObj):
+
+	# make sure to not calculate thickness
+	if iObj.Length.Value < 30:
+		size1 = iObj.Width
+		size2 = iObj.Height
+	elif iObj.Width.Value < 30:
+		size1 = iObj.Length
+		size2 = iObj.Height
+	else:
+		size1 = iObj.Length
+		size2 = iObj.Width
+
+	area = size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
+
+	return area
+
+
+# #######################################################
+def setDB(iObj, iDB):
+
+	# support for arrays
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
+
+		if iObj.ArrayType == "polar":
+			value = iObj.NumberPolar - 1                                                                # without the base element
+		else:
+			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1      # without the base element
+
+		iObj = iObj.Base                             # change obejct reference
+		area = getArea(iObj) * value      # get area for object
+	else:
+		value = 1                                           # single object
+		area = getArea(iObj)                     # get area for object
+	
+	# set DB for name of element database
+	if iDB == "name":
+		key = getKey(iObj, "name")
+		if key in vNameQ:
+			vNameQ[key] = vNameQ[key] + value
+			vNameA[key] = vNameA[key] + area
+		else:
+			vNameQ[key] = value
+			vNameA[key] = area
+
+	# set DB for sizes database (quantity)
+	elif iDB == "size":
+		key = getKey(iObj, "size")
+		if key in vSizesQ:
+			vSizesQ[key] = vSizesQ[key] + value
+			vSizesA[key] = vSizesA[key] + area
+		else:
+			vSizesQ[key] = value
+			vSizesA[key] = area
+
+	# set DB for group database
+	elif iDB == "group":
+		key = getKey(iObj, "group")
+		if key in vGroupQ:
+			vGroupQ[key] = vGroupQ[key] + value
+			vGroupA[key] = vGroupA[key] + area
+		else:
+			vGroupQ[key] = value
+			vGroupA[key] = area
+	
+	# set DB for thickness database
+	elif iDB == "thick":
+		key = getKey(iObj, "thick")
+		if key in vThickQ:
+			vThickQ[key] = vThickQ[key] + value
+			vThickA[key] = vThickA[key] + area
+		else:
+			vThickQ[key] = value
+			vThickA[key] = area
+
+
+# #######################################################
+def getEdge(iObj):
+
+	# support for arrays
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
+
+		if iObj.ArrayType == "polar":
+			value = iObj.NumberPolar - 1                                                                # without the base element
+		else:
+			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1      # without the base element
+
+		iObj = iObj.Base
+	else:
+		value = 1
+
+	if iObj.Length.Value < 30:
+		size1 = iObj.Width
+		size2 = iObj.Height
+	elif iObj.Width.Value < 30:
+		size1 = iObj.Length
+		size2 = iObj.Height
+	else:
+		size1 = iObj.Length
+		size2 = iObj.Width
+	edge = ((2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)) * value
+
+	return edge
+
+	
+# #######################################################
+# Build objects database
+# #######################################################
+
+# build data for later calculation
+for obj in objs:
+
+    	# if feature is on, just skip all hidden elements
+	if sTVF == "on":
+		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
+			continue
+
+	# support for cube objects
+	if obj.isDerivedFrom("Part::Box"):
+		obj = obj                  # same object reference
+	# support for array objects with cube as base
+	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
+		obj = obj                 # same object reference
+	else: 
+		continue		    # skip if object is not reconized
+
+	# set db for main report
+	if sLTF == "n":
+		setDB(obj, "name")
+
+	if sLTF == "q":
+		setDB(obj, "size")
+
+	if sLTF == "g":
+		setDB(obj, "group")
+
+	# set db for thickness report
+	setDB(obj, "thick")
+
+	# set db for edge report
+	edge = getEdge(obj)
+	if sTVF == "edge":
+		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
+				edge = 0 # skip if object is not visible			
+ 
+	vEdgeSize = vEdgeSize + edge
+
+
+# #######################################################
+# Spreadsheet data decoration
+# #######################################################
 
 # setting variables - autoconfig
 if sLang  == "pl":
@@ -94,201 +344,146 @@ if FreeCAD.ActiveDocument.getObject("toCut"):
 
 result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
 
-# set headers
-result.set("A1", vLang1)
-result.set("B1", vLang2)
-result.set("E1", vLang3)
-result.set("F1", vLang4)
-result.set("G1", vLang5)
-result.mergeCells("B1:D1")
-
 
 # #######################################################
-# Calculation loop
+# Spreadsheet main report
 # #######################################################
 
-# scan all objects and count chipboards (cubes)
-objs = FreeCAD.ActiveDocument.Objects
-
-# init data storage
-vQuantity = dict()
-vArea = dict()
-vThick = dict()
-
-if sSBCF == "on":
-	vGroupSqm = dict()
-	vGroupQua = dict()
-
-# build data for later calculation
-for obj in objs:
-
-    	# if feature is on, just skip all hidden elements
-	if sTVF == "on":
-		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-			continue
-
-	# support for cube objects
-	if obj.isDerivedFrom("Part::Box"):
-        
-		# create unique key
-		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
-		keyArr.sort()
-		key = "x".join(keyArr)
-
-		# calculate
-		if key in vQuantity:
-			vQuantity[key] = vQuantity[key] + 1
-		else:
-			vQuantity[key] = 1
-
-	# support for array objects with cube as base
-	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
-
-		# the main box cube will be added in next loop
-		if obj.ArrayType == "polar":
-			arrayQuantity = obj.NumberPolar - 1
-		else:
-			arrayQuantity = obj.NumberX * obj.NumberY * obj.NumberZ - 1
-
-		# create unique key
-		keyArr = [ str(obj.Base.Length), str(obj.Base.Width), str(obj.Base.Height) ]
-		keyArr.sort()
-		key = "x".join(keyArr)
-
-		# calculate
-		if key in vQuantity:
-			vQuantity[key] = vQuantity[key] + arrayQuantity
-		else:
-			vQuantity[key] = arrayQuantity
-
-
-# reset local variables
-sqm = 0
 i = 1
-vEdgeSize = 0
 
-# check what we have...
-for obj in objs:
+# report for name
+if sLTF == "n":
 
-	if obj.isDerivedFrom("Part::Box"):
-		
-		# set unique key for search
-		keyArr = [ str(obj.Length), str(obj.Width), str(obj.Height) ]
-		keyArr.sort()
-		key = "x".join(keyArr)
+	# add headers
+	result.set("A1", vLang1)
+	result.set("B1", vLang2)
+	result.set("E1", vLang3)
+	result.set("F1", vLang4)
+	result.set("G1", vLang5)
+	result.mergeCells("B1:D1")
 
-		# search the key in stored data
-		if not key in vQuantity:
-			continue
-
+	# add values
+	for key in vNameA.keys():
 		i = i + 1
+		a = key.split(":")
+		result.set("A" + str(i), "'" + str(a[3]))
+		result.set("B" + str(i), "'" + str(a[1]))
+		result.set("C" + str(i), "'" + "x")
+		result.set("D" + str(i), "'" + str(a[2]))
+		result.set("E" + str(i), "'" + str(a[0]))
+		result.set("F" + str(i), "'" + str(vNameQ[key]))
+		result.set("G" + str(i), "'" + str(vNameA[key]))
+		result.setAlignment("A" + str(i), "left", "keep")
+		result.setAlignment("F" + str(i), "right", "keep")
+		result.setAlignment("G" + str(i), "right", "keep")
 
-		if obj.Length.Value < 30:
-			size1 = obj.Width
-			size2 = obj.Height
-			thick = obj.Length
-		elif obj.Width.Value < 30:
-			size1 = obj.Length
-			size2 = obj.Height
-			thick = obj.Width
-		else:
-			size1 = obj.Length
-			size2 = obj.Width
-			thick = obj.Height
+	# cell sizes
+	result.setColumnWidth("A", 135)
+	result.setColumnWidth("B", 80)
+	result.setColumnWidth("C", 40)
+	result.setColumnWidth("D", 80)
+	result.setColumnWidth("E", 100)
+	result.setColumnWidth("F", 100)
+	result.setColumnWidth("G", 180)
+
+	# alignment
+	result.setAlignment("A1:A" + str(i), "left", "keep")
+	result.setAlignment("B1:B" + str(i), "right", "keep")
+	result.setAlignment("C1:C" + str(i), "center", "keep")
+	result.setAlignment("D1:D" + str(i), "right", "keep")
+	result.setAlignment("E1:E" + str(i), "right", "keep")
+	result.setAlignment("F1:F" + str(i), "right", "keep")
+	result.setAlignment("G1:G" + str(i), "right", "keep")
+
+# report for quantity
+if sLTF == "q":
+
+	# add headers
+	result.set("A1", vLang4)
+	result.set("B1", vLang2)
+	result.set("E1", vLang3)
+	result.set("F1", vLang5)
+	result.mergeCells("B1:D1")
 		
-		# calculate square area
-		sqm = vQuantity[key] * size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
-
-		# calculate edge size
-		vSkip = 0
-		if sTVF == "edge":
-			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-				vSkip = 1	
-
-		if vSkip == 0:
-			vEdge = (2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)
-			vEdgeSize = vEdgeSize + (vQuantity[key] * vEdge)
-		
-		# ...and add to spreadsheet
-		if sSBCF == "on":
-			
-			# get parent folder (group name)
-			vParent = getParentGroup(obj.Label)
-			vPL = vParent.Label
-
-			# add group name to spreadsheet
-			result.set("A" + str(i), "'" + str(vPL))
-			
-			# get grandparent folder
-			vGrand = getParentGroup(vPL)
-			vGL = vGrand.Label
-
-			# store number of items
-			if vGL in vGroupQua:
-				vGroupQua[vGL] = vGroupQua[vGL] + len(vParent.Group)
-			else:
-				vGroupQua[vGL] = len(vParent.Group)
-
-			# store square area
-			if vGL in vGroupSqm:
-				vGroupSqm[vGL] = vGroupSqm[vGL] + sqm
-			else:
-				vGroupSqm[vGL] = sqm
-			
-		else:
-			# add element name to spreadsheet if the feature is off
-			result.set("A" + str(i), "'" + str(obj.Label))
-
-		# add other values to spreadsheet
-		result.set("B" + str(i), "'" + str(size1.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
+	# add values
+	for key in vSizesQ.keys():
+		i = i + 1
+		a = key.split(":")
+		result.set("A" + str(i), "'" + str(vSizesQ[key])+" x")
+		result.set("B" + str(i), "'" + str(a[1]))
 		result.set("C" + str(i), "x")
-		result.set("D" + str(i), "'" + str(size2.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
-		result.set("E" + str(i), "'" + str(thick.getValueAs(sUnitsMetric)) + " " + sUnitsMetric)
-		result.set("F" + str(i), "'" + str(vQuantity[key]))
-		result.set("G" + str(i), "'" + str(sqm))
+		result.set("D" + str(i), "'" + str(a[2]))
+		result.set("E" + str(i), "'" + str(a[0]))
+		result.set("F" + str(i), "'" + str(vSizesA[key]))
 
-		vQ = vQuantity[key]
+	# cell sizes
+	result.setColumnWidth("A", 80)
+	result.setColumnWidth("B", 80)
+	result.setColumnWidth("C", 20)
+	result.setColumnWidth("D", 80)
+	result.setColumnWidth("E", 100)
+	result.setColumnWidth("F", 180)
 
-		# recalculate and add partial square meters
-		del vQuantity[key]
-		key = str(thick.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+	# alignment
+	result.setAlignment("A1:A" + str(i), "right", "keep")
+	result.setAlignment("B1:B" + str(i), "right", "keep")
+	result.setAlignment("C1:C" + str(i), "center", "keep")
+	result.setAlignment("D1:D" + str(i), "right", "keep")
+	result.setAlignment("E1:E" + str(i), "right", "keep")
+	result.setAlignment("F1:F" + str(i), "right", "keep")
 
-		if key in vArea:
-			vArea[key] = vArea[key] + sqm
-		else:
-			vArea[key] = sqm
+# add summary for groups
+if sLTF == "g":
 
-		if key in vThick:
-			vThick[key] = vThick[key] + vQ
-		else:
-			vThick[key] = vQ
+	# add headers
+	result.set("A1", vLang1)
+	result.set("B1", vLang2)
+	result.set("E1", vLang3)
+	result.set("F1", vLang4)
+	result.set("G1", vLang5)
+	result.mergeCells("B1:D1")
+
+	# add values
+	for key in vGroupA.keys():
+		i = i + 1
+		a = key.split(":")
+		result.set("A" + str(i), "'" + str(a[3]))
+		result.set("B" + str(i), "'" + str(a[1]))
+		result.set("C" + str(i), "'" + "x")
+		result.set("D" + str(i), "'" + str(a[2]))
+		result.set("E" + str(i), "'" + str(a[0]))
+		result.set("F" + str(i), "'" + str(vGroupQ[key]))
+		result.set("G" + str(i), "'" + str(vGroupA[key]))
+		result.setAlignment("A" + str(i), "left", "keep")
+		result.setAlignment("F" + str(i), "right", "keep")
+		result.setAlignment("G" + str(i), "right", "keep")
+
+	# cell sizes
+	result.setColumnWidth("A", 135)
+	result.setColumnWidth("B", 80)
+	result.setColumnWidth("C", 40)
+	result.setColumnWidth("D", 80)
+	result.setColumnWidth("E", 100)
+	result.setColumnWidth("F", 100)
+	result.setColumnWidth("G", 180)
+
+	# alignment
+	result.setAlignment("A1:A" + str(i), "left", "keep")
+	result.setAlignment("B1:B" + str(i), "right", "keep")
+	result.setAlignment("C1:C" + str(i), "center", "keep")
+	result.setAlignment("D1:D" + str(i), "right", "keep")
+	result.setAlignment("E1:E" + str(i), "right", "keep")
+	result.setAlignment("F1:F" + str(i), "right", "keep")
+	result.setAlignment("G1:G" + str(i), "right", "keep")
 
 
 # #######################################################
-# Spreadsheet data decoration
+# Spreadsheet final decoration
 # #######################################################
 
 # colors
 result.setForeground("A1:G" + str(i), (0,0,0))
 result.setBackground("A1:G" + str(i), (1,1,1))
-
-# cell sizes
-result.setColumnWidth("A", 135)
-result.setColumnWidth("B", 80)
-result.setColumnWidth("C", 40)
-result.setColumnWidth("D", 80)
-result.setColumnWidth("E", 100)
-result.setColumnWidth("F", 100)
-result.setColumnWidth("G", 180)
-
-# alignment
-result.setAlignment("A1:A" + str(i), "left", "keep")
-result.setAlignment("B1:B" + str(i), "right", "keep")
-result.setAlignment("C1:C" + str(i), "center", "keep")
-result.setAlignment("D1:D" + str(i), "right", "keep")
-result.setAlignment("E1:E" + str(i), "right", "keep")
-result.setAlignment("F1:F" + str(i), "right", "keep")
-result.setAlignment("G1:G" + str(i), "right", "keep")
 
 # fix for center header text in merged cells
 result.setAlignment("B1:B1", "center", "keep")
@@ -300,37 +495,8 @@ result.setStyle("A1:G1", "bold", "add")
 
 
 # #######################################################
-# Spreadsheet summary 
+# Spreadsheet report for thickness
 # #######################################################
-
-# add empty line separator
-i = i + 1
-
-# show summary for groups
-if sSBCF == "on":
-
-	# add empty line separator
-	i = i + 1
-	
-	# add summary title
-	vCell = "A" + str(i) + ":D" + str(i)
-	result.mergeCells(vCell)
-	result.set(vCell, vLang6)
-	result.setStyle(vCell, "bold", "add")
-	result.setAlignment(vCell, "left", "keep")
-		
-	# add empty line separator
-	i = i + 1
-
-	# add values
-	for key in vGroupSqm.keys():
-		result.set("A" + str(i), "'" + str(key))
-		result.set("F" + str(i), "'" + str(vGroupQua[key]))
-		result.set("G" + str(i), "'" + str(vGroupSqm[key]))
-		result.setAlignment("A" + str(i), "left", "keep")
-		result.setAlignment("F" + str(i), "right", "keep")
-		result.setAlignment("G" + str(i), "right", "keep")
-		i = i + 1
 
 # add empty line separator
 i = i + 1
@@ -345,27 +511,44 @@ result.setAlignment(vCell, "left", "keep")
 # add empty line separator
 i = i + 1
 
-# add summary values for thickness	
-for key in vArea.keys():
-	result.set("E" + str(i), "'" + str(key))
-	result.set("F" + str(i), "'" + str(vThick[key]))
-	result.set("G" + str(i), "'" + str(vArea[key]))
-	result.setAlignment("E" + str(i), "right", "keep")
-	result.setAlignment("F" + str(i), "right", "keep")
-	result.setAlignment("G" + str(i), "right", "keep")
-	i = i + 1
+# for thickness	(quantity)
+if sLTF == "q":
+	for key in vThickQ.keys():
+		result.set("A" + str(i), "'" + str(vThickQ[key])+" x")
+		result.set("E" + str(i), "'" + str(key))
+		result.set("F" + str(i), "'" + str(vThickA[key]))
+		result.setAlignment("A" + str(i), "right", "keep")
+		result.setAlignment("E" + str(i), "right", "keep")
+		result.setAlignment("F" + str(i), "right", "keep")
+		i = i + 1
+
+# for thickness	(group & name)
+if sLTF == "g" or sLTF == "n":
+	for key in vThickQ.keys():
+		result.set("E" + str(i), "'" + str(key))
+		result.set("F" + str(i), "'" + str(vThickQ[key]))
+		result.set("G" + str(i), "'" + str(vThickA[key]))
+		result.setAlignment("E" + str(i), "right", "keep")
+		result.setAlignment("F" + str(i), "right", "keep")
+		result.setAlignment("G" + str(i), "right", "keep")
+		i = i + 1
+
+
+# #######################################################
+# Spreadsheet report for edge
+# #######################################################
 
 # add empty line separator
 i = i + 1
 
 # add summary for edge size
-vCell = "A" + str(i)
+vCell = "A" + str(i) + ":B" + str(i)
 result.mergeCells(vCell)
 result.set(vCell, vLang8)
 result.setStyle(vCell, "bold", "add")
 result.setAlignment(vCell, "left", "keep")
 
-vCell = "B" + str(i) + ":D" + str(i)
+vCell = "C" + str(i) + ":E" + str(i)
 result.mergeCells(vCell)
 result.set(vCell, "'" + str(vEdgeSize) + " " + sUnitsMetric)
 result.setAlignment(vCell, "right", "keep")
