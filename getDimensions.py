@@ -2,15 +2,15 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 7.0
+# Version: 7.1
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD,Draft,Spreadsheet
 
 
-# #######################################################
+# ###################################################################################################################
 # SETTINGS ( SET HERE )
-# #######################################################
+# ###################################################################################################################
 
 # set language:
 # "pl" - Polish
@@ -42,9 +42,9 @@ sTVF = "edge"
 sLTF = "q"
 
 
-# #######################################################
+# ###################################################################################################################
 # Autoconfig (NOT CHANGE HERE)
-# #######################################################
+# ###################################################################################################################
 
 # get all objects
 objs = FreeCAD.ActiveDocument.Objects
@@ -70,11 +70,11 @@ if sLTF == "n":
 	vNameA = dict() # area
 
 
-# #######################################################
+# ###################################################################################################################
 # Functions
-# #######################################################
+# ###################################################################################################################
 
-# #######################################################
+# ###################################################################################################################
 def getParentGroup(iLabel):
 	for iGroup in FreeCAD.ActiveDocument.Objects:
 		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
@@ -84,7 +84,7 @@ def getParentGroup(iLabel):
 	return ""
 
 
-# #######################################################
+# ###################################################################################################################
 def getKey(iObj, iType):
 
 	# create key string with thickness first
@@ -150,7 +150,7 @@ def getKey(iObj, iType):
 	return str(key)
 
 
-# #######################################################
+# ###################################################################################################################
 def getArea(iObj):
 
 	# make sure to not calculate thickness
@@ -169,22 +169,22 @@ def getArea(iObj):
 	return area
 
 
-# #######################################################
+# ###################################################################################################################
 def setDB(iObj, iDB):
 
 	# support for arrays
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		if iObj.ArrayType == "polar":
-			value = iObj.NumberPolar - 1                                                                # without the base element
+			value = iObj.NumberPolar - 1                                  # without the base element
 		else:
 			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1      # without the base element
 
-		iObj = iObj.Base                             # change obejct reference
-		area = getArea(iObj) * value      # get area for object
+		iObj = iObj.Base                                                  # change obejct reference
+		area = getArea(iObj) * value                                      # get area for object
 	else:
-		value = 1                                           # single object
-		area = getArea(iObj)                     # get area for object
+		value = 1                                                         # single object
+		area = getArea(iObj)                                              # get area for object
 	
 	# set DB for name of element database
 	if iDB == "name":
@@ -227,14 +227,14 @@ def setDB(iObj, iDB):
 			vThickA[key] = area
 
 
-# #######################################################
+# ###################################################################################################################
 def getEdge(iObj):
 
 	# support for arrays
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		if iObj.ArrayType == "polar":
-			value = iObj.NumberPolar - 1                                                                # without the base element
+			value = iObj.NumberPolar - 1                                  # without the base element
 		else:
 			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1      # without the base element
 
@@ -256,9 +256,9 @@ def getEdge(iObj):
 	return edge
 
 	
-# #######################################################
+# ###################################################################################################################
 # Build objects database
-# #######################################################
+# ###################################################################################################################
 
 # build data for later calculation
 for obj in objs:
@@ -270,12 +270,12 @@ for obj in objs:
 
 	# support for cube objects
 	if obj.isDerivedFrom("Part::Box"):
-		obj = obj                  # same object reference
+		obj = obj                                         # same object reference
 	# support for array objects with cube as base
 	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
-		obj = obj                 # same object reference
+		obj = obj                                         # same object reference
 	else: 
-		continue		    # skip if object is not reconized
+		continue	                                      # skip if object is not reconized
 
 	# set db for main report
 	if sLTF == "n":
@@ -299,9 +299,9 @@ for obj in objs:
 	vEdgeSize = vEdgeSize + edge
 
 
-# #######################################################
+# ###################################################################################################################
 # Spreadsheet data decoration
-# #######################################################
+# ###################################################################################################################
 
 # setting variables - autoconfig
 if sLang  == "pl":
@@ -345,9 +345,9 @@ if FreeCAD.ActiveDocument.getObject("toCut"):
 result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
 
 
-# #######################################################
+# ###################################################################################################################
 # Spreadsheet main report
-# #######################################################
+# ###################################################################################################################
 
 i = 1
 
@@ -477,9 +477,9 @@ if sLTF == "g":
 	result.setAlignment("G1:G" + str(i), "right", "keep")
 
 
-# #######################################################
+# ###################################################################################################################
 # Spreadsheet final decoration
-# #######################################################
+# ###################################################################################################################
 
 # colors
 result.setForeground("A1:G" + str(i), (0,0,0))
@@ -494,9 +494,9 @@ result.setAlignment("D1:D1", "center", "keep")
 result.setStyle("A1:G1", "bold", "add")
 
 
-# #######################################################
+# ###################################################################################################################
 # Spreadsheet report for thickness
-# #######################################################
+# ###################################################################################################################
 
 # add empty line separator
 i = i + 1
@@ -534,9 +534,9 @@ if sLTF == "g" or sLTF == "n":
 		i = i + 1
 
 
-# #######################################################
+# ###################################################################################################################
 # Spreadsheet report for edge
-# #######################################################
+# ###################################################################################################################
 
 # add empty line separator
 i = i + 1
@@ -554,9 +554,9 @@ result.set(vCell, "'" + str(vEdgeSize) + " " + sUnitsMetric)
 result.setAlignment(vCell, "right", "keep")
 
 
-# #######################################################
+# ###################################################################################################################
 # Code link
-# #######################################################
+# ###################################################################################################################
 
 # add empty line separator
 i = i + 3
@@ -568,9 +568,9 @@ result.set(vCell, "Generated by FreeCAD macro: github.com/dprojects/getDimension
 result.setAlignment(vCell, "left", "keep")
 
 
-# #######################################################
+# ###################################################################################################################
 # TechDraw part
-# #######################################################
+# ###################################################################################################################
 
 # add empty line to spreadsheet to fix merged cells at TechDraw page
 i = i + 1
@@ -596,8 +596,8 @@ FreeCAD.getDocument("Index").getObject("Sheet").Y = 200.00
 FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G" + str(i)
 
 
-# #######################################################
+# ###################################################################################################################
 # Reload to see changes
-# #######################################################
+# ###################################################################################################################
 
 App.ActiveDocument.recompute()
