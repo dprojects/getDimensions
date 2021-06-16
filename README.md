@@ -90,19 +90,19 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 * Search "Label Type Feature" part in the "default settings" section in the macro code.
 * Set "sLTF" variable to exact value You want.
 
-###### Create name list
+#### Create name list
 
-* To create list of names just set "sLTF" variable to "n" and run macro: 
+* To create list of names just set "sLTF" variable to "n" and run macro:
 
     ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf001.png)
 
-###### Create quantity report
+#### Create quantity report
 
-To create quantity report just set "sLTF" variable to "q" and run macro:
+* To create quantity report just set "sLTF" variable to "q" and run macro:
 
     ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/screenshots/ltf002.png)
-
-###### Create group report    
+    
+#### Create group report
 
 * For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
 
