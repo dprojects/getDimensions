@@ -170,7 +170,7 @@ def getArea(iObj):
 		size1 = iObj.Length
 		size2 = iObj.Width
 
-    # calculate area without thickness
+	# calculate area without thickness
 	area = size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
 
 	return area
@@ -183,16 +183,16 @@ def setDB(iObj, iDB):
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		if iObj.ArrayType == "polar":
-			value = iObj.NumberPolar - 1                                  # without the base element
+			value = iObj.NumberPolar - 1 # without the base element
 		else:
-			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1      # without the base element
+			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
 
-		iObj = iObj.Base                                                  # change obejct reference
-		area = getArea(iObj) * value                                      # get area for object
+		iObj = iObj.Base # change obejct reference
+		area = getArea(iObj) * value # get area for object
 	
 	else:
-		value = 1                                                         # single object
-		area = getArea(iObj)                                              # get area for object
+		value = 1 # single object
+		area = getArea(iObj) # get area for object
 	
 	# set DB for name of element database
 	if iDB == "name":
@@ -258,7 +258,7 @@ def getEdge(iObj):
 	else:
 		value = 1 # single object
 
-    # skip the thickness dimension
+	# skip the thickness dimension
 	if iObj.Length.Value < 30:
 		size1 = iObj.Width
 		size2 = iObj.Height
@@ -271,7 +271,7 @@ def getEdge(iObj):
 		size1 = iObj.Length
 		size2 = iObj.Width
 
-    # calculate the edge size
+	# calculate the edge size
 	edge = ((2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)) * value
 
 	return edge
@@ -284,7 +284,7 @@ def getEdge(iObj):
 # search all objects and set database for each one
 for obj in objs:
 
-    # if feature is on, just skip all hidden elements
+	# if feature is on, just skip all hidden elements
 	if sTVF == "on":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			continue
@@ -319,7 +319,7 @@ for obj in objs:
 	
 	if sTVF == "edge":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-				edge = 0 # skip if object is not visible			
+			edge = 0 # skip if object is not visible			
  
 	vEdgeSize = vEdgeSize + edge
 
