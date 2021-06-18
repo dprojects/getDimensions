@@ -46,13 +46,28 @@ sLTF = "q"
 # Autoconfig ( NOT CHANGE HERE )
 # ###################################################################################################################
 
+# Maximum thickness size - do not set this value too high, beacuse the thickness 
+# will not be recognized correctly and you may see incorrect calculation 
+# for small elements e.g. 3 mm x 30 mm x 30 mm. Thickness should always be 
+# as low as possible. In Poland usually we use chipboards 18 mm of thickness.
+# There are MDF 40 mm but they are not so common. So the thickess should be 
+# 20 mm max in this case. If you use much bigger chipboards or wood just set this 
+# value higher as you need but make sure the small elements are listed correctly.
+vThickMax = 20
+
+if sUnitsMetric == "in":
+	vThickMax = float(vThickMax) * float(0.0393700787)
+
+if sUnitsMetric == "m":
+	vThickMax = float(vThickMax) * float(0.001)
+
 # get all objects from 3D model
 objs = FreeCAD.ActiveDocument.Objects
 
 # init database for sizes (quantity) report
 if sLTF == "q":
-    vSizesQ = dict() # quantity
-    vSizesA = dict() # area
+	vSizesQ = dict() # quantity
+	vSizesA = dict() # area
 
 # init database for name report
 if sLTF == "n":
@@ -90,14 +105,14 @@ def getKey(iObj, iType):
 
 	# create key string with thickness first
 
-	if iObj.Length.Value < 30:
+	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
 		key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
 		key += str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
 		key += str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 
-	elif iObj.Width.Value < 30:
+	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
 		key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
 		key += str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
@@ -123,10 +138,10 @@ def getKey(iObj, iType):
 	# key for thickness database
 	elif iType == "thick":
         
-		if iObj.Length.Value < 30:
+		if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
 			key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		
-		elif iObj.Width.Value < 30:
+		elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
 			key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		
 		else:
@@ -158,11 +173,11 @@ def getKey(iObj, iType):
 def getArea(iObj):
 
 	# make sure to not calculate thickness
-	if iObj.Length.Value < 30:
+	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
 		size1 = iObj.Width
 		size2 = iObj.Height
 	
-	elif iObj.Width.Value < 30:
+	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
 		size1 = iObj.Length
 		size2 = iObj.Height
 	
@@ -259,11 +274,11 @@ def getEdge(iObj):
 		value = 1 # single object
 
 	# skip the thickness dimension
-	if iObj.Length.Value < 30:
+	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
 		size1 = iObj.Width
 		size2 = iObj.Height
 
-	elif iObj.Width.Value < 30:
+	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
 		size1 = iObj.Length
 		size2 = iObj.Height
 
