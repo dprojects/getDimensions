@@ -61,8 +61,11 @@ if sUnitsMetric == "in":
 if sUnitsMetric == "m":
 	vThickMax = float(vThickMax) * float(0.001)
 
+# set reference point to Active Document
+vAD = FreeCAD.activeDocument()
+
 # get all objects from 3D model
-objs = FreeCAD.ActiveDocument.Objects
+objs = vAD.Objects
 
 # init database for sizes (quantity) report
 if sLTF == "q":
@@ -93,7 +96,7 @@ vEdgeSize = 0 # edge size
 
 # ###################################################################################################################
 def getParentGroup(iLabel):
-	for iGroup in FreeCAD.ActiveDocument.Objects:
+	for iGroup in vAD.Objects:
 		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
 			for iChild in iGroup.Group:
 				if iChild.Label == iLabel:
@@ -380,10 +383,10 @@ else:
     vLang8 = "Edge size"
 
 # create spreadsheet and prepere it for data
-if FreeCAD.ActiveDocument.getObject("toCut"):
-	FreeCAD.ActiveDocument.removeObject("toCut")
+if vAD.getObject("toCut"):
+	vAD.removeObject("toCut")
 
-result = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","toCut")
+result = vAD.addObject("Spreadsheet::Sheet","toCut")
 
 # init spreadsheet row access point
 i = 1
@@ -618,31 +621,29 @@ result.setAlignment(vCell, "left", "keep")
 # add empty line at the end of spreadsheet to fix merged cells at TechDraw page
 i = i + 1
 
-Tree = App.ActiveDocument.Name
-
 # remove existing toPrint page
-if FreeCAD.ActiveDocument.getObject("toPrint"):
-	App.getDocument(Tree).removeObject("toPrint")
+if vAD.getObject("toPrint"):
+	vAD.removeObject("toPrint")
 
 # create TechDraw page for print
-App.activeDocument().addObject("TechDraw::DrawPage","toPrint")
-App.activeDocument().addObject("TechDraw::DrawSVGTemplate","Template")
-App.activeDocument().Template.Template = App.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
-App.activeDocument().toPrint.Template = App.activeDocument().Template
+vAD.addObject("TechDraw::DrawPage","toPrint")
+vAD.addObject("TechDraw::DrawSVGTemplate","Template")
+vAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+vAD.toPrint.Template = vAD.Template
 
 # add spreadsheet to TechDraw page
-App.activeDocument().addObject("TechDraw::DrawViewSpreadsheet","Sheet")
-App.activeDocument().Sheet.Source = App.activeDocument().toCut
-App.activeDocument().toPrint.addView(App.activeDocument().Sheet)
+vAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
+vAD.Sheet.Source = vAD.toCut
+vAD.toPrint.addView(vAD.Sheet)
 
 # add decoration to the table
-FreeCAD.getDocument(Tree).getObject("Sheet").X = 105.00
-FreeCAD.getDocument(Tree).getObject("Sheet").Y = 200.00
-FreeCAD.getDocument(Tree).getObject("Sheet").CellEnd = "G" + str(i)
+vAD.getObject("Sheet").X = 105.00
+vAD.getObject("Sheet").Y = 200.00
+vAD.getObject("Sheet").CellEnd = "G" + str(i)
 
 
 # ###################################################################################################################
 # Reload to see changes
 # ###################################################################################################################
 
-App.ActiveDocument.recompute()
+vAD.recompute()
