@@ -618,9 +618,11 @@ result.setAlignment(vCell, "left", "keep")
 # add empty line at the end of spreadsheet to fix merged cells at TechDraw page
 i = i + 1
 
+Tree = App.ActiveDocument.Name
+
 # remove existing toPrint page
 if FreeCAD.ActiveDocument.getObject("toPrint"):
-	App.getDocument("Index").removeObject("toPrint")
+	App.getDocument(Tree).removeObject("toPrint")
 
 # create TechDraw page for print
 App.activeDocument().addObject("TechDraw::DrawPage","toPrint")
@@ -634,9 +636,9 @@ App.activeDocument().Sheet.Source = App.activeDocument().toCut
 App.activeDocument().toPrint.addView(App.activeDocument().Sheet)
 
 # add decoration to the table
-FreeCAD.getDocument("Index").getObject("Sheet").X = 105.00
-FreeCAD.getDocument("Index").getObject("Sheet").Y = 200.00
-FreeCAD.getDocument("Index").getObject("Sheet").CellEnd = "G" + str(i)
+FreeCAD.getDocument(Tree).getObject("Sheet").X = 105.00
+FreeCAD.getDocument(Tree).getObject("Sheet").Y = 200.00
+FreeCAD.getDocument(Tree).getObject("Sheet").CellEnd = "G" + str(i)
 
 
 # ###################################################################################################################
