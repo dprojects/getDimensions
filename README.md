@@ -1,6 +1,6 @@
 # Description
 
-This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), espeacially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates spreadsheet named "toCut" and also TechDraw page "toPrint" with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know what kind of elements You need to cut and You can easily calculate costs per square area.
+This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates spreadsheet named "toCut" and also TechDraw page "toPrint" with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know what kind of elements You need to cut and You can easily calculate costs per square area.
 
 ### TechDraw report example in Polish language:
 
