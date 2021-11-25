@@ -1,8 +1,24 @@
+# Table of Contents
+
+1. [Default settings](#default-settings)
+2. [Quickstart](#quickstart)
+3. [Printing](#printing)
+4. [Known issues](#known-issues)
+5. [Features](#features)
+5.1 [Arrays](#arrays)
+5.2 [Toggle Visibility](#toggle-visibility)
+5.3 [Group objects](#group-objects)
+5.3.1 [Name report](#name-report)
+5.3.2 [Quantity report](#quantity-report)
+5.3.3 [Group report](#group-report)
+5.4 [Edge size](#edge-size)
+5.5 [Pads and Sketches](#pads-and-sketches)
+
 # Default settings
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ds001.png)
 
-# Usage - quickstart
+# Quickstart
 
 * Go to FreeCAD -> Part -> Create a cube solid -> Cube data (tab):
 * Set "Length" to e.g. 500
@@ -23,7 +39,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
 # Features
 
-### Arrays:
+### Arrays
 
 * This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
 * Project example (3D model view):
@@ -40,7 +56,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
     
     ![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
 
-### Toggle Visibility Feature:
+### Toggle Visibility
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "on".
@@ -52,24 +68,24 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
 * You can generate different reports at the same furniture project. Just rename the TechDraw page "toPrint" to store it and prevent from overwrite.
 
-### Label Type Feature:
+### Group objects
 
 * Search "Label Type Feature" part in the "default settings" section in the macro code.
 * Set "sLTF" variable to exact value You want.
 
-#### Create name list
+#### Name report
 
 * To create list of names just set "sLTF" variable to "n" and run macro:
 
     ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
 
-#### Create quantity report
+#### Quantity report
 
 * To create quantity report just set "sLTF" variable to "q" and run macro:
 
     ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
     
-#### Create group report
+#### Group report
 
 * For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
 
@@ -79,7 +95,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
     ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
     
-### Summary for Edge Size Feature:
+### Edge size
 
 * Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
 * Set "sTVF" variable to "edge".
@@ -98,7 +114,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
     ![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf004.png)
 
     
-### Pads and Sketches:
+### Pads and Sketches
 
 * Create any furniture using Pads and Sketches. 
 
@@ -117,4 +133,4 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
     ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
 
     
-This is experimental feature, so advanced features like mirror not working. See the demo for pads to see the correct directory tree: [here](https://github.com/dprojects/getDimensions/tree/master/Demo)
+This is experimental feature, so advanced features like mirror is not working. See the demo for pads to see the correct directory tree: [the Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo)
