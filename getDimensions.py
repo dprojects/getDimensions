@@ -2,10 +2,10 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 7.1
+# Version: 2021.11
 # Latest version: https://github.com/dprojects/getDimensions
 
-import FreeCAD,Draft,Spreadsheet
+import FreeCAD, Draft, Spreadsheet
 
 
 # ###################################################################################################################
@@ -21,13 +21,13 @@ sLang = "en"
 # "mm" - millimeter
 # "m" - meter
 # "in" - inch
-sUnitsMetric = "in"
+sUnitsMetric = "mm"
 
 # set square area units:
 # "m"  - meter
 # "mm" - millimeter
 # "in" - inch
-sUnitsArea = "in"
+sUnitsArea = "m"
 
 # Toggle Visibility Feature:
 # "on" - all hidden items with visibility = false will be skipped
@@ -104,30 +104,56 @@ def getParentGroup(iLabel):
 	return ""
 
 # ###################################################################################################################
-def getKey(iObj, iType):
+def getKey(iObj, iW, iH, iL, iType):
 
-	# create key string with thickness first
+	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
 
-	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
-		key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		# create key string with thickness first
+		key  = str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
-		key += str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
-		key += str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 
-	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
-		key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		# sort other two dimensions too		
+		if iW.getValueAs(sUnitsMetric).Value < iH.getValueAs(sUnitsMetric).Value:
+			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		else:
+			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
+
+		# create key string with thickness first
+		key  = str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
-		key += str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
-		key += str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+		# sort other two dimensions too		
+		if iL.getValueAs(sUnitsMetric).Value < iH.getValueAs(sUnitsMetric).Value:
+			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		else:
+			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 
 	else:
-		key = str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+		# create key string with thickness first
+		key  = str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		key += ":"
-		key += str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
-		key += str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+
+		# sort other two dimensions too
+		if iW.getValueAs(sUnitsMetric).Value < iL.getValueAs(sUnitsMetric).Value:
+			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		else:
+			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key += ":"
+			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			
 
 	# key for sizes database
 	if iType == "size":
@@ -141,14 +167,14 @@ def getKey(iObj, iType):
 	# key for thickness database
 	elif iType == "thick":
         
-		if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
-			key = str(iObj.Length.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		if iL.getValueAs(sUnitsMetric).Value < vThickMax:
+			key = str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		
-		elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
-			key = str(iObj.Width.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
+			key = str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 		
 		else:
-			key = str(iObj.Height.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+			key = str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
 
 	# key for group database
 	elif iType == "group":	
@@ -173,20 +199,20 @@ def getKey(iObj, iType):
 
 
 # ###################################################################################################################
-def getArea(iObj):
+def getArea(iObj, iW, iH, iL):
 
 	# make sure to not calculate thickness
-	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iObj.Width
-		size2 = iObj.Height
+	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
+		size1 = iW
+		size2 = iH
 	
-	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iObj.Length
-		size2 = iObj.Height
+	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
+		size1 = iL
+		size2 = iH
 	
 	else:
-		size1 = iObj.Length
-		size2 = iObj.Width
+		size1 = iL
+		size2 = iW
 
 	# calculate area without thickness
 	area = size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
@@ -195,7 +221,7 @@ def getArea(iObj):
 
 
 # ###################################################################################################################
-def setDB(iObj, iDB):
+def setDB(iObj, iW, iH, iL, iDB):
 
 	# support for arrays
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
@@ -206,16 +232,16 @@ def setDB(iObj, iDB):
 			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
 
 		iObj = iObj.Base # change obejct reference
-		area = getArea(iObj) * value # get area for object
+		area = getArea(iObj, iW, iH, iL) * value # get area for object
 	
 	else:
 		value = 1 # single object
-		area = getArea(iObj) # get area for object
+		area = getArea(iObj, iW, iH, iL) # get area for object
 	
 	# set DB for name of element database
 	if iDB == "name":
 
-		key = getKey(iObj, "name")
+		key = getKey(iObj, iW, iH, iL, "name")
 
 		if key in vNameQ:
 			vNameQ[key] = vNameQ[key] + value
@@ -227,7 +253,7 @@ def setDB(iObj, iDB):
 	# set DB for sizes (quantity) database
 	elif iDB == "size":
 
-		key = getKey(iObj, "size")
+		key = getKey(iObj, iW, iH, iL, "size")
 
 		if key in vSizesQ:
 			vSizesQ[key] = vSizesQ[key] + value
@@ -239,7 +265,7 @@ def setDB(iObj, iDB):
 	# set DB for group database
 	elif iDB == "group":
 
-		key = getKey(iObj, "group")
+		key = getKey(iObj, iW, iH, iL, "group")
 
 		if key in vGroupQ:
 			vGroupQ[key] = vGroupQ[key] + value
@@ -251,7 +277,7 @@ def setDB(iObj, iDB):
 	# set DB for thickness database
 	elif iDB == "thick":
 
-		key = getKey(iObj, "thick")
+		key = getKey(iObj, iW, iH, iL, "thick")
 
 		if key in vThickQ:
 			vThickQ[key] = vThickQ[key] + value
@@ -262,7 +288,7 @@ def setDB(iObj, iDB):
 
 
 # ###################################################################################################################
-def getEdge(iObj):
+def getEdge(iObj, iW, iH, iL):
 
 	# support for arrays
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
@@ -277,17 +303,17 @@ def getEdge(iObj):
 		value = 1 # single object
 
 	# skip the thickness dimension
-	if iObj.Length.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iObj.Width
-		size2 = iObj.Height
+	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
+		size1 = iW
+		size2 = iH
 
-	elif iObj.Width.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iObj.Length
-		size2 = iObj.Height
+	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
+		size1 = iL
+		size2 = iH
 
 	else:
-		size1 = iObj.Length
-		size2 = iObj.Width
+		size1 = iL
+		size2 = iW
 
 	# calculate the edge size
 	edge = ((2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)) * value
@@ -309,31 +335,64 @@ for obj in objs:
 
 	# support for cube objects
 	if obj.isDerivedFrom("Part::Box"):
-		keepGoing = 1 # just do nothing
+		vWidth = obj.Width
+		vHeight = obj.Height
+		vLength = obj.Length
 	
 	# support for array objects with cube as base
 	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
-		keepGoing = 1 # just do nothing
-	
+		vWidth = obj.Base.Width
+		vHeight = obj.Base.Height
+		vLength = obj.Base.Length
+
+	# support for Pads and Sketches (this is experimental feature)
+	elif obj.isDerivedFrom("PartDesign::Pad"):
+		
+		# remove existing fakeCube object
+		if vAD.getObject("fakeCube"):
+			vAD.removeObject("fakeCube")
+
+		# create fake Cube 
+		fakeCube = vAD.addObject("Part::Box", "fakeCube")
+
+		try:	
+			# assign values to the fake Cube dimensions
+			fakeCube.Width = obj.Profile[0].Constraints[8].Value
+			fakeCube.Height = obj.Profile[0].Constraints[9].Value
+			fakeCube.Length = obj.Length.Value
+
+		except:
+			# remove existing fakeCube object
+			if vAD.getObject("fakeCube"):
+				vAD.removeObject("fakeCube")
+
+			# skip if no access to the values (wrong design of Sketch and Pad)
+			continue
+		
+		# get values as the correct dimensions
+		vWidth = fakeCube.Width
+		vHeight = fakeCube.Height
+		vLength = fakeCube.Length
+
 	# skip if object is not reconized
 	else: 
 		continue
 
 	# set db for main report
 	if sLTF == "n":
-		setDB(obj, "name")
+		setDB(obj, vWidth, vHeight, vLength, "name")
 
 	if sLTF == "q":
-		setDB(obj, "size")
+		setDB(obj, vWidth, vHeight, vLength, "size")
 
 	if sLTF == "g":
-		setDB(obj, "group")
+		setDB(obj, vWidth, vHeight, vLength, "group")
 
 	# set db for thickness report
-	setDB(obj, "thick")
+	setDB(obj, vWidth, vHeight, vLength, "thick")
 
 	# set db for edge report
-	edge = getEdge(obj)
+	edge = getEdge(obj, vWidth, vHeight, vLength)
 	
 	if sTVF == "edge":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
@@ -341,6 +400,11 @@ for obj in objs:
  
 	vEdgeSize = vEdgeSize + edge
 
+	# remove existing fakeCube object
+	if vAD.getObject("fakeCube"):
+		vAD.removeObject("fakeCube")
+
+	
 
 # ###################################################################################################################
 # Spreadsheet data init
