@@ -5,14 +5,14 @@
 3. [Printing](#printing)
 4. [Known issues](#known-issues)
 5. [Features](#features)
-    5.1 [Arrays](#arrays)
-    5.2 [Toggle Visibility](#toggle-visibility)
-    5.3 [Group objects](#group-objects)
-        5.3.1 [Name report](#name-report)
-        5.3.2 [Quantity report](#quantity-report)
-        5.3.3 [Group report](#group-report)
-    5.4 [Edge size](#edge-size)
-    5.5 [Pads and Sketches](#pads-and-sketches)
+    1. [Arrays](#arrays)
+    2. [Toggle Visibility](#toggle-visibility)
+    3. [Group objects](#group-objects)
+        1. [Name report](#name-report)
+        2. [Quantity report](#quantity-report)
+        3. [Group report](#group-report)
+    4. [Edge size](#edge-size)
+    5. [Pads and Sketches](#pads-and-sketches)
 
 # Default settings
 
