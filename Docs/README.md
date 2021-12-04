@@ -87,7 +87,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
     
 #### Group report
 
-* For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
+* For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For example element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
 
     ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
     
@@ -124,7 +124,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
     ![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
     
-* You can also create global furniture dimensions in seprate spreadsheet to be able to change the global furniture size later:
+* You can also create global furniture dimensions in separate spreadsheet to be able to change the global furniture size later:
     
     ![pads003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads003.png)
     

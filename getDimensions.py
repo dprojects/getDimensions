@@ -46,7 +46,7 @@ sLTF = "q"
 # Autoconfig ( NOT CHANGE HERE )
 # ###################################################################################################################
 
-# Maximum thickness size - do not set this value too high, beacuse the thickness 
+# Maximum thickness size - do not set this value too high, because the thickness 
 # will not be recognized correctly and you may see incorrect calculation 
 # for small elements e.g. 3 mm x 30 mm x 30 mm. Thickness should always be 
 # as low as possible. In Poland usually we use chipboards 18 mm of thickness.
@@ -231,7 +231,7 @@ def setDB(iObj, iW, iH, iL, iDB):
 		else:
 			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
 
-		iObj = iObj.Base # change obejct reference
+		iObj = iObj.Base # change object reference
 		area = getArea(iObj, iW, iH, iL) * value # get area for object
 	
 	else:
@@ -374,7 +374,7 @@ for obj in objs:
 		vHeight = fakeCube.Height
 		vLength = fakeCube.Length
 
-	# skip if object is not reconized
+	# skip if object is not recognized
 	else: 
 		continue
 
