@@ -20,22 +20,22 @@
 
 # Quickstart
 
-* Go to FreeCAD -> Part -> Create a cube solid -> Cube data (tab):
-* Set "Length" to e.g. 500
-* Set "Width" to e.g. 500
-* Set "Height" to e.g. 18
+* Go to `FreeCAD > Part > Create a cube solid > Cube data (tab)`
+* Set `Length` to e.g. 500
+* Set `Width` to e.g. 500
+* Set `Height` to e.g. 18
 
-**NOTE**: Now you should have chipboard 500 mm x 500 mm x 18 mm. You can create whatever you like using such chipboards. Even group them in folders.
+    **NOTE**: Now you should have chipboard `500 mm x 500 mm x 18 mm`. You can create whatever you like using such chipboards. Even group them in folders.
 
 * Run macro.
 
 # Printing
 
-TechDraw page is automatically created and it is named "toPrint". You can print directly from the page named "toPrint" or just export this page to pdf file and print it later. 
+TechDraw page is automatically created and it is named `toPrint`. You can print directly from the page named `toPrint` or just export this page to pdf file and print it later. 
 
 # Known issues
 
-* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change the names later manually in spreadsheet and the TechDraw view will be automatically updated with new names. 
+* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names. 
 
 # Features
 
@@ -50,7 +50,7 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
     ![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays002.png)
 
-* Automatically generated report "toPrint" for project above:
+* Automatically generated report `toPrint` for project above:
     
     ![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays003.png)
     
@@ -58,24 +58,24 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
 ### Toggle Visibility
 
-* Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
-* Set "sTVF" variable to "on".
+* Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
+* Set `sTVF` variable to `on`.
 * Now You can create any report You want just by toggle visibility items or group of items.
 
     ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf001.png)
 
     ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf002.png)
 
-* You can generate different reports at the same furniture project. Just rename the TechDraw page "toPrint" to store it and prevent from overwrite.
+    **Note:** You can generate different reports at the same furniture project. Just rename the TechDraw page `toPrint` to store it and prevent it from an overwrite.
 
 ### Group objects
 
-* Search "Label Type Feature" part in the "default settings" section in the macro code.
-* Set "sLTF" variable to exact value You want.
+* Search `Label Type Feature` part in the `default settings` section in the macro code.
+* Set `sLTF` variable to the exact value You want.
 
 #### Name report
 
-* To create list of names just set "sLTF" variable to "n" and run macro:
+* To create list of names just set `sLTF` variable to `n` and run macro:
 
     ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
 
@@ -87,32 +87,33 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
     
 #### Group report
 
-* For group mode "g", You need to have exact folder tree structure in Your furniture project. The idea behind it is that each element need to has parent folder and also grandparent folder. For exaple element named "Foot L" need to be in parent folder (e.g. named "Foot"). Also the "Foot" folder need to be in grandparent folder (e.g. named "White color"). See example:
+* For group mode `g`, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
 
     ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
     
-* Now You can generate TechDraw page "toPrint" with the macro:
+* Now You can generate TechDraw page `toPrint` with the macro:
 
     ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
     
 ### Edge size
 
-* Search "Toggle Visibility Feature" part in the "default settings" section in the macro code.
-* Set "sTVF" variable to "edge".
-* By default the feature "Summary for Edge Size Feature" calculate the whole edge and do not have to be turned on. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do it, just make Your project Tree for better visibility management, e.g. You can do it for Array as well:
+* Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
+* Set `sTVF` variable to `edge`.
+* By default the feature `Summary for Edge Size Feature` calculates the whole edge and do not have to be activated. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize your project tree with exact visibility. This also can be done for `Array` objects:
 
     ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf001.png)
     
     ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf002.png)
     
-* Turn off parts You do not want to calculate (e.g. press "space" on "Array" group):
+* Hide parts You do not wish to calculate (e.g. press the `Spacebar` key while on the `Array` group) as demonstrated in:
 
     ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf003.png)
     
-* and run the macro (the edge size is different now):
+* Run the macro. 
     
     ![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf004.png)
 
+    **Note:** The edge size should be different now.
     
 ### Pads and Sketches
 
@@ -120,17 +121,18 @@ TechDraw page is automatically created and it is named "toPrint". You can print 
 
     ![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
  
-* Make sure all your folder tree has correct structure. The Sketch object must be in the Pad folder:
+* Make sure all Your folder tree have the correct structure. 
 
     ![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
     
-* You can also create global furniture dimensions in seprate spreadsheet to be able to change the global furniture size later:
+    **Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Constraints[8].Value` and `.Profile[0].Constraints[9].Value`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, those values needs to be accessible and correct to get it to work.
+    
+* You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
     ![pads003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads003.png)
     
-* Now you can create report with all needed dimensions to cut:
+* Now you can create the desired report with all necessary dimensions to cut:
     
     ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
 
-    
-This is experimental feature, so advanced features like mirror is not working. See the demo for pads to see the correct directory tree: [the Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo)
+    **Important note:** This is an experimental feature, so advanced features like mirror are not working. See the demo for pads to see the correct directory tree in the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo)

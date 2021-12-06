@@ -1,6 +1,6 @@
 # Description
 
-This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates spreadsheet named "toCut" and also TechDraw page "toPrint" with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know what kind of elements You need to cut and You can easily calculate costs per square area.
+This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know what kind of elements You need to cut and You can easily calculate costs per square area.
 
 ### TechDraw report example in Polish language:
 
@@ -18,7 +18,7 @@ This FreeCAD macro gets objects dimensions. It has been designed for my private 
 * Objects can be listed in millimeters, meters or inches.
 * Square area can be listed in millimeters, meters or inches.
 * Group elements by thickness, size, name, folders.
-* Allow turn off visibility of objects or even group of elements (folder).
+* Allow turn off visibility of objects or even a group of elements (folder).
 * Summary for edge size.
 * Support for arrays made of cube.
 * Support for pads (experimental feature).
@@ -34,8 +34,8 @@ For more details see documentation page: [in Docs folder](https://github.com/dpr
 
 # Contact
 
-Please add all comments and questions in FreeCAD forum topic related to this project available at:
-[https://forum.freecadweb.org/viewtopic.php?f=22&t=21127](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127)
+Please add all comments and questions to the dedicated
+[FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127).
 
 # License
 
