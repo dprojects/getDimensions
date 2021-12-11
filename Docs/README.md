@@ -13,6 +13,8 @@
         3. [Group report](#group-report)
     4. [Edge size](#edge-size)
     5. [Pads and Sketches](#pads-and-sketches)
+		1. [Pads basic](#pads-basic)
+        2. [Pads transformations](#pads-transformations)
 
 # Default settings
 
@@ -25,7 +27,7 @@
 * Set `Width` to e.g. 500
 * Set `Height` to e.g. 18
 
-    **NOTE**: Now you should have chipboard `500 mm x 500 mm x 18 mm`. You can create whatever you like using such chipboards. Even group them in folders.
+	**Note**: Now you should have chipboard `500 mm x 500 mm x 18 mm`. You can create whatever you like using such chipboards. Even group them in folders.
 
 * Run macro.
 
@@ -39,7 +41,7 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
 # Features
 
-### Arrays
+## Arrays
 
 * This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
 * Project example (3D model view):
@@ -56,7 +58,7 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
     
     ![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
 
-### Toggle Visibility
+## Toggle Visibility
 
 * Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
 * Set `sTVF` variable to `on`.
@@ -68,24 +70,24 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
     **Note:** You can generate different reports at the same furniture project. Just rename the TechDraw page `toPrint` to store it and prevent it from an overwrite.
 
-### Group objects
+## Group objects
 
 * Search `Label Type Feature` part in the `default settings` section in the macro code.
 * Set `sLTF` variable to the exact value You want.
 
-#### Name report
+### Name report
 
 * To create list of names just set `sLTF` variable to `n` and run macro:
 
     ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
 
-#### Quantity report
+### Quantity report
 
 * To create quantity report just set "sLTF" variable to "q" and run macro:
 
     ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
     
-#### Group report
+### Group report
 
 * For group mode `g`, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
 
@@ -95,7 +97,7 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
     ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
     
-### Edge size
+## Edge size
 
 * Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
 * Set `sTVF` variable to `edge`.
@@ -115,7 +117,9 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
     **Note:** The edge size should be different now.
     
-### Pads and Sketches
+## Pads and Sketches
+
+### Pads basic
 
 * Create any furniture using Pads and Sketches. 
 
@@ -125,7 +129,7 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
     ![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
     
-    **Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Constraints[8].Value` and `.Profile[0].Constraints[9].Value`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, those values needs to be accessible and correct to get it to work.
+    **Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values needs to be accessible and correct to get it to work.
     
 * You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
@@ -135,4 +139,20 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
     
     ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
 
-    **Important note:** This is an experimental feature, so advanced features like mirror are not working. See the demo for pads to see the correct directory tree in the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo)
+
+### Pads transformations
+
+* Create any furniture using Pads and Sketches. You can use Single Mirror FreeCAD feature and MultiTransform.
+
+	![pads005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads005.png)
+	
+* You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
+    
+	![pads006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads006.png)
+        
+* Now you can create the desired report with all necessary dimensions to cut. However, if You want calculate the edge correctly, just use the visibility to show e.g. top and hide legs and other parts.
+
+	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
+
+
+	**Note:** For more details see the demo for pads in: [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).

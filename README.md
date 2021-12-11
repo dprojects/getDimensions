@@ -1,12 +1,12 @@
 # Description
 
-This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed chipboards elements to cut for your woodworking project. They are grouped with same sizes to make cutting more easier. So, You know what kind of elements You need to cut and You can easily calculate costs per square area.
+This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed chipboards elements to cut for woodworking project. 
 
-### TechDraw report example in Polish language:
+### Example in Polish language:
 
 ![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_pl.png)
 
-### TechDraw report example in English language:
+### Example in English language:
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en.png)
 
@@ -14,16 +14,14 @@ This FreeCAD macro gets objects dimensions. It has been designed for my private 
 
 # Main features
 
-* Support for English and Polish languages.
-* Objects can be listed in millimeters, meters or inches.
-* Square area can be listed in millimeters, meters or inches.
-* Group elements by thickness, size, name, folders.
-* Allow turn off visibility of objects or even a group of elements (folder).
-* Summary for edge size.
-* Support for arrays made of cube.
-* Support for pads (experimental feature).
+* Languages: Polish, English.
+* Group by: thickness, quantity, size, name, folder, visibility.
+* Units: millimeters, meters, inches.
+* Calculations: quantity, thickness, squared area, edge size.
+* Objects types: Cube, Array, Pad.
+* Pads transformations: Single Mirror, MultiTransform Mirror.
 
-For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs)
+For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 
 # Screenshots
 

@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12
+# Version: 2021.12.11
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -43,51 +43,42 @@ sLTF = "q"
 
 
 # ###################################################################################################################
-# Autoconfig ( NOT CHANGE HERE )
+# Autoconfig - define globals ( NOT CHANGE HERE )
 # ###################################################################################################################
 
-# Maximum thickness size - do not set this value too high, because the thickness 
-# will not be recognized correctly and you may see incorrect calculation 
-# for small elements e.g. 3 mm x 30 mm x 30 mm. Thickness should always be 
-# as low as possible. In Poland usually we use chipboards 18 mm of thickness.
-# There are MDF 40 mm but they are not so common. So the thickess should be 
-# 20 mm max in this case. If you use much bigger chipboards or wood just set this 
-# value higher as you need but make sure the small elements are listed correctly.
-vThickMax = 20
-
-if sUnitsMetric == "in":
-	vThickMax = float(vThickMax) * float(0.0393700787)
-
-if sUnitsMetric == "m":
-	vThickMax = float(vThickMax) * float(0.001)
-
 # set reference point to Active Document
-vAD = FreeCAD.activeDocument()
+gAD = FreeCAD.activeDocument()
 
 # get all objects from 3D model
-objs = vAD.Objects
+gOBs = gAD.Objects
+
+# fake Cube database for objects and dimensions
+gFakeCubeO = []
+gFakeCubeW = dict()
+gFakeCubeH = dict()
+gFakeCubeL = dict()
 
 # init database for sizes (quantity) report
 if sLTF == "q":
-	vSizesQ = dict() # quantity
-	vSizesA = dict() # area
+	gSizesQ = dict() # quantity
+	gSizesA = dict() # area
 
 # init database for name report
 if sLTF == "n":
-	vNameQ = dict() # quantity
-	vNameA = dict() # area
+	gNameQ = dict() # quantity
+	gNameA = dict() # area
 
 # init database for group report
 if sLTF == "g":
-	vGroupQ = dict() # quantity
-	vGroupA = dict() # area
+	gGroupQ = dict() # quantity
+	gGroupA = dict() # area
 
 # init database for thickness report
-vThickQ = dict() # quantity
-vThickA = dict() # area
+gThickQ = dict() # quantity
+gThickA = dict() # area
 
 # init database for edge report
-vEdgeSize = 0 # edge size
+gEdgeSize = 0 # edge size
 
 
 # ###################################################################################################################
@@ -96,7 +87,7 @@ vEdgeSize = 0 # edge size
 
 # ###################################################################################################################
 def getParentGroup(iLabel):
-	for iGroup in vAD.Objects:
+	for iGroup in gAD.Objects:
 		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
 			for iChild in iGroup.Group:
 				if iChild.Label == iLabel:
@@ -106,75 +97,36 @@ def getParentGroup(iLabel):
 # ###################################################################################################################
 def getKey(iObj, iW, iH, iL, iType):
 
-	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
+	# set array with values
+	vKeyArr = [
+		iW.getValueAs(sUnitsMetric),
+		iH.getValueAs(sUnitsMetric),
+		iL.getValueAs(sUnitsMetric)
+	]
 
-		# create key string with thickness first
-		key  = str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
+	# sort as values to have thickness first
+	vKeyArr.sort()
 
-		# sort other two dimensions too		
-		if iW.getValueAs(sUnitsMetric).Value < iH.getValueAs(sUnitsMetric).Value:
-			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		else:
-			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-
-	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
-
-		# create key string with thickness first
-		key  = str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
-
-		# sort other two dimensions too		
-		if iL.getValueAs(sUnitsMetric).Value < iH.getValueAs(sUnitsMetric).Value:
-			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		else:
-			key += str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-
-	else:
-
-		# create key string with thickness first
-		key  = str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		key += ":"
-
-		# sort other two dimensions too
-		if iW.getValueAs(sUnitsMetric).Value < iL.getValueAs(sUnitsMetric).Value:
-			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		else:
-			key += str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			key += ":"
-			key += str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-			
+	# create key string with thickness first
+	vKey = ""
+	vKey += str(vKeyArr[0]) + " " + sUnitsMetric
+	vKey += ":"
+	vKey += str(vKeyArr[1]) + " " + sUnitsMetric
+	vKey += ":"
+	vKey += str(vKeyArr[2]) + " " + sUnitsMetric
 
 	# key for sizes database
 	if iType == "size":
-		return str(key)
+		return str(vKey)
 
 	# key for name database
 	elif iType == "name":
-		key = str(key) + ":" + str(iObj.Label)
-		return str(key)
+		vKey = str(vKey) + ":" + str(iObj.Label)
+		return str(vKey)
 
-	# key for thickness database
+	# key for thickness database (this is value, not string)
 	elif iType == "thick":
-        
-		if iL.getValueAs(sUnitsMetric).Value < vThickMax:
-			key = str(iL.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		
-		elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
-			key = str(iW.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
-		
-		else:
-			key = str(iH.getValueAs(sUnitsMetric)) + " " + sUnitsMetric
+		return vKeyArr[0]
 
 	# key for group database
 	elif iType == "group":	
@@ -189,35 +141,37 @@ def getKey(iObj, iW, iH, iL, iType):
 			vGrand = getParentGroup(vPL)
 
 			if vGrand != "":
-				key = str(key) + ":" + str(vGrand.Label)
+				vKey = str(vKey) + ":" + str(vGrand.Label)
 			else:
-				key = str(key) + ":" + str(vPL)
+				vKey = str(vKey) + ":" + str(vPL)
 		else:
-			key = str(key) + ":[...]"
+			vKey = str(vKey) + ":[...]"
 
-	return str(key)
+	return str(vKey)
 
 
 # ###################################################################################################################
 def getArea(iObj, iW, iH, iL):
 
 	# make sure to not calculate thickness
-	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iW
-		size2 = iH
+	vThickMax = getKey(iObj, iW, iH, iL, "thick")
+
+	if iL.getValueAs(sUnitsMetric).Value == vThickMax:
+		vSize1 = iW
+		vSize2 = iH
 	
-	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iL
-		size2 = iH
+	elif iW.getValueAs(sUnitsMetric).Value == vThickMax:
+		vSize1 = iL
+		vSize2 = iH
 	
 	else:
-		size1 = iL
-		size2 = iW
+		vSize1 = iL
+		vSize2 = iW
 
 	# calculate area without thickness
-	area = size1.getValueAs(sUnitsArea) * size2.getValueAs(sUnitsArea)
+	vArea = vSize1.getValueAs(sUnitsArea) * vSize2.getValueAs(sUnitsArea)
 
-	return area
+	return vArea
 
 
 # ###################################################################################################################
@@ -227,64 +181,65 @@ def setDB(iObj, iW, iH, iL, iDB):
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		if iObj.ArrayType == "polar":
-			value = iObj.NumberPolar - 1 # without the base element
+			vArray = iObj.NumberPolar - 1 # without the base element
 		else:
-			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
+			vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
 
 		iObj = iObj.Base # change object reference
-		area = getArea(iObj, iW, iH, iL) * value # get area for object
+		vArea = getArea(iObj, iW, iH, iL) * vArray # get area for object
 	
 	else:
-		value = 1 # single object
-		area = getArea(iObj, iW, iH, iL) # get area for object
+		vArray = 1 # single object
+		vArea = getArea(iObj, iW, iH, iL) # get area for object
 	
 	# set DB for name of element database
 	if iDB == "name":
 
-		key = getKey(iObj, iW, iH, iL, "name")
+		vKey = getKey(iObj, iW, iH, iL, "name")
 
-		if key in vNameQ:
-			vNameQ[key] = vNameQ[key] + value
-			vNameA[key] = vNameA[key] + area
+		if vKey in gNameQ:
+			gNameQ[vKey] = gNameQ[vKey] + vArray
+			gNameA[vKey] = gNameA[vKey] + vArea
 		else:
-			vNameQ[key] = value
-			vNameA[key] = area
+			gNameQ[vKey] = vArray
+			gNameA[vKey] = vArea
 
 	# set DB for sizes (quantity) database
 	elif iDB == "size":
 
-		key = getKey(iObj, iW, iH, iL, "size")
+		vKey = getKey(iObj, iW, iH, iL, "size")
 
-		if key in vSizesQ:
-			vSizesQ[key] = vSizesQ[key] + value
-			vSizesA[key] = vSizesA[key] + area
+		if vKey in gSizesQ:
+			gSizesQ[vKey] = gSizesQ[vKey] + vArray
+			gSizesA[vKey] = gSizesA[vKey] + vArea
 		else:
-			vSizesQ[key] = value
-			vSizesA[key] = area
+			gSizesQ[vKey] = vArray
+			gSizesA[vKey] = vArea
 
 	# set DB for group database
 	elif iDB == "group":
 
-		key = getKey(iObj, iW, iH, iL, "group")
+		vKey = getKey(iObj, iW, iH, iL, "group")
 
-		if key in vGroupQ:
-			vGroupQ[key] = vGroupQ[key] + value
-			vGroupA[key] = vGroupA[key] + area
+		if vKey in gGroupQ:
+			gGroupQ[vKey] = gGroupQ[vKey] + vArray
+			gGroupA[vKey] = gGroupA[vKey] + vArea
 		else:
-			vGroupQ[key] = value
-			vGroupA[key] = area
+			gGroupQ[vKey] = vArray
+			gGroupA[vKey] = vArea
 	
 	# set DB for thickness database
 	elif iDB == "thick":
 
-		key = getKey(iObj, iW, iH, iL, "thick")
-
-		if key in vThickQ:
-			vThickQ[key] = vThickQ[key] + value
-			vThickA[key] = vThickA[key] + area
+		# convert value to dimesion string
+		vKey = str(getKey(iObj, iW, iH, iL, "thick")) + " " + sUnitsMetric
+	
+		if vKey in gThickQ:
+			gThickQ[vKey] = gThickQ[vKey] + vArray
+			gThickA[vKey] = gThickA[vKey] + vArea
 		else:
-			vThickQ[key] = value
-			vThickA[key] = area
+			gThickQ[vKey] = vArray
+			gThickA[vKey] = vArea
 
 
 # ###################################################################################################################
@@ -294,117 +249,223 @@ def getEdge(iObj, iW, iH, iL):
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		if iObj.ArrayType == "polar":
-			value = iObj.NumberPolar - 1 # without the base element
+			vArray = iObj.NumberPolar - 1 # without the base element
 		else:
-			value = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
+			vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
 
 		iObj = iObj.Base # change object reference
 	else:
-		value = 1 # single object
+		vArray = 1 # single object
 
 	# skip the thickness dimension
-	if iL.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iW
-		size2 = iH
+	vThickMax = getKey(iObj, iW, iH, iL, "thick")
 
-	elif iW.getValueAs(sUnitsMetric).Value < vThickMax:
-		size1 = iL
-		size2 = iH
+	if iL.getValueAs(sUnitsMetric).Value == vThickMax:
+		vSize1 = iW
+		vSize2 = iH
+
+	elif iW.getValueAs(sUnitsMetric).Value == vThickMax:
+		vSize1 = iL
+		vSize2 = iH
 
 	else:
-		size1 = iL
-		size2 = iW
+		vSize1 = iL
+		vSize2 = iW
 
 	# calculate the edge size
-	edge = ((2 * size1.getValueAs(sUnitsMetric).Value) + (2 * size2.getValueAs(sUnitsMetric).Value)) * value
+	vEdge = ((2 * vSize1.getValueAs(sUnitsMetric).Value) + (2 * vSize2.getValueAs(sUnitsMetric).Value)) * vArray
 
-	return edge
+	return vEdge
 
 
 # ###################################################################################################################
-# Build objects database
+# Support for base objects types
 # ###################################################################################################################
 
-# search all objects and set database for each one
-for obj in objs:
+# ###################################################################################################################
+def setCube(iObj):
+
+	# support for Cube objects
+	if iObj.isDerivedFrom("Part::Box"):
+        
+		gFakeCubeO.append(iObj)
+		gFakeCubeW[iObj.Label] = iObj.Width
+		gFakeCubeH[iObj.Label] = iObj.Height
+		gFakeCubeL[iObj.Label] = iObj.Length
+	
+	return 0
+
+
+# ###################################################################################################################
+def setCubesArray(iObj):
+
+	# support for Array objects with Cube as base
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
+
+		gFakeCubeO.append(iObj)
+		gFakeCubeW[iObj.Label] = iObj.Base.Width
+		gFakeCubeH[iObj.Label] = iObj.Base.Height
+		gFakeCubeL[iObj.Label] = iObj.Base.Length
+
+	return 0
+
+
+# ###################################################################################################################
+def setPad(iObj):
+
+	# support for Pads and Sketches (this is an experimental feature)
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+
+		try:
+
+			# remove existing fakeCube object
+			if gAD.getObject("fakeCube"):
+				gAD.removeObject("fakeCube")
+
+			# create fake Cube 
+			fakeCube = gAD.addObject("Part::Box", "fakeCube")
+
+			# assign values to the fake Cube dimensions
+			fakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
+			fakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
+			fakeCube.Length = iObj.Length.Value
+			
+			# get values as the correct dimensions and set database
+			gFakeCubeO.append(iObj)
+			gFakeCubeW[iObj.Label] = fakeCube.Width
+			gFakeCubeH[iObj.Label] = fakeCube.Height
+			gFakeCubeL[iObj.Label] = fakeCube.Length
+
+			if gAD.getObject("fakeCube"):
+				gAD.removeObject("fakeCube")
+
+		except:
+
+			# remove existing fakeCube object
+			if gAD.getObject("fakeCube"):
+				gAD.removeObject("fakeCube")
+
+			# skip if no access to the values (wrong design of Sketch and Pad)
+			return 1
+
+	return 0
+
+
+# ###################################################################################################################
+# Support for base objects transformations
+# ###################################################################################################################
+
+# ###################################################################################################################
+def setSingleMirror(iObj):
+
+	# support for Pads single mirror FreeCAD feature
+	if iObj.isDerivedFrom("PartDesign::Mirrored"):
+
+		try:
+
+			# set reference point to the base Pad object
+			key = iObj.Originals[0]
+
+			# if object is Mirror this can be calculated as new Pad
+			setPad(key)
+		
+		except:
+			
+			# skip if there is no base Pad object
+			return 1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setMultiTransform(iObj):
+	
+	# support for Pads MultiTransform FreeCAD feature
+	if iObj.isDerivedFrom("PartDesign::MultiTransform"):
+
+		try:
+			
+			# set number of mirror transformations available    
+			lenT = len(iObj.Transformations)
+			k = 0
+
+			# if this is MultiTransform, not single mirror
+			if lenT > 0:
+				
+				# mirror makes 2 elements but you have to remove the base element already added
+				while k < (2 * lenT) - 1:
+
+					# set reference point to the base Pad object
+					key = iObj.Originals[0]
+
+					# if object is Mirror this can be calculated as new Pad
+					setPad(key)
+					
+					# go to the next Mirror object and do the same
+					k = k + 1
+
+		except:
+
+			# skip if there is no exact structure
+			return 1
+	
+	return 0
+
+
+# ###################################################################################################################
+# MAIN LOOP - set database for objects
+# ###################################################################################################################
+
+# search all objects in document and set database for correct ones
+for obj in gOBs:
 
 	# if feature is on, just skip all hidden elements
 	if sTVF == "on":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			continue
 
-	# support for cube objects
-	if obj.isDerivedFrom("Part::Box"):
-		vWidth = obj.Width
-		vHeight = obj.Height
-		vLength = obj.Length
+	setCube(obj)
+	setCubesArray(obj)
+	setPad(obj)
 	
-	# support for array objects with cube as base
-	elif obj.isDerivedFrom("Part::FeaturePython") and obj.Base.isDerivedFrom("Part::Box"):
-		vWidth = obj.Base.Width
-		vHeight = obj.Base.Height
-		vLength = obj.Base.Length
+	setSingleMirror(obj)
+	setMultiTransform(obj)
 
-	# support for Pads and Sketches (this is experimental feature)
-	elif obj.isDerivedFrom("PartDesign::Pad"):
-		
-		# remove existing fakeCube object
-		if vAD.getObject("fakeCube"):
-			vAD.removeObject("fakeCube")
 
-		# create fake Cube 
-		fakeCube = vAD.addObject("Part::Box", "fakeCube")
+# ###################################################################################################################
+# # MAIN LOOP - set database for dimesions
+# ###################################################################################################################
 
-		try:	
-			# assign values to the fake Cube dimensions
-			fakeCube.Width = obj.Profile[0].Constraints[8].Value
-			fakeCube.Height = obj.Profile[0].Constraints[9].Value
-			fakeCube.Length = obj.Length.Value
+# search all correct objects and set database for dimensions
+for obj in gFakeCubeO:
 
-		except:
-			# remove existing fakeCube object
-			if vAD.getObject("fakeCube"):
-				vAD.removeObject("fakeCube")
-
-			# skip if no access to the values (wrong design of Sketch and Pad)
-			continue
-		
-		# get values as the correct dimensions
-		vWidth = fakeCube.Width
-		vHeight = fakeCube.Height
-		vLength = fakeCube.Length
-
-	# skip if object is not recognized
-	else: 
-		continue
+	# assign values
+	vW = gFakeCubeW[obj.Label]
+	vH = gFakeCubeH[obj.Label]
+	vL = gFakeCubeL[obj.Label]
 
 	# set db for main report
 	if sLTF == "n":
-		setDB(obj, vWidth, vHeight, vLength, "name")
+		setDB(obj, vW, vH, vL, "name")
 
 	if sLTF == "q":
-		setDB(obj, vWidth, vHeight, vLength, "size")
+		setDB(obj, vW, vH, vL, "size")
 
 	if sLTF == "g":
-		setDB(obj, vWidth, vHeight, vLength, "group")
+		setDB(obj, vW, vH, vL, "group")
 
 	# set db for thickness report
-	setDB(obj, vWidth, vHeight, vLength, "thick")
+	setDB(obj, vW, vH, vL, "thick")
 
 	# set db for edge report
-	edge = getEdge(obj, vWidth, vHeight, vLength)
+	edge = getEdge(obj, vW, vH, vL)
 	
 	if sTVF == "edge":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			edge = 0 # skip if object is not visible			
  
-	vEdgeSize = vEdgeSize + edge
+	gEdgeSize = gEdgeSize + edge
 
-	# remove existing fakeCube object
-	if vAD.getObject("fakeCube"):
-		vAD.removeObject("fakeCube")
-
-	
 
 # ###################################################################################################################
 # Spreadsheet data init
@@ -447,10 +508,10 @@ else:
     vLang8 = "Edge size"
 
 # create spreadsheet and prepere it for data
-if vAD.getObject("toCut"):
-	vAD.removeObject("toCut")
+if gAD.getObject("toCut"):
+	gAD.removeObject("toCut")
 
-result = vAD.addObject("Spreadsheet::Sheet","toCut")
+result = gAD.addObject("Spreadsheet::Sheet","toCut")
 
 # init spreadsheet row access point
 i = 1
@@ -471,7 +532,7 @@ if sLTF == "n":
 	result.mergeCells("B1:D1")
 
 	# add values
-	for key in vNameA.keys():
+	for key in gNameA.keys():
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
@@ -479,8 +540,8 @@ if sLTF == "n":
 		result.set("C" + str(i), "'" + "x")
 		result.set("D" + str(i), "'" + str(a[2]))
 		result.set("E" + str(i), "'" + str(a[0]))
-		result.set("F" + str(i), "'" + str(vNameQ[key]))
-		result.set("G" + str(i), "'" + str(vNameA[key]))
+		result.set("F" + str(i), "'" + str(gNameQ[key]))
+		result.set("G" + str(i), "'" + str(gNameA[key]))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -515,15 +576,15 @@ if sLTF == "q":
 	result.mergeCells("B1:D1")
 		
 	# add values
-	for key in vSizesQ.keys():
+	for key in gSizesQ.keys():
 		i = i + 1
 		a = key.split(":")
-		result.set("A" + str(i), "'" + str(vSizesQ[key])+" x")
+		result.set("A" + str(i), "'" + str(gSizesQ[key])+" x")
 		result.set("B" + str(i), "'" + str(a[1]))
 		result.set("C" + str(i), "x")
 		result.set("D" + str(i), "'" + str(a[2]))
 		result.set("E" + str(i), "'" + str(a[0]))
-		result.set("F" + str(i), "'" + str(vSizesA[key]))
+		result.set("F" + str(i), "'" + str(gSizesA[key]))
 
 	# cell sizes
 	result.setColumnWidth("A", 80)
@@ -557,7 +618,7 @@ if sLTF == "g":
 	result.mergeCells("B1:D1")
 
 	# add values
-	for key in vGroupA.keys():
+	for key in gGroupA.keys():
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
@@ -565,8 +626,8 @@ if sLTF == "g":
 		result.set("C" + str(i), "'" + "x")
 		result.set("D" + str(i), "'" + str(a[2]))
 		result.set("E" + str(i), "'" + str(a[0]))
-		result.set("F" + str(i), "'" + str(vGroupQ[key]))
-		result.set("G" + str(i), "'" + str(vGroupA[key]))
+		result.set("F" + str(i), "'" + str(gGroupQ[key]))
+		result.set("G" + str(i), "'" + str(gGroupA[key]))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -623,10 +684,10 @@ i = i + 1
 
 # for thickness	(quantity)
 if sLTF == "q":
-	for key in vThickQ.keys():
-		result.set("A" + str(i), "'" + str(vThickQ[key])+" x")
+	for key in gThickQ.keys():
+		result.set("A" + str(i), "'" + str(gThickQ[key])+" x")
 		result.set("E" + str(i), "'" + str(key))
-		result.set("F" + str(i), "'" + str(vThickA[key]))
+		result.set("F" + str(i), "'" + str(gThickA[key]))
 		result.setAlignment("A" + str(i), "right", "keep")
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
@@ -634,10 +695,10 @@ if sLTF == "q":
 
 # for thickness	(group & name)
 if sLTF == "g" or sLTF == "n":
-	for key in vThickQ.keys():
+	for key in gThickQ.keys():
 		result.set("E" + str(i), "'" + str(key))
-		result.set("F" + str(i), "'" + str(vThickQ[key]))
-		result.set("G" + str(i), "'" + str(vThickA[key]))
+		result.set("F" + str(i), "'" + str(gThickQ[key]))
+		result.set("G" + str(i), "'" + str(gThickA[key]))
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
 		result.setAlignment("G" + str(i), "right", "keep")
@@ -660,7 +721,7 @@ result.setAlignment(vCell, "left", "keep")
 
 vCell = "C" + str(i) + ":E" + str(i)
 result.mergeCells(vCell)
-result.set(vCell, "'" + str(vEdgeSize) + " " + sUnitsMetric)
+result.set(vCell, "'" + str(gEdgeSize) + " " + sUnitsMetric)
 result.setAlignment(vCell, "right", "keep")
 
 
@@ -686,28 +747,28 @@ result.setAlignment(vCell, "left", "keep")
 i = i + 1
 
 # remove existing toPrint page
-if vAD.getObject("toPrint"):
-	vAD.removeObject("toPrint")
+if gAD.getObject("toPrint"):
+	gAD.removeObject("toPrint")
 
 # create TechDraw page for print
-vAD.addObject("TechDraw::DrawPage","toPrint")
-vAD.addObject("TechDraw::DrawSVGTemplate","Template")
-vAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
-vAD.toPrint.Template = vAD.Template
+gAD.addObject("TechDraw::DrawPage","toPrint")
+gAD.addObject("TechDraw::DrawSVGTemplate","Template")
+gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+gAD.toPrint.Template = gAD.Template
 
 # add spreadsheet to TechDraw page
-vAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
-vAD.Sheet.Source = vAD.toCut
-vAD.toPrint.addView(vAD.Sheet)
+gAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
+gAD.Sheet.Source = gAD.toCut
+gAD.toPrint.addView(gAD.Sheet)
 
 # add decoration to the table
-vAD.getObject("Sheet").X = 105.00
-vAD.getObject("Sheet").Y = 200.00
-vAD.getObject("Sheet").CellEnd = "G" + str(i)
+gAD.getObject("Sheet").X = 105.00
+gAD.getObject("Sheet").Y = 200.00
+gAD.getObject("Sheet").CellEnd = "G" + str(i)
 
 
 # ###################################################################################################################
 # Reload to see changes
 # ###################################################################################################################
 
-vAD.recompute()
+gAD.recompute()
