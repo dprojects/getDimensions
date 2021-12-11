@@ -33,17 +33,18 @@
 
 # Printing
 
-TechDraw page is automatically created and it is named `toPrint`. You can print directly from the page named `toPrint` or just export this page to pdf file and print it later. 
+TechDraw page is automatically created and it is named `toPrint`. You can print directly from the page named `toPrint` or just export this page to `pdf` file and print it later. 
 
 # Known issues
 
-* Special characters (Polish) for chipboards (object cube names) not supported. However, You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names. 
+* Special characters (e.g. Polish) for chipboards (objects names) are not supported. However, You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names. 
 
 # Features
 
 ## Arrays
 
-* This macro supports arrays made of cube (thanks [jaisejames](https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=10269)).
+This feature has been suggested to me at the [FreeCAD forum thread by jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072), Thanks.
+
 * Project example (3D model view):
 
     ![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays001.png)
@@ -83,13 +84,13 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
 ### Quantity report
 
-* To create quantity report just set "sLTF" variable to "q" and run macro:
+* To create quantity report just set `sLTF` variable to `q` and run macro:
 
     ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
     
 ### Group report
 
-* For group mode `g`, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
+* To create quantity report just set `sLTF` variable to `g` and run macro. However, for group mode, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
 
     ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
     
@@ -118,6 +119,8 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
     **Note:** The edge size should be different now.
     
 ## Pads and Sketches
+
+This feature has been suggested to me at the [FreeCAD forum thread by Petert](https://forum.freecadweb.org/viewtopic.php?p=547453#p547453), Thanks.
 
 ### Pads basic
 
@@ -154,5 +157,4 @@ TechDraw page is automatically created and it is named `toPrint`. You can print 
 
 	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
 
-
-	**Note:** For more details see the demo for pads in: [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).
+**Note:** For more details see the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).

@@ -7,17 +7,17 @@
 
 ## Demo001_features
 
-This demo shows all the stable features supported by the macro. Also I use this demo for testing macro purposes.
+This demo shows all the stable features supported by the macro. Also, I use this demo for testing macro purposes.
 
 ![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s001.png)
 
-    **Tests passed:** If the final report look like below it is higly possible that all features are working fine and there is no broken functionality. 
+**Tests passed:** If the final report looks like below, it is highly possible that all features are working fine and there is no broken functionality.
 
 ![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s002.png)
 
 ## Demo002_cube
 
-This is sample furniture I made in my garage. So this is real-life project made with FreeCAD and this macro. The furniture is made using FreeCAD Cube objects as I usually do for my private purposes (hobby).
+This is sample furniture I made in my garage. So, this is real-life project made with FreeCAD and this macro. The furniture is made using FreeCAD Cube objects, as I usually do for my private purposes (hobby).
 
 ![demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo002/s001.png)
 
@@ -36,7 +36,7 @@ This is sample furniture but made using Pads and Sketches.
 
 ## Demo004_pads_mirror
 
-This is sample furniture for Pads but uses FreeCAD Pads transormations features like: Single Mirror and MultiTransform Mirror.
+This is sample furniture for Pads but uses FreeCAD Pads transformations features like: Single Mirror and MultiTransform Mirror.
 
 ![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo004/s001.png)
 
