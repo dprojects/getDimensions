@@ -15,7 +15,7 @@
 	1. [Pads Basic](#pads-basic)
 	2. [Pads Single Mirror](#pads-single-mirror)
     3. [Pads MultiTransform Mirror](#pads-multitransform-mirror)
-    4. [Pads Mirror - usage example](#pads-mirror---usage example)
+    4. [Pads Mirror - usage example](#pads-mirror---usage-example)
 
 # Default settings
 
