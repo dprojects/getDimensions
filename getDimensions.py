@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.11
+# Version: 2021.12.12
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -11,6 +11,7 @@ import FreeCAD, Draft, Spreadsheet
 # ###################################################################################################################
 # SETTINGS ( SET HERE )
 # ###################################################################################################################
+
 
 # set language:
 # "pl" - Polish
@@ -82,8 +83,9 @@ gEdgeSize = 0 # edge size
 
 
 # ###################################################################################################################
-# Functions
+# Support for dimensions calculations
 # ###################################################################################################################
+
 
 # ###################################################################################################################
 def getParentGroup(iLabel):
@@ -93,6 +95,7 @@ def getParentGroup(iLabel):
 				if iChild.Label == iLabel:
 					return iGroup
 	return ""
+
 
 # ###################################################################################################################
 def getKey(iObj, iW, iH, iL, iType):
@@ -231,7 +234,7 @@ def setDB(iObj, iW, iH, iL, iDB):
 	# set DB for thickness database
 	elif iDB == "thick":
 
-		# convert value to dimesion string
+		# convert value to dimension string
 		vKey = str(getKey(iObj, iW, iH, iL, "thick")) + " " + sUnitsMetric
 	
 		if vKey in gThickQ:
@@ -282,6 +285,7 @@ def getEdge(iObj, iW, iH, iL):
 # Support for base objects types
 # ###################################################################################################################
 
+
 # ###################################################################################################################
 def setCube(iObj):
 
@@ -313,7 +317,7 @@ def setCubesArray(iObj):
 # ###################################################################################################################
 def setPad(iObj):
 
-	# support for Pads and Sketches (this is an experimental feature)
+	# support for Pads and Sketches
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 
 		try:
@@ -355,6 +359,7 @@ def setPad(iObj):
 # Support for base objects transformations
 # ###################################################################################################################
 
+
 # ###################################################################################################################
 def setSingleMirror(iObj):
 
@@ -392,8 +397,10 @@ def setMultiTransform(iObj):
 			# if this is MultiTransform, not single mirror
 			if lenT > 0:
 				
-				# mirror makes 2 elements but you have to remove the base element already added
-				while k < (2 * lenT) - 1:
+				# Mirror makes 2 elements but each Mirror in MultiTransform makes next Mirror but using 
+				# current transformed object, so this will raise the number of Mirrors to the power, 
+				# also you have to remove the base Pad object already added
+				while k < (2 ** lenT) - 1:
 
 					# set reference point to the base Pad object
 					key = iObj.Originals[0]
@@ -416,6 +423,7 @@ def setMultiTransform(iObj):
 # MAIN LOOP - set database for objects
 # ###################################################################################################################
 
+
 # search all objects in document and set database for correct ones
 for obj in gOBs:
 
@@ -424,17 +432,20 @@ for obj in gOBs:
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			continue
 
+	# set base objects
 	setCube(obj)
 	setCubesArray(obj)
 	setPad(obj)
 	
+	# set transformations
 	setSingleMirror(obj)
 	setMultiTransform(obj)
 
 
 # ###################################################################################################################
-# # MAIN LOOP - set database for dimesions
+# MAIN LOOP - set database for dimensions
 # ###################################################################################################################
+
 
 # search all correct objects and set database for dimensions
 for obj in gFakeCubeO:
@@ -470,6 +481,7 @@ for obj in gFakeCubeO:
 # ###################################################################################################################
 # Spreadsheet data init
 # ###################################################################################################################
+
 
 # Polish language
 if sLang  == "pl":
@@ -521,6 +533,7 @@ i = 1
 # Spreadsheet main report - name
 # ###################################################################################################################
 
+
 if sLTF == "n":
 
 	# add headers
@@ -566,6 +579,7 @@ if sLTF == "n":
 # Spreadsheet main report - sizes (quantity)
 # ###################################################################################################################
 
+
 if sLTF == "q":
 
 	# add headers
@@ -606,6 +620,7 @@ if sLTF == "q":
 # ###################################################################################################################
 # Spreadsheet main report - group
 # ###################################################################################################################
+
 
 if sLTF == "g":
 
@@ -652,6 +667,7 @@ if sLTF == "g":
 # Spreadsheet main report - final decoration
 # ###################################################################################################################
 
+
 # colors
 result.setForeground("A1:G" + str(i), (0,0,0))
 result.setBackground("A1:G" + str(i), (1,1,1))
@@ -668,6 +684,7 @@ result.setStyle("A1:G1", "bold", "add")
 # ###################################################################################################################
 # Spreadsheet report for thickness
 # ###################################################################################################################
+
 
 # add empty line separator
 i = i + 1
@@ -709,6 +726,7 @@ if sLTF == "g" or sLTF == "n":
 # Spreadsheet report for edge
 # ###################################################################################################################
 
+
 # add empty line separator
 i = i + 1
 
@@ -729,6 +747,7 @@ result.setAlignment(vCell, "right", "keep")
 # Code link
 # ###################################################################################################################
 
+
 # add empty line separator
 i = i + 3
 
@@ -742,6 +761,7 @@ result.setAlignment(vCell, "left", "keep")
 # ###################################################################################################################
 # TechDraw part
 # ###################################################################################################################
+
 
 # add empty line at the end of spreadsheet to fix merged cells at TechDraw page
 i = i + 1
@@ -771,4 +791,6 @@ gAD.getObject("Sheet").CellEnd = "G" + str(i)
 # Reload to see changes
 # ###################################################################################################################
 
+
 gAD.recompute()
+
