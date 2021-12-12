@@ -2,11 +2,7 @@
 
 This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed chipboards elements to cut for woodworking project. 
 
-* Example in Polish language:
-
 ![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_pl.png)
-
-* Example in English language:
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en.png)
 
