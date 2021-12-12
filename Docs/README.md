@@ -7,15 +7,15 @@
 5. [Arrays](#arrays)
 6. [Toggle Visibility](#toggle-visibility)
 7. [Group objects](#group-objects)
-    1. [Name report](#name-report)
-    2. [Quantity report](#quantity-report)
-    3. [Group report](#group-report)
+	1. [Name report](#name-report)
+	2. [Quantity report](#quantity-report)
+	3. [Group report](#group-report)
 8. [Edge size](#edge-size)
 9. [Pads and Sketches](#pads-and-sketches)
 	1. [Pads Basic](#pads-basic)
 	2. [Pads Single Mirror](#pads-single-mirror)
-    3. [Pads MultiTransform Mirror](#pads-multitransform-mirror)
-    4. [Pads Mirror - usage example](#pads-mirror---usage-example)
+	3. [Pads MultiTransform Mirror](#pads-multitransform-mirror)
+	4. [Pads Mirror - usage example](#pads-mirror---usage-example)
 
 # Default settings
 
@@ -143,14 +143,13 @@ This feature has been suggested to me at the [FreeCAD forum thread by Petert](ht
 
 ## Pads Single Mirror
 
-FreCAD allows You to create Mirror for the Pad. One way is to use Single Mirror option. By the Single Mirror, I mean, the icon bordered in red at the screenshot below. The icon is also resized at the image. This kind of Mirror just creates new Pad object at the 3D model but the 2 elements created are named in folder tree structure `Mirrored`.
+FreCAD allows You to create Mirror for the Pad. One way is to use `Single Mirror` option. By the `Single Mirror`, I mean, the icon bordered in red at the screenshot below. The icon is also zoomed at the image. This kind of `Mirror` creates new Pad object at the 3D model but both objects are visible as single object in the folder tree structure and it is named `Mirrored`.
 
 ![padsSM001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM001.png)
 
-
 ## Pads MultiTransform Mirror
 
-There is also another way of Mirror creation. This is named by FreeCAD `MultiTransform`. The `MultiTransform` allows for many transformations at single step. However, the Mirror is supported by the macro. The The `MultiTransform` icon is bordered in red at the screenshot below. The icon is also resized at the image.
+There is also another way for `Pads Mirror` creation. This is named by FreeCAD `MultiTransform`. The `MultiTransform` allows for many transformations at the single step. The `MultiTransform` icon is bordered in red at the screenshot below. The icon is also zoomed at the image.
 
 ![padsMT001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT001.png)
 
@@ -170,4 +169,5 @@ To use any mirror type of feature with Your furniture projects just follow the s
 
 	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
 
+___
 **Note:** For more details see the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).
