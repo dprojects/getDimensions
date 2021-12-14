@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.12
+# Version: 2021.12.14
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -81,6 +81,9 @@ gThickA = dict() # area
 # init database for edge report
 gEdgeSize = 0 # edge size
 
+# unit for calculation purposes
+gUnitC = "mm"
+
 
 # ###################################################################################################################
 # Support for dimensions calculations
@@ -101,22 +104,18 @@ def getParentGroup(iLabel):
 def getKey(iObj, iW, iH, iL, iType):
 
 	# set array with values
-	vKeyArr = [
-		iW.getValueAs(sUnitsMetric),
-		iH.getValueAs(sUnitsMetric),
-		iL.getValueAs(sUnitsMetric)
-	]
+	vKeyArr = [ iW, iH, iL ]
 
 	# sort as values to have thickness first
 	vKeyArr.sort()
 
 	# create key string with thickness first
 	vKey = ""
-	vKey += str(vKeyArr[0]) + " " + sUnitsMetric
+	vKey += str(vKeyArr[0])
 	vKey += ":"
-	vKey += str(vKeyArr[1]) + " " + sUnitsMetric
+	vKey += str(vKeyArr[1])
 	vKey += ":"
-	vKey += str(vKeyArr[2]) + " " + sUnitsMetric
+	vKey += str(vKeyArr[2])
 
 	# key for sizes database
 	if iType == "size":
@@ -157,13 +156,13 @@ def getKey(iObj, iW, iH, iL, iType):
 def getArea(iObj, iW, iH, iL):
 
 	# make sure to not calculate thickness
-	vThickMax = getKey(iObj, iW, iH, iL, "thick")
+	vT = getKey(iObj, iW, iH, iL, "thick")
 
-	if iL.getValueAs(sUnitsMetric).Value == vThickMax:
+	if iL == vT:
 		vSize1 = iW
 		vSize2 = iH
 	
-	elif iW.getValueAs(sUnitsMetric).Value == vThickMax:
+	elif iW == vT:
 		vSize1 = iL
 		vSize2 = iH
 	
@@ -172,7 +171,7 @@ def getArea(iObj, iW, iH, iL):
 		vSize2 = iW
 
 	# calculate area without thickness
-	vArea = vSize1.getValueAs(sUnitsArea) * vSize2.getValueAs(sUnitsArea)
+	vArea = vSize1 * vSize2
 
 	return vArea
 
@@ -235,7 +234,7 @@ def setDB(iObj, iW, iH, iL, iDB):
 	elif iDB == "thick":
 
 		# convert value to dimension string
-		vKey = str(getKey(iObj, iW, iH, iL, "thick")) + " " + sUnitsMetric
+		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
 	
 		if vKey in gThickQ:
 			gThickQ[vKey] = gThickQ[vKey] + vArray
@@ -261,13 +260,13 @@ def getEdge(iObj, iW, iH, iL):
 		vArray = 1 # single object
 
 	# skip the thickness dimension
-	vThickMax = getKey(iObj, iW, iH, iL, "thick")
+	vT = getKey(iObj, iW, iH, iL, "thick")
 
-	if iL.getValueAs(sUnitsMetric).Value == vThickMax:
+	if iL == vT:
 		vSize1 = iW
 		vSize2 = iH
 
-	elif iW.getValueAs(sUnitsMetric).Value == vThickMax:
+	elif iW == vT:
 		vSize1 = iL
 		vSize2 = iH
 
@@ -276,9 +275,39 @@ def getEdge(iObj, iW, iH, iL):
 		vSize2 = iW
 
 	# calculate the edge size
-	vEdge = ((2 * vSize1.getValueAs(sUnitsMetric).Value) + (2 * vSize2.getValueAs(sUnitsMetric).Value)) * vArray
+	vEdge = ( (2 * vSize1) + (2 * vSize2) ) * vArray
 
 	return vEdge
+
+
+# ###################################################################################################################
+def getUnit(iValue, iType):
+
+	iValue = float(iValue)
+
+	if iType == "size":
+		
+		if sUnitsMetric == "mm":
+			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsMetric
+		
+		if sUnitsMetric == "m":
+			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsMetric
+		
+		if sUnitsMetric == "in":
+			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsMetric
+		
+	if iType == "area":
+		
+		if sUnitsArea == "mm":
+			return "'" + str( int(round(iValue, 0)) )
+		
+		if sUnitsArea == "m":
+			return "'" + str( round(iValue * float(0.000001), 6) )
+		
+		if sUnitsArea == "in":
+			return "'" + str( round(iValue * float(0.0015500031), 6) )
+		
+	return -1
 
 
 # ###################################################################################################################
@@ -293,9 +322,9 @@ def setCube(iObj):
 	if iObj.isDerivedFrom("Part::Box"):
         
 		gFakeCubeO.append(iObj)
-		gFakeCubeW[iObj.Label] = iObj.Width
-		gFakeCubeH[iObj.Label] = iObj.Height
-		gFakeCubeL[iObj.Label] = iObj.Length
+		gFakeCubeW[iObj.Label] = iObj.Width.getValueAs(gUnitC).Value
+		gFakeCubeH[iObj.Label] = iObj.Height.getValueAs(gUnitC).Value
+		gFakeCubeL[iObj.Label] = iObj.Length.getValueAs(gUnitC).Value
 	
 	return 0
 
@@ -307,9 +336,9 @@ def setCubesArray(iObj):
 	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
 
 		gFakeCubeO.append(iObj)
-		gFakeCubeW[iObj.Label] = iObj.Base.Width
-		gFakeCubeH[iObj.Label] = iObj.Base.Height
-		gFakeCubeL[iObj.Label] = iObj.Base.Length
+		gFakeCubeW[iObj.Label] = iObj.Base.Width.getValueAs(gUnitC).Value
+		gFakeCubeH[iObj.Label] = iObj.Base.Height.getValueAs(gUnitC).Value
+		gFakeCubeL[iObj.Label] = iObj.Base.Length.getValueAs(gUnitC).Value
 
 	return 0
 
@@ -336,9 +365,9 @@ def setPad(iObj):
 			
 			# get values as the correct dimensions and set database
 			gFakeCubeO.append(iObj)
-			gFakeCubeW[iObj.Label] = fakeCube.Width
-			gFakeCubeH[iObj.Label] = fakeCube.Height
-			gFakeCubeL[iObj.Label] = fakeCube.Length
+			gFakeCubeW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
+			gFakeCubeH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
+			gFakeCubeL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
 
 			if gAD.getObject("fakeCube"):
 				gAD.removeObject("fakeCube")
@@ -549,12 +578,12 @@ if sLTF == "n":
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
-		result.set("B" + str(i), "'" + str(a[1]))
+		result.set("B" + str(i), getUnit(a[1], "size"))
 		result.set("C" + str(i), "'" + "x")
-		result.set("D" + str(i), "'" + str(a[2]))
-		result.set("E" + str(i), "'" + str(a[0]))
+		result.set("D" + str(i), getUnit(a[2], "size"))
+		result.set("E" + str(i), getUnit(a[0], "size"))
 		result.set("F" + str(i), "'" + str(gNameQ[key]))
-		result.set("G" + str(i), "'" + str(gNameA[key]))
+		result.set("G" + str(i), getUnit(gNameA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -594,11 +623,11 @@ if sLTF == "q":
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(gSizesQ[key])+" x")
-		result.set("B" + str(i), "'" + str(a[1]))
+		result.set("B" + str(i), getUnit(a[1], "size"))
 		result.set("C" + str(i), "x")
-		result.set("D" + str(i), "'" + str(a[2]))
-		result.set("E" + str(i), "'" + str(a[0]))
-		result.set("F" + str(i), "'" + str(gSizesA[key]))
+		result.set("D" + str(i), getUnit(a[2], "size"))
+		result.set("E" + str(i), getUnit(a[0], "size"))
+		result.set("F" + str(i), getUnit(gSizesA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 80)
@@ -637,12 +666,12 @@ if sLTF == "g":
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
-		result.set("B" + str(i), "'" + str(a[1]))
+		result.set("B" + str(i), getUnit(a[1], "size"))
 		result.set("C" + str(i), "'" + "x")
-		result.set("D" + str(i), "'" + str(a[2]))
-		result.set("E" + str(i), "'" + str(a[0]))
+		result.set("D" + str(i), getUnit(a[2], "size"))
+		result.set("E" + str(i), getUnit(a[0], "size"))
 		result.set("F" + str(i), "'" + str(gGroupQ[key]))
-		result.set("G" + str(i), "'" + str(gGroupA[key]))
+		result.set("G" + str(i), getUnit(gGroupA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -703,8 +732,8 @@ i = i + 1
 if sLTF == "q":
 	for key in gThickQ.keys():
 		result.set("A" + str(i), "'" + str(gThickQ[key])+" x")
-		result.set("E" + str(i), "'" + str(key))
-		result.set("F" + str(i), "'" + str(gThickA[key]))
+		result.set("E" + str(i), getUnit(key, "size"))
+		result.set("F" + str(i), getUnit(gThickA[key], "area"))
 		result.setAlignment("A" + str(i), "right", "keep")
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
@@ -713,9 +742,9 @@ if sLTF == "q":
 # for thickness	(group & name)
 if sLTF == "g" or sLTF == "n":
 	for key in gThickQ.keys():
-		result.set("E" + str(i), "'" + str(key))
+		result.set("E" + str(i), getUnit(key, "size"))
 		result.set("F" + str(i), "'" + str(gThickQ[key]))
-		result.set("G" + str(i), "'" + str(gThickA[key]))
+		result.set("G" + str(i), getUnit(gThickA[key], "area"))
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
 		result.setAlignment("G" + str(i), "right", "keep")
@@ -739,7 +768,7 @@ result.setAlignment(vCell, "left", "keep")
 
 vCell = "C" + str(i) + ":E" + str(i)
 result.mergeCells(vCell)
-result.set(vCell, "'" + str(gEdgeSize) + " " + sUnitsMetric)
+result.set(vCell, getUnit(gEdgeSize, "size"))
 result.setAlignment(vCell, "right", "keep")
 
 
