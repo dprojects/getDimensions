@@ -810,9 +810,19 @@ gAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
 gAD.Sheet.Source = gAD.toCut
 gAD.toPrint.addView(gAD.Sheet)
 
-# add decoration to the table
-gAD.getObject("Sheet").X = 105.00
-gAD.getObject("Sheet").Y = 200.00
+# set in the center of the template
+gAD.getObject("Sheet").X = gAD.getObject("Template").Width / 2
+gAD.getObject("Sheet").Y = gAD.getObject("Template").Height / 2
+
+# try to set fonts
+try:
+	gAD.getObject("Sheet").Font = "DejaVu Sans"
+except:
+	gAD.getObject("Sheet").Font = "Arial"
+
+gAD.getObject("Sheet").TextSize = 13
+
+# fix FreeCAD bug
 gAD.getObject("Sheet").CellEnd = "G" + str(i)
 
 
