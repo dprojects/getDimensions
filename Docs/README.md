@@ -3,7 +3,7 @@
 1. [Default settings](#default-settings)
 2. [Furniture parts](#furniture-parts)
 	1. [Cube - quickstart](#cube---quickstart)
-	2. [Pad - basic](#pad-basic)
+	2. [Pad - basic](#pad---basic)
 3. [Transformations](#transformations)
 	1. [Cube Array](#cube-array)
 	2. [Cube Array Polar](#cube-array-polar)
@@ -37,13 +37,13 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 * Set `Width` to e.g. 600
 * Set `Height` to e.g. 18
 
-	![cube001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cube001.png)
+	![cubes001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes001.png)
 
 	**Note**: Now You should have chipboard `300 mm x 600 mm x 18 mm`. You can create whatever You like using such chipboards. Even group them in folders.
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![cube002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cube002.png)
+	![cubes002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes002.png)
 
 ## Pad - basic
 
@@ -189,11 +189,11 @@ To use any mirror type of feature with Your furniture projects just follow the s
 
 # Known issues
 
-**Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
-**Workaround**: You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names.
+* **Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
+	**Workaround**: You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names.
 
-**Issue**: Units at TechDraw page `toPrint` disappear after open project again.
-**Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
+* **Issue**: Units at TechDraw page `toPrint` disappear after open project again.
+	**Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
 
 # Special thanks
 
