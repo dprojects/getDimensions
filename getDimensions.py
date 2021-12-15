@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.14
+# Version: 2021.12.15
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -40,7 +40,7 @@ sTVF = "edge"
 # "n" - show name of the element first for each group
 # "q" - show quantity first for each group
 # "g" - show group name first for each group (grandparent or parent folder)
-sLTF = "q"
+sLTF = "n"
 
 
 # ###################################################################################################################
@@ -179,20 +179,8 @@ def getArea(iObj, iW, iH, iL):
 # ###################################################################################################################
 def setDB(iObj, iW, iH, iL, iDB):
 
-	# support for arrays
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
-
-		if iObj.ArrayType == "polar":
-			vArray = iObj.NumberPolar - 1 # without the base element
-		else:
-			vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
-
-		iObj = iObj.Base # change object reference
-		vArea = getArea(iObj, iW, iH, iL) * vArray # get area for object
-	
-	else:
-		vArray = 1 # single object
-		vArea = getArea(iObj, iW, iH, iL) # get area for object
+	# get area for object
+	vArea = getArea(iObj, iW, iH, iL) 
 	
 	# set DB for name of element database
 	if iDB == "name":
@@ -200,10 +188,10 @@ def setDB(iObj, iW, iH, iL, iDB):
 		vKey = getKey(iObj, iW, iH, iL, "name")
 
 		if vKey in gNameQ:
-			gNameQ[vKey] = gNameQ[vKey] + vArray
+			gNameQ[vKey] = gNameQ[vKey] + 1
 			gNameA[vKey] = gNameA[vKey] + vArea
 		else:
-			gNameQ[vKey] = vArray
+			gNameQ[vKey] = 1
 			gNameA[vKey] = vArea
 
 	# set DB for sizes (quantity) database
@@ -212,10 +200,10 @@ def setDB(iObj, iW, iH, iL, iDB):
 		vKey = getKey(iObj, iW, iH, iL, "size")
 
 		if vKey in gSizesQ:
-			gSizesQ[vKey] = gSizesQ[vKey] + vArray
+			gSizesQ[vKey] = gSizesQ[vKey] + 1
 			gSizesA[vKey] = gSizesA[vKey] + vArea
 		else:
-			gSizesQ[vKey] = vArray
+			gSizesQ[vKey] = 1
 			gSizesA[vKey] = vArea
 
 	# set DB for group database
@@ -224,10 +212,10 @@ def setDB(iObj, iW, iH, iL, iDB):
 		vKey = getKey(iObj, iW, iH, iL, "group")
 
 		if vKey in gGroupQ:
-			gGroupQ[vKey] = gGroupQ[vKey] + vArray
+			gGroupQ[vKey] = gGroupQ[vKey] + 1
 			gGroupA[vKey] = gGroupA[vKey] + vArea
 		else:
-			gGroupQ[vKey] = vArray
+			gGroupQ[vKey] = 1
 			gGroupA[vKey] = vArea
 	
 	# set DB for thickness database
@@ -237,27 +225,15 @@ def setDB(iObj, iW, iH, iL, iDB):
 		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
 	
 		if vKey in gThickQ:
-			gThickQ[vKey] = gThickQ[vKey] + vArray
+			gThickQ[vKey] = gThickQ[vKey] + 1
 			gThickA[vKey] = gThickA[vKey] + vArea
 		else:
-			gThickQ[vKey] = vArray
+			gThickQ[vKey] = 1
 			gThickA[vKey] = vArea
 
 
 # ###################################################################################################################
 def getEdge(iObj, iW, iH, iL):
-
-	# support for arrays
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
-
-		if iObj.ArrayType == "polar":
-			vArray = iObj.NumberPolar - 1 # without the base element
-		else:
-			vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1 # without the base element
-
-		iObj = iObj.Base # change object reference
-	else:
-		vArray = 1 # single object
 
 	# skip the thickness dimension
 	vT = getKey(iObj, iW, iH, iL, "thick")
@@ -275,7 +251,7 @@ def getEdge(iObj, iW, iH, iL):
 		vSize2 = iW
 
 	# calculate the edge size
-	vEdge = ( (2 * vSize1) + (2 * vSize2) ) * vArray
+	vEdge = (2 * vSize1) + (2 * vSize2)
 
 	return vEdge
 
@@ -330,20 +306,6 @@ def setCube(iObj):
 
 
 # ###################################################################################################################
-def setCubesArray(iObj):
-
-	# support for Array objects with Cube as base
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Base.isDerivedFrom("Part::Box"):
-
-		gFakeCubeO.append(iObj)
-		gFakeCubeW[iObj.Label] = iObj.Base.Width.getValueAs(gUnitC).Value
-		gFakeCubeH[iObj.Label] = iObj.Base.Height.getValueAs(gUnitC).Value
-		gFakeCubeL[iObj.Label] = iObj.Base.Length.getValueAs(gUnitC).Value
-
-	return 0
-
-
-# ###################################################################################################################
 def setPad(iObj):
 
 	# support for Pads and Sketches
@@ -387,6 +349,45 @@ def setPad(iObj):
 # ###################################################################################################################
 # Support for base objects transformations
 # ###################################################################################################################
+
+
+# ###################################################################################################################
+def setArray(iObj):
+
+	# support for Array FreeCAD feature
+	if iObj.isDerivedFrom("Part::FeaturePython"):
+
+		try:
+
+			# set reference point to the base Pad object
+			key = iObj.Base
+
+			if iObj.ArrayType == "polar":
+				
+				# without the base element
+				vArray = iObj.NumberPolar - 1
+			else:
+				
+				# without the base element
+				vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
+
+			# calculate the Base Cube object
+			k = 0
+			
+			while k < vArray:
+
+				# add the Base Cube object
+				setCube(key)
+				
+				# go to the next object
+				k = k + 1
+		
+		except:
+			
+			# skip if there is no Base object
+			return 1
+	
+	return 0
 
 
 # ###################################################################################################################
@@ -463,10 +464,10 @@ for obj in gOBs:
 
 	# set base objects
 	setCube(obj)
-	setCubesArray(obj)
 	setPad(obj)
 	
 	# set transformations
+	setArray(obj)
 	setSingleMirror(obj)
 	setMultiTransform(obj)
 
