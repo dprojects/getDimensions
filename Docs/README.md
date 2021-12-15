@@ -1,129 +1,55 @@
 # Table of Contents
 
 1. [Default settings](#default-settings)
-2. [Quickstart](#quickstart)
-3. [Printing](#printing)
-4. [Known issues](#known-issues)
-5. [Arrays](#arrays)
-6. [Toggle Visibility](#toggle-visibility)
-7. [Group objects](#group-objects)
-	1. [Name report](#name-report)
-	2. [Quantity report](#quantity-report)
-	3. [Group report](#group-report)
-8. [Edge size](#edge-size)
-9. [Pads and Sketches](#pads-and-sketches)
-	1. [Pads Basic](#pads-basic)
-	2. [Pads Single Mirror](#pads-single-mirror)
-	3. [Pads MultiTransform Mirror](#pads-multitransform-mirror)
-	4. [Pads Mirror - usage example](#pads-mirror---usage-example)
+2. [Furniture parts](#furniture-parts)
+	1. [Cube - quickstart](#cube---quickstart)
+	2. [Pad - basic](#pad-basic)
+3. [Transformations](#transformations)
+	1. [Cube Array](#cube-array)
+	2. [Cube Array Polar](#cube-array-polar)
+	3. [Pad Single Mirror](#pad-single-mirror)
+	4. [Pad MultiTransform Mirror](#pad-multitransform-mirror)
+	5. [Pad Mirror - usage example](#pad-mirror---usage-example)
+4. [Report customization](#report-customization)
+	1. [Toggle Visibility](#toggle-visibility)
+	2. [Group objects](#group-objects)
+		1. [Name report](#name-report)
+		2. [Quantity report](#quantity-report)
+		3. [Group report](#group-report)
+	3. [Edge size](#edge-size)
+5. [Known issues](#known-issues)
+6. [Special thanks](#special-thanks)
 
 # Default settings
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ds001.png)
 
-# Quickstart
+# Furniture parts
+
+Furniture parts are base objects for building furniture. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have squared shape and four edges, to calculate area and edge size. You can consider furniture part as wood board or even better, the squared chipboard. 
+
+## Cube - quickstart
+
+Cube is the easiest way to create furniture. You can create it just by single button click. To do that, just follow steps:
 
 * Go to `FreeCAD > Part > Create a cube solid > Cube data (tab)`
-* Set `Length` to e.g. 500
-* Set `Width` to e.g. 500
+* Set `Length` to e.g. 300
+* Set `Width` to e.g. 600
 * Set `Height` to e.g. 18
 
-	**Note**: Now you should have chipboard `500 mm x 500 mm x 18 mm`. You can create whatever you like using such chipboards. Even group them in folders.
+	![cube001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cube001.png)
 
-* Run macro.
+	**Note**: Now You should have chipboard `300 mm x 600 mm x 18 mm`. You can create whatever You like using such chipboards. Even group them in folders.
 
-# Printing
+* Now, just run the macro, to get report `toPrint`:
+	
+	![cube002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cube002.png)
 
-TechDraw page is automatically created and it is named `toPrint`. You can print directly from the page named `toPrint` or just export this page to `pdf` file and print it later. 
+## Pad - basic
 
-# Known issues
+Pad is not base object. In fact it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because th Sketch is not real-life object, because it has only two dimensions. To start with Pad furniture part, just follow the steps below: 
 
-* Special characters (e.g. Polish) for chipboards (objects names) are not supported. However, You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names. 
-
-# Arrays
-
-This feature has been suggested to me at the [FreeCAD forum thread by jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072), Thanks.
-
-* Project example (3D model view):
-
-    ![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays001.png)
-
-* Project example (objects view):
-
-    ![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays002.png)
-
-* Automatically generated report `toPrint` for project above:
-    
-    ![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays003.png)
-    
-    ![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
-
-# Toggle Visibility
-
-* Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
-* Set `sTVF` variable to `on`.
-* Now You can create any report You want just by toggle visibility items or group of items.
-
-    ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf001.png)
-
-    ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf002.png)
-
-    **Note:** You can generate different reports at the same furniture project. Just rename the TechDraw page `toPrint` to store it and prevent it from an overwrite.
-
-# Group objects
-
-* Search `Label Type Feature` part in the `default settings` section in the macro code.
-* Set `sLTF` variable to the exact value You want.
-
-## Name report
-
-* To create list of names just set `sLTF` variable to `n` and run macro:
-
-    ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
-
-## Quantity report
-
-* To create quantity report just set `sLTF` variable to `q` and run macro:
-
-    ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
-    
-## Group report
-
-* To create quantity report just set `sLTF` variable to `g` and run macro. However, for group mode, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
-
-    ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
-    
-* Now You can generate TechDraw page `toPrint` with the macro:
-
-    ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
-    
-# Edge size
-
-* Search `Toggle Visibility Feature` part in the `default settings` section in the macro code.
-* Set `sTVF` variable to `edge`.
-* By default the feature `Summary for Edge Size Feature` calculates the whole edge and do not have to be activated. But in the real world the edge size that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize your project tree with exact visibility. This also can be done for `Array` objects:
-
-    ![sesf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf001.png)
-    
-    ![sesf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf002.png)
-    
-* Hide parts You do not wish to calculate (e.g. press the `Spacebar` key while on the `Array` group) as demonstrated in:
-
-    ![sesf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf003.png)
-    
-* Run the macro. 
-    
-    ![sesf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sesf004.png)
-
-    **Note:** The edge size should be different now.
-    
-# Pads and Sketches
-
-This feature has been suggested to me at the [FreeCAD forum thread by Petert](https://forum.freecadweb.org/viewtopic.php?p=547453#p547453), Thanks.
-
-## Pads Basic
-
-* Create any furniture using Pads and Sketches. 
+* Create any furniture using Pads and Sketches.
 
     ![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
  
@@ -141,19 +67,47 @@ This feature has been suggested to me at the [FreeCAD forum thread by Petert](ht
     
     ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
 
-## Pads Single Mirror
+# Transformations
+
+Transformation on furniture part is any FreCAD operation that creates new object and simplify furniture design process.
+
+## Cube Array
+
+To start with `Cube Array` transformation You need to create furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+
+* Click the `Cube` furniture part and create `Array` like it is shown below:
+
+	![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays001.png)
+
+* Run the macro:
+	
+	![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays002.png)
+
+## Cube Array Polar
+
+To start with `Cube Array Polar` transformation You need to create furniture part for transformation first. In this case this will be `Cube`. If You already have the `Cube` created, just follow steps: 
+
+* Click the `Cube` furniture part and create `Array Polar` like it is shown below:
+
+	![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays003.png)
+
+* Run the macro:
+	
+	![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
+
+## Pad Single Mirror
 
 FreCAD allows You to create Mirror for the Pad. One way is to use `Single Mirror` option. By the `Single Mirror`, I mean, the icon bordered in red at the screenshot below. The icon is also zoomed at the image. This kind of `Mirror` creates new Pad object at the 3D model but both objects are visible as single object in the folder tree structure and it is named `Mirrored`.
 
 ![padsSM001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM001.png)
 
-## Pads MultiTransform Mirror
+## Pad MultiTransform Mirror
 
 There is also another way for `Pads Mirror` creation. This is named by FreeCAD `MultiTransform`. The `MultiTransform` allows for many transformations at the single step. The `MultiTransform` icon is bordered in red at the screenshot below. The icon is also zoomed at the image.
 
 ![padsMT001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT001.png)
 
-## Pads Mirror - usage example
+## Pad Mirror - usage example
 
 To use any mirror type of feature with Your furniture projects just follow the steps:
 
@@ -168,6 +122,84 @@ To use any mirror type of feature with Your furniture projects just follow the s
 * Now you can create the desired report with all necessary dimensions to cut. However, if You want calculate the edge correctly, just use the visibility to show e.g. top and hide legs and other parts:
 
 	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
+
+# Report customization
+
+## Toggle Visibility
+
+* Search `Toggle Visibility Feature` part in the `Default Settings` section in the macro code.
+* Set `sTVF` variable to `on`.
+* Now You can create any report You want just by toggle visibility items or group of items.
+
+    ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf001.png)
+
+    ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf002.png)
+
+    **Note:** You can generate different reports at the same furniture project. Just rename the TechDraw page `toPrint` to store it and prevent it from an overwrite.
+
+## Group objects
+
+* Search `Label Type Feature` part in the `Default Settings` section in the macro code.
+* Set `sLTF` variable to the exact value You want.
+
+### Name report
+
+* To create list of names just set `sLTF` variable to `n` and run macro:
+
+    ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
+
+### Quantity report
+
+* To create quantity report just set `sLTF` variable to `q` and run macro:
+
+    ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
+    
+### Group report
+
+* To create quantity report just set `sLTF` variable to `g` and run macro. However, for group mode, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). See the screenshot tree:
+
+    ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
+    
+* Now You can generate TechDraw page `toPrint` with the macro:
+
+    ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
+    
+## Edge size
+
+* Search `Toggle Visibility Feature` part in the `Default Settings` section in the macro code.
+* By default the feature `Toggle Visibility Feature` is set to `edge` because in the real world the edge size that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize your project tree with exact visibility, because this feature works for any folder and transformation like `Array`:
+
+    ![edge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge001.png)
+    
+    ![edge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge002.png)
+    
+* Hide parts You do not wish to calculate (e.g. press the `Spacebar` key while on the `Array`) as demonstrated in:
+
+    ![edge003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge003.png)
+    
+* Run the macro. 
+    
+    ![edge004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge004.png)
+
+    **Note:** The edge size should be different now.
+
+* If You want to calculate the edge size for all furniture parts just set `sTVF` to `off`:
+	
+	![edge005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge005.png)
+
+# Known issues
+
+**Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
+**Workaround**: You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names.
+
+**Issue**: Units at TechDraw page `toPrint` disappear after open project again.
+**Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
+
+# Special thanks
+
+* Array feature has been suggested to me at the [FreeCAD forum thread by jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072), Thanks.
+
+* Pads feature has been suggested to me at the [FreeCAD forum thread by Petert](https://forum.freecadweb.org/viewtopic.php?p=547453#p547453), Thanks.
 
 ___
 **Note:** For more details see the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).

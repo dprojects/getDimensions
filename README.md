@@ -1,6 +1,6 @@
 # Description
 
-This FreeCAD macro gets objects dimensions. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed chipboards elements to cut for woodworking project. 
+This FreeCAD macro gets dimensions of furniture parts. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed furniture parts to cut for woodworking project. 
 
 ![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_pl.png)
 
@@ -11,9 +11,10 @@ This FreeCAD macro gets objects dimensions. It has been designed for my private 
 * Languages: Polish, English.
 * Group by: thickness, quantity, size, name, folder, visibility.
 * Units: millimeters, meters, inches.
-* Calculations: quantity, thickness, squared area, edge size.
-* Objects types: Cube, Array, Pad.
-* Pads transformations: Single Mirror, MultiTransform Mirror.
+* Calculations: quantity, thickness, area, edge size.
+* Supported furniture parts: Cube, Pad.
+* Supported transformations for Cubes: Array, Array Polar.
+* Supported transformations for Pads: Single Mirror, MultiTransform Mirror.
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 
