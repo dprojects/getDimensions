@@ -26,7 +26,7 @@
 
 # Furniture parts
 
-Furniture parts are base objects for building furniture. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have squared shape and four edges, to calculate area and edge size. You can consider furniture part as wood board or even better, the squared chipboard. 
+Furniture parts are base objects for building furniture. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have rectangular shape (four edges), to calculate area and edge size. You can consider furniture part as wood board, or even better, the rectangular chipboard. 
 
 ## Cube - quickstart
 
@@ -39,7 +39,7 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 
 	![cubes001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes001.png)
 
-	**Note**: Now You should have chipboard `300 mm x 600 mm x 18 mm`. You can create whatever You like using such chipboards. Even group them in folders.
+	**Note**: Now You should have chipboard `300 mm x 600 mm x 18 mm` and You can create any furniture You like using such chipboards. Even group them in folders.
 
 * Now, just run the macro, to get report `toPrint`:
 	
@@ -47,7 +47,7 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 
 ## Pad - basic
 
-Pad is not base object. In fact it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because th Sketch is not real-life object, because it has only two dimensions. To start with Pad furniture part, just follow the steps below: 
+Pad is not base object. In fact it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the Sketch is not real-life object, because it has only two dimensions. To start with Pad furniture part, just follow the steps below: 
 
 * Create any furniture using Pads and Sketches.
 
