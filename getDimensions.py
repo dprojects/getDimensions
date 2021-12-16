@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.15
+# Version: 2021.12.16
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -53,36 +53,31 @@ gAD = FreeCAD.activeDocument()
 # get all objects from 3D model
 gOBs = gAD.Objects
 
-# fake Cube database for objects and dimensions
-gFakeCubeO = []
-gFakeCubeW = dict()
-gFakeCubeH = dict()
-gFakeCubeL = dict()
-
-# init database for sizes (quantity) report
-if sLTF == "q":
-	gSizesQ = dict() # quantity
-	gSizesA = dict() # area
-
-# init database for name report
-if sLTF == "n":
-	gNameQ = dict() # quantity
-	gNameA = dict() # area
-
-# init database for group report
-if sLTF == "g":
-	gGroupQ = dict() # quantity
-	gGroupA = dict() # area
-
-# init database for thickness report
-gThickQ = dict() # quantity
-gThickA = dict() # area
-
-# init database for edge report
-gEdgeSize = 0 # edge size
-
-# unit for calculation purposes
+# unit for calculation purposes (not change)
 gUnitC = "mm"
+
+
+# ###################################################################################################################
+# Init databases
+# ###################################################################################################################
+
+
+# init database for fake Cube
+dbFCO = [] # objects
+dbFCW = dict() # width
+dbFCH = dict() # height
+dbFCL = dict() # length
+
+# init database for dimensions
+dbDQ = dict() # quantity
+dbDA = dict() # area
+
+# init database for thickness
+dbTQ = dict() # quantity
+dbTA = dict() # area
+
+# init database for edge
+dbES = 0 # edge size
 
 
 # ###################################################################################################################
@@ -117,21 +112,17 @@ def getKey(iObj, iW, iH, iL, iType):
 	vKey += ":"
 	vKey += str(vKeyArr[2])
 
-	# key for sizes database
-	if iType == "size":
+	# key for quantity report
+	if iType == "d" and sLTF == "q":
 		return str(vKey)
 
-	# key for name database
-	elif iType == "name":
+	# key for name report
+	elif iType == "d" and sLTF == "n":
 		vKey = str(vKey) + ":" + str(iObj.Label)
 		return str(vKey)
 
-	# key for thickness database (this is value, not string)
-	elif iType == "thick":
-		return vKeyArr[0]
-
-	# key for group database
-	elif iType == "group":	
+	# key for group report
+	elif iType == "d" and sLTF == "g":
 		
 		# get parent folder (group name)
 		vParent = getParentGroup(iObj.Label)
@@ -149,6 +140,10 @@ def getKey(iObj, iW, iH, iL, iType):
 		else:
 			vKey = str(vKey) + ":[...]"
 
+	# return thickness (this is value, not string)
+	elif iType == "thick":
+		return vKeyArr[0]
+
 	return str(vKey)
 
 
@@ -159,19 +154,19 @@ def getArea(iObj, iW, iH, iL):
 	vT = getKey(iObj, iW, iH, iL, "thick")
 
 	if iL == vT:
-		vSize1 = iW
-		vSize2 = iH
+		vD1 = iW
+		vD2 = iH
 	
 	elif iW == vT:
-		vSize1 = iL
-		vSize2 = iH
+		vD1 = iL
+		vD2 = iH
 	
 	else:
-		vSize1 = iL
-		vSize2 = iW
+		vD1 = iL
+		vD2 = iW
 
 	# calculate area without thickness
-	vArea = vSize1 * vSize2
+	vArea = vD1 * vD2
 
 	return vArea
 
@@ -182,54 +177,30 @@ def setDB(iObj, iW, iH, iL, iDB):
 	# get area for object
 	vArea = getArea(iObj, iW, iH, iL) 
 	
-	# set DB for name of element database
-	if iDB == "name":
+	# set DB for dimensions
+	if iDB == "d":
 
-		vKey = getKey(iObj, iW, iH, iL, "name")
+		vKey = getKey(iObj, iW, iH, iL, "d")
 
-		if vKey in gNameQ:
-			gNameQ[vKey] = gNameQ[vKey] + 1
-			gNameA[vKey] = gNameA[vKey] + vArea
+		if vKey in dbDQ:
+			dbDQ[vKey] = dbDQ[vKey] + 1
+			dbDA[vKey] = dbDA[vKey] + vArea
 		else:
-			gNameQ[vKey] = 1
-			gNameA[vKey] = vArea
+			dbDQ[vKey] = 1
+			dbDA[vKey] = vArea
 
-	# set DB for sizes (quantity) database
-	elif iDB == "size":
-
-		vKey = getKey(iObj, iW, iH, iL, "size")
-
-		if vKey in gSizesQ:
-			gSizesQ[vKey] = gSizesQ[vKey] + 1
-			gSizesA[vKey] = gSizesA[vKey] + vArea
-		else:
-			gSizesQ[vKey] = 1
-			gSizesA[vKey] = vArea
-
-	# set DB for group database
-	elif iDB == "group":
-
-		vKey = getKey(iObj, iW, iH, iL, "group")
-
-		if vKey in gGroupQ:
-			gGroupQ[vKey] = gGroupQ[vKey] + 1
-			gGroupA[vKey] = gGroupA[vKey] + vArea
-		else:
-			gGroupQ[vKey] = 1
-			gGroupA[vKey] = vArea
-	
-	# set DB for thickness database
+	# set DB for thickness
 	elif iDB == "thick":
 
 		# convert value to dimension string
 		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
 	
-		if vKey in gThickQ:
-			gThickQ[vKey] = gThickQ[vKey] + 1
-			gThickA[vKey] = gThickA[vKey] + vArea
+		if vKey in dbTQ:
+			dbTQ[vKey] = dbTQ[vKey] + 1
+			dbTA[vKey] = dbTA[vKey] + vArea
 		else:
-			gThickQ[vKey] = 1
-			gThickA[vKey] = vArea
+			dbTQ[vKey] = 1
+			dbTA[vKey] = vArea
 
 
 # ###################################################################################################################
@@ -239,19 +210,19 @@ def getEdge(iObj, iW, iH, iL):
 	vT = getKey(iObj, iW, iH, iL, "thick")
 
 	if iL == vT:
-		vSize1 = iW
-		vSize2 = iH
+		vD1 = iW
+		vD2 = iH
 
 	elif iW == vT:
-		vSize1 = iL
-		vSize2 = iH
+		vD1 = iL
+		vD2 = iH
 
 	else:
-		vSize1 = iL
-		vSize2 = iW
+		vD1 = iL
+		vD2 = iW
 
 	# calculate the edge size
-	vEdge = (2 * vSize1) + (2 * vSize2)
+	vEdge = (2 * vD1) + (2 * vD2)
 
 	return vEdge
 
@@ -261,7 +232,8 @@ def getUnit(iValue, iType):
 
 	iValue = float(iValue)
 
-	if iType == "size":
+	# for dimensions
+	if iType == "d":
 		
 		if sUnitsMetric == "mm":
 			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsMetric
@@ -271,7 +243,8 @@ def getUnit(iValue, iType):
 		
 		if sUnitsMetric == "in":
 			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsMetric
-		
+	
+	# for area
 	if iType == "area":
 		
 		if sUnitsArea == "mm":
@@ -297,10 +270,10 @@ def setCube(iObj):
 	# support for Cube objects
 	if iObj.isDerivedFrom("Part::Box"):
         
-		gFakeCubeO.append(iObj)
-		gFakeCubeW[iObj.Label] = iObj.Width.getValueAs(gUnitC).Value
-		gFakeCubeH[iObj.Label] = iObj.Height.getValueAs(gUnitC).Value
-		gFakeCubeL[iObj.Label] = iObj.Length.getValueAs(gUnitC).Value
+		dbFCO.append(iObj)
+		dbFCW[iObj.Label] = iObj.Width.getValueAs(gUnitC).Value
+		dbFCH[iObj.Label] = iObj.Height.getValueAs(gUnitC).Value
+		dbFCL[iObj.Label] = iObj.Length.getValueAs(gUnitC).Value
 	
 	return 0
 
@@ -326,10 +299,10 @@ def setPad(iObj):
 			fakeCube.Length = iObj.Length.Value
 			
 			# get values as the correct dimensions and set database
-			gFakeCubeO.append(iObj)
-			gFakeCubeW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
-			gFakeCubeH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
-			gFakeCubeL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
+			dbFCO.append(iObj)
+			dbFCW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
+			dbFCH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
+			dbFCL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
 
 			if gAD.getObject("fakeCube"):
 				gAD.removeObject("fakeCube")
@@ -478,34 +451,27 @@ for obj in gOBs:
 
 
 # search all correct objects and set database for dimensions
-for obj in gFakeCubeO:
+for obj in dbFCO:
 
 	# assign values
-	vW = gFakeCubeW[obj.Label]
-	vH = gFakeCubeH[obj.Label]
-	vL = gFakeCubeL[obj.Label]
+	vW = dbFCW[obj.Label]
+	vH = dbFCH[obj.Label]
+	vL = dbFCL[obj.Label]
 
-	# set db for main report
-	if sLTF == "n":
-		setDB(obj, vW, vH, vL, "name")
+	# set db for dimensions
+	setDB(obj, vW, vH, vL, "d")
 
-	if sLTF == "q":
-		setDB(obj, vW, vH, vL, "size")
-
-	if sLTF == "g":
-		setDB(obj, vW, vH, vL, "group")
-
-	# set db for thickness report
+	# set db for thickness
 	setDB(obj, vW, vH, vL, "thick")
 
-	# set db for edge report
+	# set db for edge
 	edge = getEdge(obj, vW, vH, vL)
 	
 	if sTVF == "edge":
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			edge = 0 # skip if object is not visible			
  
-	gEdgeSize = gEdgeSize + edge
+	dbES = dbES + edge
 
 
 # ###################################################################################################################
@@ -575,16 +541,16 @@ if sLTF == "n":
 	result.mergeCells("B1:D1")
 
 	# add values
-	for key in gNameA.keys():
+	for key in dbDA.keys():
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
-		result.set("B" + str(i), getUnit(a[1], "size"))
+		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "'" + "x")
-		result.set("D" + str(i), getUnit(a[2], "size"))
-		result.set("E" + str(i), getUnit(a[0], "size"))
-		result.set("F" + str(i), "'" + str(gNameQ[key]))
-		result.set("G" + str(i), getUnit(gNameA[key], "area"))
+		result.set("D" + str(i), getUnit(a[2], "d"))
+		result.set("E" + str(i), getUnit(a[0], "d"))
+		result.set("F" + str(i), "'" + str(dbDQ[key]))
+		result.set("G" + str(i), getUnit(dbDA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -606,7 +572,7 @@ if sLTF == "n":
 
 
 # ###################################################################################################################
-# Spreadsheet main report - sizes (quantity)
+# Spreadsheet main report - quantity
 # ###################################################################################################################
 
 
@@ -620,15 +586,15 @@ if sLTF == "q":
 	result.mergeCells("B1:D1")
 		
 	# add values
-	for key in gSizesQ.keys():
+	for key in dbDQ.keys():
 		i = i + 1
 		a = key.split(":")
-		result.set("A" + str(i), "'" + str(gSizesQ[key])+" x")
-		result.set("B" + str(i), getUnit(a[1], "size"))
+		result.set("A" + str(i), "'" + str(dbDQ[key])+" x")
+		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "x")
-		result.set("D" + str(i), getUnit(a[2], "size"))
-		result.set("E" + str(i), getUnit(a[0], "size"))
-		result.set("F" + str(i), getUnit(gSizesA[key], "area"))
+		result.set("D" + str(i), getUnit(a[2], "d"))
+		result.set("E" + str(i), getUnit(a[0], "d"))
+		result.set("F" + str(i), getUnit(dbDA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 80)
@@ -663,16 +629,16 @@ if sLTF == "g":
 	result.mergeCells("B1:D1")
 
 	# add values
-	for key in gGroupA.keys():
+	for key in dbDA.keys():
 		i = i + 1
 		a = key.split(":")
 		result.set("A" + str(i), "'" + str(a[3]))
-		result.set("B" + str(i), getUnit(a[1], "size"))
+		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "'" + "x")
-		result.set("D" + str(i), getUnit(a[2], "size"))
-		result.set("E" + str(i), getUnit(a[0], "size"))
-		result.set("F" + str(i), "'" + str(gGroupQ[key]))
-		result.set("G" + str(i), getUnit(gGroupA[key], "area"))
+		result.set("D" + str(i), getUnit(a[2], "d"))
+		result.set("E" + str(i), getUnit(a[0], "d"))
+		result.set("F" + str(i), "'" + str(dbDQ[key]))
+		result.set("G" + str(i), getUnit(dbDA[key], "area"))
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -731,10 +697,10 @@ i = i + 1
 
 # for thickness	(quantity)
 if sLTF == "q":
-	for key in gThickQ.keys():
-		result.set("A" + str(i), "'" + str(gThickQ[key])+" x")
-		result.set("E" + str(i), getUnit(key, "size"))
-		result.set("F" + str(i), getUnit(gThickA[key], "area"))
+	for key in dbTQ.keys():
+		result.set("A" + str(i), "'" + str(dbTQ[key])+" x")
+		result.set("E" + str(i), getUnit(key, "d"))
+		result.set("F" + str(i), getUnit(dbTA[key], "area"))
 		result.setAlignment("A" + str(i), "right", "keep")
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
@@ -742,10 +708,10 @@ if sLTF == "q":
 
 # for thickness	(group & name)
 if sLTF == "g" or sLTF == "n":
-	for key in gThickQ.keys():
-		result.set("E" + str(i), getUnit(key, "size"))
-		result.set("F" + str(i), "'" + str(gThickQ[key]))
-		result.set("G" + str(i), getUnit(gThickA[key], "area"))
+	for key in dbTQ.keys():
+		result.set("E" + str(i), getUnit(key, "d"))
+		result.set("F" + str(i), "'" + str(dbTQ[key]))
+		result.set("G" + str(i), getUnit(dbTA[key], "area"))
 		result.setAlignment("E" + str(i), "right", "keep")
 		result.setAlignment("F" + str(i), "right", "keep")
 		result.setAlignment("G" + str(i), "right", "keep")
@@ -769,7 +735,7 @@ result.setAlignment(vCell, "left", "keep")
 
 vCell = "C" + str(i) + ":E" + str(i)
 result.mergeCells(vCell)
-result.set(vCell, getUnit(gEdgeSize, "size"))
+result.set(vCell, getUnit(dbES, "d"))
 result.setAlignment(vCell, "right", "keep")
 
 
