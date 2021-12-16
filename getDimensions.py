@@ -260,61 +260,112 @@ def getUnit(iValue, iType):
 
 
 # ###################################################################################################################
+# Support for errors
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def showError(iObj, iPlace, iError):
+
+	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+	
+	try:
+		FreeCAD.Console.PrintMessage("ERROR: ")
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iObj.Label))
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iPlace))
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iError))
+		
+	except:
+		FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
+		
+	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+	
+	return 0
+
+
+# ###################################################################################################################
 # Support for base furniture parts
 # ###################################################################################################################
 
 
 # ###################################################################################################################
+def selectFurniturePart(iObj):
+
+	# support for Cube furniture part
+	if iObj.isDerivedFrom("Part::Box"):
+		setCube(iObj)
+    
+	# support for Pad furniture part
+	elif iObj.isDerivedFrom("PartDesign::Pad"):
+		setPad(iObj)
+	
+	# skip not supported furniture parts with no error
+	# Sheet, Transformations will be handling later
+	else:
+		return 0
+
+	return 0	
+
+
+# ###################################################################################################################
 def setCube(iObj):
 
-	# support for Cube objects
-	if iObj.isDerivedFrom("Part::Box"):
-        
+	try:
+
+		# get correct dimensions as values
 		dbFCO.append(iObj)
 		dbFCW[iObj.Label] = iObj.Width.getValueAs(gUnitC).Value
 		dbFCH[iObj.Label] = iObj.Height.getValueAs(gUnitC).Value
 		dbFCL[iObj.Label] = iObj.Length.getValueAs(gUnitC).Value
-	
+
+	except:
+
+		# if no access to the values
+		showError(iObj, "setCube", "no access to the values")
+		return -1
+
 	return 0
 
 
 # ###################################################################################################################
 def setPad(iObj):
 
-	# support for Pads and Sketches
-	if iObj.isDerivedFrom("PartDesign::Pad"):
+	try:
 
-		try:
+		# remove existing fakeCube object
+		if gAD.getObject("fakeCube"):
+			gAD.removeObject("fakeCube")
 
-			# remove existing fakeCube object
-			if gAD.getObject("fakeCube"):
-				gAD.removeObject("fakeCube")
+		# create fake Cube 
+		fakeCube = gAD.addObject("Part::Box", "fakeCube")
 
-			# create fake Cube 
-			fakeCube = gAD.addObject("Part::Box", "fakeCube")
+		# assign values to the fake Cube dimensions
+		fakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
+		fakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
+		fakeCube.Length = iObj.Length.Value
+		
+		# get values as the correct dimensions and set database
+		dbFCO.append(iObj)
+		dbFCW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
+		dbFCH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
+		dbFCL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
 
-			# assign values to the fake Cube dimensions
-			fakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
-			fakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
-			fakeCube.Length = iObj.Length.Value
-			
-			# get values as the correct dimensions and set database
-			dbFCO.append(iObj)
-			dbFCW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
-			dbFCH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
-			dbFCL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
+		# remove existing fakeCube object
+		if gAD.getObject("fakeCube"):
+			gAD.removeObject("fakeCube")
 
-			if gAD.getObject("fakeCube"):
-				gAD.removeObject("fakeCube")
+	except:
 
-		except:
+		# remove existing fakeCube object
+		if gAD.getObject("fakeCube"):
+			gAD.removeObject("fakeCube")
 
-			# remove existing fakeCube object
-			if gAD.getObject("fakeCube"):
-				gAD.removeObject("fakeCube")
-
-			# skip if no access to the values (wrong design of Sketch and Pad)
-			return 1
+		# if no access to the values (wrong design of Sketch and Pad)
+		showError(iObj, "setPad", "no access to the values")
+		return -1
 
 	return 0
 
@@ -332,33 +383,32 @@ def setArray(iObj):
 
 		try:
 
-			# set reference point to the base Pad object
+			# set reference point to the furniture part
 			key = iObj.Base
 
 			if iObj.ArrayType == "polar":
 				
-				# without the base element
+				# without the base furniture part
 				vArray = iObj.NumberPolar - 1
 			else:
 				
-				# without the base element
+				# without the base furniture part
 				vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
 
-			# calculate the Base Cube object
+			# calculate the base furniture part
 			k = 0
 			
 			while k < vArray:
 
-				# add the Base Cube object
-				setCube(key)
-				
-				# go to the next object
+				# select and add furniture part
+				selectFurniturePart(key)
 				k = k + 1
 		
 		except:
 			
-			# skip if there is no Base object
-			return 1
+			# if there is wrong structure
+			showError(iObj, "setArray", "wrong structure")
+			return -1
 	
 	return 0
 
@@ -366,21 +416,25 @@ def setArray(iObj):
 # ###################################################################################################################
 def setSingleMirror(iObj):
 
-	# support for Pads single mirror FreeCAD feature
+	# support for Single Mirror FreeCAD feature
 	if iObj.isDerivedFrom("PartDesign::Mirrored"):
 
 		try:
 
-			# set reference point to the base Pad object
-			key = iObj.Originals[0]
+			# skip Single Mirrors from MultiTransform with no error
+			if len(iObj.Originals) != 0:
 
-			# if object is Mirror this can be calculated as new Pad
-			setPad(key)
+				# set reference point to the base furniture part
+				key = iObj.Originals[0]
+
+				# if object is Mirror this create new furniture part
+				selectFurniturePart(key)
 		
 		except:
 			
-			# skip if there is no base Pad object
-			return 1
+			# if there is wrong structure
+			showError(iObj, "setSingleMirror", "wrong structure")
+			return -1
 	
 	return 0
 
@@ -388,36 +442,38 @@ def setSingleMirror(iObj):
 # ###################################################################################################################
 def setMultiTransform(iObj):
 	
-	# support for Pads MultiTransform FreeCAD feature
+	# support for MultiTransform FreeCAD feature
 	if iObj.isDerivedFrom("PartDesign::MultiTransform"):
 
 		try:
 			
-			# set number of mirror transformations available    
+			# set number of transformations available    
 			lenT = len(iObj.Transformations)
 			k = 0
 
-			# if this is MultiTransform, not single mirror
+			# if this is MultiTransform, not Single Mirror
 			if lenT > 0:
 				
 				# Mirror makes 2 elements but each Mirror in MultiTransform makes next Mirror but using 
 				# current transformed object, so this will raise the number of Mirrors to the power, 
-				# also you have to remove the base Pad object already added
+				# also you have to remove the base furniture part already added
 				while k < (2 ** lenT) - 1:
 
-					# set reference point to the base Pad object
+					# set reference point to the base furniture part
 					key = iObj.Originals[0]
 
-					# if object is Mirror this can be calculated as new Pad
-					setPad(key)
-					
-					# go to the next Mirror object and do the same
+					# if object is Mirror this create new furniture part
+					# Note: you cannot call Single Mirror here on this because 
+					# it is transformation with empty array, there is no access
+					# to the base furniture part
+					selectFurniturePart(key)
 					k = k + 1
 
 		except:
 
-			# skip if there is no exact structure
-			return 1
+			# if there is wrong structure
+			showError(iObj, "setMultiTransform", "wrong structure")
+			return -1
 	
 	return 0
 
@@ -435,10 +491,9 @@ for obj in gOBs:
 		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 			continue
 
-	# set base objects
-	setCube(obj)
-	setPad(obj)
-	
+	# select and set furniture part
+	selectFurniturePart(obj)
+
 	# set transformations
 	setArray(obj)
 	setSingleMirror(obj)

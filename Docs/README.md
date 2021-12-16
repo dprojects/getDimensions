@@ -3,13 +3,16 @@
 1. [Default settings](#default-settings)
 2. [Furniture parts](#furniture-parts)
 	1. [Cube - quickstart](#cube---quickstart)
-	2. [Pad - basic](#pad---basic)
+	2. [Pad - quickstart](#pad---quickstart)
+	3. [Pad - basic furniture example](#pad---basic-furniture-example)
 3. [Transformations](#transformations)
 	1. [Cube Array](#cube-array)
 	2. [Cube Array Polar](#cube-array-polar)
-	3. [Pad Single Mirror](#pad-single-mirror)
-	4. [Pad MultiTransform Mirror](#pad-multitransform-mirror)
-	5. [Pad Mirror - usage example](#pad-mirror---usage-example)
+	3. [Pad Array](#pad-array)
+	4. [Pad Array Polar](#pad-array-polar)
+	5. [Pad Single Mirror](#pad-single-mirror)
+	6. [Pad MultiTransform Mirror](#pad-multitransform-mirror)
+	7. [Pad - advanced furniture example](#pad---advanced-furniture-example)
 4. [Report customization](#report-customization)
 	1. [Toggle Visibility](#toggle-visibility)
 	2. [Group objects](#group-objects)
@@ -45,31 +48,45 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 	
 	![cubes002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes002.png)
 
-## Pad - basic
+## Pad - quickstart
 
-Pad is not base object. In fact it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the Sketch is not real-life object, because it has only two dimensions. To start with Pad furniture part, just follow the steps below: 
+Pad is not base object. In fact it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the Sketch is not real-life object, because it has only two dimensions. 
+
+* To start with Pad furniture part, You have to create Sketch object first. If You have the Sketch created already, just click the Sketch object and then the icon bordered in red at the screenshot below. The icon is also zoomed at the image.
+
+	![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
+
+	**Note**: Now You should have chipboard `300 mm x 600 mm x 18 mm` and You can create any furniture You like using such chipboards. Even group them in folders.
+	
+* Now, just run the macro, to get report `toPrint`:
+
+	![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
+
+	**Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
+
+## Pad - basic furniture example
 
 * Create any furniture using Pads and Sketches.
 
-    ![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
+    ![pads003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads003.png)
  
 * Make sure all Your folders tree have the correct structure. 
 
-    ![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
-    
-    **Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
+    ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
     
 * You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
-    ![pads003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads003.png)
+    ![pads005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads005.png)
     
 * Now you can create the desired report with all necessary dimensions to cut:
     
-    ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
+    ![pads006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads006.png)
 
 # Transformations
 
-Transformation on furniture part is any FreCAD operation that creates new object and simplify furniture design process.
+Transformation on furniture part is any FreCAD operation that creates new object and simplify furniture design process. 
+
+**Note:** Some transformations are not supported by FreeCAD e.g.: `Single Mirror` or `MultiTransform Mirror` for `Cube` furniture part. 
 
 ## Cube Array
 
@@ -95,6 +112,36 @@ To start with `Cube Array Polar` transformation You need to create furniture par
 	
 	![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
 
+## Pad Array
+
+To start with `Pad Array` transformation You need to create furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `Array` like it is shown below:
+
+	![arrays005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays005.png)
+
+* Run the macro:
+	
+	![arrays006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays006.png)
+	
+* By default such FreeCAD objects like transformations have hidden base elements. Only the final transformed object is visible. Hovewer it is not a problem, to have the `edge size` calculated as well just use `spacebar` on `Pad` to make it visible and run the macro again:
+	
+	![arrays007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays007.png)
+	
+	**Note:** Now You should see the `edge size` calculated correctly.
+
+## Pad Array Polar
+
+To start with `Pad Array Polar` transformation You need to create furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `Array Polar` like it is shown below:
+
+	![arrays008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays008.png)
+
+* Run the macro:
+	
+	![arrays009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays009.png)
+
 ## Pad Single Mirror
 
 FreCAD allows You to create Mirror for the Pad. One way is to use `Single Mirror` option. By the `Single Mirror`, I mean, the icon bordered in red at the screenshot below. The icon is also zoomed at the image. This kind of `Mirror` creates new Pad object at the 3D model but both objects are visible as single object in the folder tree structure and it is named `Mirrored`.
@@ -107,21 +154,21 @@ There is also another way for `Pads Mirror` creation. This is named by FreeCAD `
 
 ![padsMT001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT001.png)
 
-## Pad Mirror - usage example
+## Pad - advanced furniture example
 
 To use any mirror type of feature with Your furniture projects just follow the steps:
 
 * Create any furniture using Pads and Sketches. You can use `Single Mirror` and `MultiTransform Mirror` at the same project. For example legs are four so You can use `MultiTransform Mirror` from single leg and `Single Mirror` for each pair of supporters between them:
 
-	![pads005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads005.png)
+	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
 	
 * You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
-	![pads006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads006.png)
+	![pads008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads008.png)
         
 * Now you can create the desired report with all necessary dimensions to cut. However, if You want calculate the edge correctly, just use the visibility to show e.g. top and hide legs and other parts:
 
-	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
+	![pads009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads009.png)
 
 # Report customization
 
