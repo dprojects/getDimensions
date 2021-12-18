@@ -74,7 +74,7 @@ Personally, I used to design everything with `Cube` furniture part. With calcula
 
 However, I see the power of `Pad`. The `Pad` furniture part is better supported by FreeCAD. I would say, this is how it should be designed under the FreeCAD. First You should create `Sketch` object, make it fully constrained and use `Pad` option on the fully constrained `Sketch`. It takes more time and effort but You can use more transformations then and such furniture is more compliant with FreeCAD point of view.
 
-However, if You are new FreeCAD user and You want design single furniture, I would recommend to start with `Cube`. Later You can extend You knowledge, use `Pad` and You will be able to use the full power of FreeCAD.
+However, if You are new FreeCAD user and You want design single furniture, I would recommend to start with `Cube`. Later You can extend Your knowledge, use `Pad` and You will be able to use the full power of FreeCAD.
 
 ## Basic furniture example
 
