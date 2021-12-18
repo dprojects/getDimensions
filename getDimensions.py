@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.16
+# Version: 2021.12.18
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -833,8 +833,8 @@ gAD.Sheet.Source = gAD.toCut
 gAD.toPrint.addView(gAD.Sheet)
 
 # set in the center of the template
-gAD.getObject("Sheet").X = gAD.getObject("Template").Width / 2
-gAD.getObject("Sheet").Y = gAD.getObject("Template").Height / 2
+gAD.getObject("Sheet").X = int(float(gAD.getObject("Template").Width) / 2)
+gAD.getObject("Sheet").Y = int(float(gAD.getObject("Template").Height) / 2)
 
 # try to set fonts
 try:
