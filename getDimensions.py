@@ -90,11 +90,26 @@ dbES = 0 # edge size
 
 # ###################################################################################################################
 def getParentGroup(iLabel):
-	for iGroup in gAD.Objects:
-		if iGroup.isDerivedFrom("App::DocumentObjectGroup"):
-			for iChild in iGroup.Group:
-				if iChild.Label == iLabel:
-					return iGroup
+
+	try:
+		
+		# search all groups and Pads Body objects
+		for iGroup in gAD.Objects:
+			if (
+				iGroup.isDerivedFrom("App::DocumentObjectGroup") or 
+				iGroup.isDerivedFrom("PartDesign::Body")
+				):
+				
+				# if in group array is iLabel, return the group
+				for iChild in iGroup.Group:
+					if iChild.Label == iLabel:
+						return iGroup
+
+	except:
+		
+		# for empty folders
+		return ""
+
 	return ""
 
 
