@@ -11,21 +11,19 @@ This demo shows all the stable features supported by the macro. Also, I use this
 
 ![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s001.png)
 
-`sLTF` variable set to `n`:
-
-![demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s002.png)
-
-`sLTF` variable set to `g`:
-
-![demo003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s003.png)
-
-`sLTF` variable set to `q`:
-
-![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s004.png)
-
 **Tests passed:** If the final report looks like below, it is highly possible that all features are working fine and there is no broken functionality. Make sure You have the latest version of FreeCAD (it was tested at FreeCAD 0.19.3 AppImage under Ubuntu).
 
-![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s002.png)
+* `sLTF` variable set to `n`:
+
+	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s002.png)
+
+* `sLTF` variable set to `g`:
+
+	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s003.png)
+
+* `sLTF` variable set to `q`:
+
+	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s004.png)
 
 ## Demo002_cube
 
