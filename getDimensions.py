@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.18
+# Version: 2021.12.19
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -55,6 +55,9 @@ gOBs = gAD.Objects
 
 # unit for calculation purposes (not change)
 gUnitC = "mm"
+
+# create fake Cube but not call recompute
+gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
 
 
 # ###################################################################################################################
@@ -334,34 +337,19 @@ def setCube(iObj):
 def setPad(iObj):
 
 	try:
-
-		# remove existing fakeCube object
-		if gAD.getObject("fakeCube"):
-			gAD.removeObject("fakeCube")
-
-		# create fake Cube 
-		fakeCube = gAD.addObject("Part::Box", "fakeCube")
-
+		
 		# assign values to the fake Cube dimensions
-		fakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
-		fakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
-		fakeCube.Length = iObj.Length.Value
+		gFakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
+		gFakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
+		gFakeCube.Length = iObj.Length.Value
 		
 		# get values as the correct dimensions and set database
 		dbFCO.append(iObj)
-		dbFCW[iObj.Label] = fakeCube.Width.getValueAs(gUnitC).Value
-		dbFCH[iObj.Label] = fakeCube.Height.getValueAs(gUnitC).Value
-		dbFCL[iObj.Label] = fakeCube.Length.getValueAs(gUnitC).Value
-
-		# remove existing fakeCube object
-		if gAD.getObject("fakeCube"):
-			gAD.removeObject("fakeCube")
+		dbFCW[iObj.Label] = gFakeCube.Width.getValueAs(gUnitC).Value
+		dbFCH[iObj.Label] = gFakeCube.Height.getValueAs(gUnitC).Value
+		dbFCL[iObj.Label] = gFakeCube.Length.getValueAs(gUnitC).Value
 
 	except:
-
-		# remove existing fakeCube object
-		if gAD.getObject("fakeCube"):
-			gAD.removeObject("fakeCube")
 
 		# if no access to the values (wrong design of Sketch and Pad)
 		showError(iObj, "setPad", "no access to the values")
@@ -498,6 +486,10 @@ for obj in gOBs:
 	setArray(obj)
 	setSingleMirror(obj)
 	setMultiTransform(obj)
+
+# remove existing fake Cube object before recompute
+if gAD.getObject("gFakeCube"):
+	gAD.removeObject("gFakeCube")
 
 
 # ###################################################################################################################
