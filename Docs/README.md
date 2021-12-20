@@ -54,9 +54,21 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 
 ## Pad - quickstart
 
-Pad is not base object. In fact, it is transformation on the Sketch object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the Sketch is not real-life object, because it has only two dimensions. 
+Pad is not base object. In fact, it is a transformation on the `Sketch` object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the `Sketch` is not real-life object, because it has only two dimensions. To start with Pad furniture part, You have to create `Sketch` object first.
 
-* To start with Pad furniture part, You have to create Sketch object first. If You have the Sketch created already, just click the Sketch object and then the icon bordered in red at the screenshot below. The icon is also zoomed at the image:
+* To create `Sketch` compliant with the macro You should use only the drawing object marked with the red border and zoommed below:
+	
+	![sketch001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sketch001.png)
+
+	**Note:** `Sketch` object do not recognize what shape it is and do not keep such information, so if this will be something different than rectangle or square the macro will not be able to get dimensions for the final Pad object. 
+	
+* You should have `Sketch` like this:
+
+	![sketch002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sketch002.png)
+
+	**Note:** This `Sketch` is fully constrained because the right bottom corner is connected with the center of `XY`.
+
+* If You have the `Sketch` created already, just click the `Sketch` object and then the icon bordered in red at the screenshot below. The icon is also zoomed at the image:
 
 	![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
 
@@ -70,7 +82,7 @@ Pad is not base object. In fact, it is transformation on the Sketch object. Howe
 
 ## Which one should I choose?
 
-Personally, I used to design everything with `Cube` furniture part. With calculator and `Placement` option I was able to design any furniture I needed, even some tools like doweling jig. Designing simple furniture with `Cube` takes about 5 minutes and You can just use `CTRL-C` and `CTRL-V` keys to multiply `Cube` furniture part quickly, move it and change some dimensions if needed.
+Personally, I used to design everything with `Cube` furniture part. With calculator and `Placement` option I was able to design any furniture I needed, even some tools like doweling jig. Designing simple furniture with `Cube` takes about 5 minutes and You can just use `CTRL-C` and `CTRL-V` keys to multiply quickly the `Cube` furniture part, move it and change some dimensions, if needed.
 
 However, I see the power of `Pad`. The `Pad` furniture part is better supported by FreeCAD. I would say, this is how it should be designed under the FreeCAD. First You should create `Sketch` object, make it fully constrained and use `Pad` option on the fully constrained `Sketch`. It takes more time and effort but You can use more transformations then and such furniture is more compliant with FreeCAD point of view.
 
