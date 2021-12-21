@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.19
+# Version: 2021.12.21
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -89,28 +89,44 @@ dbES = 0 # edge size
 
 
 # ###################################################################################################################
-def getParentGroup(iLabel):
+def getGroup(iObj):
 
-	try:
+	# init variable
+	vGroup = ""
+
+	# support for Cube furniture part
+	if iObj.isDerivedFrom("Part::Box"):
 		
-		# search all groups and Pads Body objects
-		for iGroup in gAD.Objects:
-			if (
-				iGroup.isDerivedFrom("App::DocumentObjectGroup") or 
-				iGroup.isDerivedFrom("PartDesign::Body")
-				):
-				
-				# if in group array is iLabel, return the group
-				for iChild in iGroup.Group:
-					if iChild.Label == iLabel:
-						return iGroup
-
-	except:
+		# get grandparent
+		try:
+			vGroup = iObj.getParentGroup().getParentGroup().Label
+		except:
+			vGroup = ""
 		
-		# for empty folders
-		return ""
+		# get parent
+		if vGroup == "":
+			try:
+				vGroup = iObj.getParentGroup().Label
+			except:
+				vGroup = ""
+			
+	# support for Pad furniture part
+	elif iObj.isDerivedFrom("PartDesign::Pad"):
+		
+		# get grandparent
+		try:
+			vGroup = iObj.Profile[0].Parents[0][0].getParentGroup().Label
+		except:
+			vGroup = ""
+		
+		# get parent
+		if vGroup == "":
+			try:
+				vGroup = iObj.Profile[0].Parents[0][0].Label
+			except:
+				vGroup = ""
 
-	return ""
+	return vGroup
 
 
 # ###################################################################################################################
@@ -142,19 +158,11 @@ def getKey(iObj, iW, iH, iL, iType):
 	# key for group report
 	elif iType == "d" and sLTF == "g":
 		
-		# get parent folder (group name)
-		vParent = getParentGroup(iObj.Label)
+		# get grandparent or parent group name
+		vGroup = getGroup(iObj)
 		
-		if vParent != "":
-			vPL = vParent.Label
-			
-			# get grandparent folder
-			vGrand = getParentGroup(vPL)
-
-			if vGrand != "":
-				vKey = str(vKey) + ":" + str(vGrand.Label)
-			else:
-				vKey = str(vKey) + ":" + str(vPL)
+		if vGroup != "":
+			vKey = str(vKey) + ":" + str(vGroup)
 		else:
 			vKey = str(vKey) + ":[...]"
 
