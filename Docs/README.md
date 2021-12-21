@@ -110,7 +110,9 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
 
 # Transformations
 
-For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for furniture parts, `Cube` and `Pad`. Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the the shape and get correct dimensions for the final `Pad` object.
+For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for furniture parts, `Cube` and `Pad`. 
+
+Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get correct dimensions for the final `Pad` object.
 
 **Note:** FreeCAD allows for many objects transformations but some are not supported e.g.: `Single Mirror` or `MultiTransform Mirror` of `Cube` furniture part. However, this macro support each transformation of any furniture part. 
 
