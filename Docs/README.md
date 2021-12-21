@@ -92,27 +92,31 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
 
 ## Basic furniture example
 
-* Create any furniture using Pads and Sketches:
+* Create `Cube` furniture part using the `Cube` dimensions bordered at the image:
 
-    ![pads003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads003.png)
+    ![exB001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB001.png)
  
-* Make sure all Your folders tree have the correct structure:
+* Click the created `Cube` and press `CTRL-C` and `CTRL-V`, to make a copy of the `Cube` furniture part. You should have new `Cube1` created:
 
-    ![pads004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads004.png)
+    ![exB002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB002.png)
     
-* You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
+*  The `Cube1` is at the same place as `Cube`, this is why it is not visible at the 3D model. To move the `Cube1` to the right place, click the `Cube1` at the `Tree` view and change its `Placement` values:
     
-    ![pads005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads005.png)
+    ![exB003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB003.png)
     
+* You can create any furniture using this method very quickly, rename the folders and objects names:
+    
+    ![exB004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB004.png)
+
 * Now, just run the macro, to get report `toPrint`:
     
-    ![pads006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads006.png)
+    ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB005.png)
 
 # Transformations
 
 For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for furniture parts, `Cube` and `Pad`. 
 
-Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get correct dimensions for the final `Pad` object.
+Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get the correct dimensions for the final `Pad` object.
 
 **Note:** FreeCAD allows for many objects transformations but some are not supported e.g.: `Single Mirror` or `MultiTransform Mirror` of `Cube` furniture part. However, this macro support each transformation of any furniture part. 
 
@@ -200,15 +204,15 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 * Create any furniture using Pads and Sketches. You can use `Single Mirror` and `MultiTransform Mirror` at the same project. For example legs are four, so You can use `MultiTransform Mirror` from the single leg and `Single Mirror` for each pair of supporters between them:
 
-	![pads007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads007.png)
+	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA001.png)
 	
 * You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
-	![pads008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads008.png)
+	![exA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA002.png)
         
 * Now, just run the macro, to get report `toPrint`:
 
-	![pads009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads009.png)
+	![exA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA003.png)
 	
 	**Note:** If You want to calculate the `edge size` correctly, You have to use the visibility to show e.g. top and hide legs and other parts.
 
