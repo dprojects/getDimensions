@@ -4,17 +4,18 @@
 2. [Furniture parts](#furniture-parts)
 	1. [Cube - quickstart](#cube---quickstart)
 	2. [Pad - quickstart](#pad---quickstart)
-	3. [Which one should I choose?](#which-one-should-i-choose)
+	3. [Design furniture not the furniture parts](#design-furniture-not-the-furniture-parts)
 	4. [Basic furniture example](#basic-furniture-example)
 3. [Transformations](#transformations)
 	1. [Part :: Mirroring :: Cube](#part--mirroring--cube)
-	2. [Array - Cube](#array---cube)
-	3. [Array - Pad](#array---pad)
-	4. [Array Polar - Cube](#array-polar---cube)
-	5. [Array Polar - Pad](#array-polar---pad)
-	6. [Single Mirror - Pad](#single-mirror---pad)
-	7. [MultiTransform Mirror - Pad](#multitransform-mirror---pad)
-	8. [Advanced furniture example](#advanced-furniture-example)
+	2. [Part :: Mirroring :: Pad](#part--mirroring--pad)
+	3. [Draft :: Array :: Cube](#draft--array--cube)
+	4. [Draft :: Array :: Pad](#draft--array--pad)
+	5. [Draft :: Array Polar :: Cube](#draft--array-polar--cube)
+	6. [Draft :: Array Polar :: Pad](#draft--array-polar--pad)
+	7. [PartDesign :: Mirrored :: Pad](#partdesign--mirrored--pad)
+	8. [PartDesign :: MultiTransform :: Pad](#partdesign--multitransform--pad)
+	9. [Advanced furniture example](#advanced-furniture-example)
 4. [Report customization](#report-customization)
 	1. [Visibility](#visibility)
 	2. [Group furniture parts](#group-furniture-parts)
@@ -81,7 +82,7 @@ Pad is not base object. In fact, it is a transformation on the `Sketch` object. 
 
 	**Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
 
-## Which one should I choose?
+## Design furniture not the furniture parts
 
 Personally, I used to design everything with `Cube` furniture part. With calculator and `Placement` option I was able to design any furniture I needed, even some tools like doweling jig. Designing simple furniture with `Cube` takes about 5 minutes and You can just use `CTRL-C` and `CTRL-V` keys to multiply quickly the `Cube` furniture part, move it and change some dimensions, if needed.
 
@@ -119,7 +120,7 @@ For the macro purposes the transformation of a furniture part will be considered
 
 Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get the correct dimensions for the final `Pad` object.
 
-**Note:** FreeCAD allows for many objects transformations but some are not supported e.g.: `Single Mirror` or `MultiTransform Mirror` of `Cube` furniture part. However, this macro support each transformation of any furniture part. 
+**Note:** FreeCAD allows for many objects transformations but some combinations are not supported by FreeCAD e.g.: `PartDesign :: Mirrored :: Cube` or `PartDesign :: MultiTransform :: Cube`. However, this macro support any furniture part for each transformation. 
 
 ## Part :: Mirroring :: Cube
 
@@ -139,11 +140,23 @@ Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. 
 	
 	![tpmc004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc004.png)
 
-## Array - Cube
+## Part :: Mirroring :: Pad
 
-To start with `Array` transformation of `Cube` furniture part, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+To start with `Part :: Mirroring :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
 
-* Click the `Cube` furniture part and create `Array` as it is demonstrated below:
+* Click the `Pad` furniture part and create `Part :: Mirroring :: Pad` as it is demonstrated below:
+
+	![tpmp001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmp001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![tpmp002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmp002.png)
+
+## Draft :: Array :: Cube
+
+To start with `Draft :: Array :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+
+* Click the `Cube` furniture part and create `Draft :: Array :: Cube` as it is demonstrated below:
 
 	![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays001.png)
 
@@ -151,11 +164,11 @@ To start with `Array` transformation of `Cube` furniture part, You have to creat
 	
 	![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays002.png)
 
-## Array - Pad
+## Draft :: Array :: Pad
 
-To start with `Array` transformation of `Pad` furniture part, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+To start with `Draft :: Array :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
 
-* Click the `Pad` furniture part and create `Array` as it is demonstrated below:
+* Click the `Pad` furniture part and create `Draft :: Array :: Pad` as it is demonstrated below:
 
 	![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays003.png)
 
@@ -169,11 +182,11 @@ To start with `Array` transformation of `Pad` furniture part, You have to create
 	
 	**Note:** Now You should see the `edge size` is calculated correctly.
 
-## Array Polar - Cube
+## Draft :: Array Polar :: Cube
 
-To start with `Array Polar` transformation of `Cube` furniture part, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+To start with `Draft :: Array Polar :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
 
-* Click the `Cube` furniture part and create `Array Polar` as it is demonstrated below:
+* Click the `Cube` furniture part and create `Draft :: Array Polar :: Cube` as it is demonstrated below:
 
 	![arrays006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays006.png)
 
@@ -181,11 +194,11 @@ To start with `Array Polar` transformation of `Cube` furniture part, You have to
 	
 	![arrays007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays007.png)
 
-## Array Polar - Pad
+## Draft :: Array Polar :: Pad
 
-To start with `Array Polar` transformation of `Pad` furniture part, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+To start with `Draft :: Array Polar :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
 
-* Click the `Pad` furniture part and create `Array Polar` as it is demonstrated below:
+* Click the `Pad` furniture part and create `Draft :: Array Polar :: Pad` as it is demonstrated below:
 
 	![arrays008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays008.png)
 
@@ -193,11 +206,11 @@ To start with `Array Polar` transformation of `Pad` furniture part, You have to 
 	
 	![arrays009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays009.png)
 
-## Single Mirror - Pad
+## PartDesign :: Mirrored :: Pad
 
-To start with `Single Mirror` transformation of `Pad` furniture part, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+To start with `PartDesign :: Mirrored :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
 
-* Click the `Pad` furniture part and create `Single Mirror` as it is demonstrated below:
+* Click the `Pad` furniture part and create `PartDesign :: Mirrored :: Pad` as it is demonstrated below:
 
 	![padsSM001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM001.png)
 
@@ -205,11 +218,11 @@ To start with `Single Mirror` transformation of `Pad` furniture part, You have t
 	
 	![padsSM002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM002.png)
 
-## MultiTransform Mirror - Pad
+## PartDesign :: MultiTransform :: Pad
 
-The `MultiTransform` allows for many transformations at the single step. To start with `MultiTransform Mirror` transformation of `Pad` furniture part, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+The `PartDesign :: MultiTransform :: Pad` allows for many transformations at the single step. To start with `PartDesign :: MultiTransform :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
 
-* Click the `Pad` furniture part and create `MultiTransform Mirror` as it is demonstrated below:
+* Click the `Pad` furniture part and create `PartDesign :: MultiTransform :: Pad` as it is demonstrated below:
 
 	![padsMT001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT001.png)
 
@@ -221,7 +234,7 @@ The `MultiTransform` allows for many transformations at the single step. To star
 
 To use any mirror type of feature part with Your furniture project just follow the steps:
 
-* Create any furniture using Pads and Sketches. You can use `Single Mirror` and `MultiTransform Mirror` at the same project. For example legs are four, so You can use `MultiTransform Mirror` from the single leg and `Single Mirror` for each pair of supporters between them:
+* Create any furniture using Pads and Sketches. You can use `PartDesign :: Mirrored :: Pad` and `PartDesign :: MultiTransform :: Pad` at the same project. For example legs are four, so You can use `PartDesign :: MultiTransform :: Pad` from the single leg and `PartDesign :: Mirrored :: Pad` for each pair of supporters between them:
 
 	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA001.png)
 	

@@ -8,12 +8,19 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 # Main features
 
-* Languages: Polish, English.
-* Group by: thickness, quantity, size, name, folder, visibility.
-* Units: millimeters, meters, inches.
-* Calculations: quantity, thickness, area, edge size.
-* Furniture parts: Cube, Pad.
-* Transformations: Array, Array Polar, Single Mirror, MultiTransform Mirror.
+* **Languages:** Polish, English.
+* **Group by:** thickness, quantity, size, name, folder, visibility.
+* **Units:** millimeters, meters, inches.
+* **Calculations:** quantity, thickness, area, edge size.
+* **Supported furniture parts:** 
+    * `Part :: Cube`, 
+    * `PartDesign :: Pad`.
+* **Supported transformations:** 
+    * `Part :: Mirroring`, 
+    * `Draft :: Array`, 
+    * `Draft :: Array Polar`, 
+    * `PartDesign :: Mirrored`, 
+    * `PartDesign :: MultiTransform`.
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 

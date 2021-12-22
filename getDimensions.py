@@ -407,10 +407,10 @@ def setPartMirroring(iObj):
 			return -1
 	
 	return 0
-			
+
 
 # ###################################################################################################################
-def setArray(iObj):
+def setDraftArray(iObj):
 
 	# support for Array FreeCAD feature
 	if iObj.isDerivedFrom("Part::FeaturePython"):
@@ -441,21 +441,21 @@ def setArray(iObj):
 		except:
 			
 			# if there is wrong structure
-			showError(iObj, "setArray", "wrong structure")
+			showError(iObj, "setDraftArray", "wrong structure")
 			return -1
 	
 	return 0
 
 
 # ###################################################################################################################
-def setSingleMirror(iObj):
+def setPartDesignMirrored(iObj):
 
 	# support for Single Mirror FreeCAD feature
 	if iObj.isDerivedFrom("PartDesign::Mirrored"):
 
 		try:
 
-			# skip Single Mirrors from MultiTransform with no error
+			# skip single mirrors from MultiTransform with no error
 			if len(iObj.Originals) != 0:
 
 				# set reference point to the base furniture part
@@ -467,14 +467,14 @@ def setSingleMirror(iObj):
 		except:
 			
 			# if there is wrong structure
-			showError(iObj, "setSingleMirror", "wrong structure")
+			showError(iObj, "setPartDesignMirrored", "wrong structure")
 			return -1
 	
 	return 0
 
 
 # ###################################################################################################################
-def setMultiTransform(iObj):
+def setPartDesignMultiTransform(iObj):
 	
 	# support for MultiTransform FreeCAD feature
 	if iObj.isDerivedFrom("PartDesign::MultiTransform"):
@@ -485,19 +485,19 @@ def setMultiTransform(iObj):
 			lenT = len(iObj.Transformations)
 			k = 0
 
-			# if this is MultiTransform, not Single Mirror
+			# if this is MultiTransform, not single mirror
 			if lenT > 0:
 				
-				# Mirror makes 2 elements but each Mirror in MultiTransform makes next Mirror but using 
-				# current transformed object, so this will raise the number of Mirrors to the power, 
+				# mirror makes 2 elements but each mirror in MultiTransform makes next mirror but using 
+				# current transformed object, so this will raise the number of mirrors to the power, 
 				# also you have to remove the base furniture part already added
 				while k < (2 ** lenT) - 1:
 
 					# set reference point to the base furniture part
 					key = iObj.Originals[0]
 
-					# if object is Mirror this create new furniture part
-					# Note: you cannot call Single Mirror here on this because 
+					# if object is mirror this create new furniture part
+					# Note: you cannot call setPartDesignMirrored here on this because 
 					# it is transformation with empty array, there is no access
 					# to the base furniture part
 					selectFurniturePart(key)
@@ -506,7 +506,7 @@ def setMultiTransform(iObj):
 		except:
 
 			# if there is wrong structure
-			showError(iObj, "setMultiTransform", "wrong structure")
+			showError(iObj, "setPartDesignMultiTransform", "wrong structure")
 			return -1
 	
 	return 0
@@ -530,9 +530,9 @@ for obj in gOBs:
 
 	# set transformations
 	setPartMirroring(obj)
-	setArray(obj)
-	setSingleMirror(obj)
-	setMultiTransform(obj)
+	setDraftArray(obj)
+	setPartDesignMirrored(obj)
+	setPartDesignMultiTransform(obj)
 
 # remove existing fake Cube object before recompute
 if gAD.getObject("gFakeCube"):
