@@ -7,13 +7,14 @@
 	3. [Which one should I choose?](#which-one-should-i-choose)
 	4. [Basic furniture example](#basic-furniture-example)
 3. [Transformations](#transformations)
-	1. [Array - Cube](#array---cube)
-	2. [Array - Pad](#array---pad)
-	3. [Array Polar - Cube](#array-polar---cube)
-	4. [Array Polar - Pad](#array-polar---pad)
-	5. [Single Mirror - Pad](#single-mirror---pad)
-	6. [MultiTransform Mirror - Pad](#multitransform-mirror---pad)
-	7. [Advanced furniture example](#advanced-furniture-example)
+	1. [Part :: Mirroring :: Cube](#part--mirroring--cube)
+	2. [Array - Cube](#array---cube)
+	3. [Array - Pad](#array---pad)
+	4. [Array Polar - Cube](#array-polar---cube)
+	5. [Array Polar - Pad](#array-polar---pad)
+	6. [Single Mirror - Pad](#single-mirror---pad)
+	7. [MultiTransform Mirror - Pad](#multitransform-mirror---pad)
+	8. [Advanced furniture example](#advanced-furniture-example)
 4. [Report customization](#report-customization)
 	1. [Visibility](#visibility)
 	2. [Group furniture parts](#group-furniture-parts)
@@ -119,6 +120,24 @@ For the macro purposes the transformation of a furniture part will be considered
 Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get the correct dimensions for the final `Pad` object.
 
 **Note:** FreeCAD allows for many objects transformations but some are not supported e.g.: `Single Mirror` or `MultiTransform Mirror` of `Cube` furniture part. However, this macro support each transformation of any furniture part. 
+
+## Part :: Mirroring :: Cube
+
+* To start with `Part :: Mirroring :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part:
+
+	![tpmc001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc001.png)
+
+* Click the `Cube` furniture part and create `Part :: Mirroring :: Cube` transformation as it is demonstrated below:
+
+	![tpmc002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc002.png)
+
+* You should have `Part :: Mirroring :: Cube` transformation created :
+
+	![tpmc003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc003.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![tpmc004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc004.png)
 
 ## Array - Cube
 

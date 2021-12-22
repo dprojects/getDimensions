@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.21
+# Version: 2021.12.22
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -387,6 +387,29 @@ def setPad(iObj):
 
 
 # ###################################################################################################################
+def setPartMirroring(iObj):
+
+	# support for Part :: Mirroring FreeCAD feature
+	if iObj.isDerivedFrom("Part::Mirroring"):
+
+		try:
+
+			# set reference point to the furniture part
+			key = iObj.Source
+
+			# select and add furniture part
+			selectFurniturePart(key)
+
+		except:
+
+			# if there is wrong structure
+			showError(iObj, "setPartMirroring", "wrong structure")
+			return -1
+	
+	return 0
+			
+
+# ###################################################################################################################
 def setArray(iObj):
 
 	# support for Array FreeCAD feature
@@ -506,6 +529,7 @@ for obj in gOBs:
 	selectFurniturePart(obj)
 
 	# set transformations
+	setPartMirroring(obj)
 	setArray(obj)
 	setSingleMirror(obj)
 	setMultiTransform(obj)
