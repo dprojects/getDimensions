@@ -8,19 +8,32 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 # Main features
 
-* **Languages:** Polish, English.
-* **Group by:** thickness, quantity, size, name, folder, visibility.
-* **Units:** millimeters, meters, inches.
-* **Calculations:** quantity, thickness, area, edge size.
+* **Languages:** 
+	* Polish,
+	* English.
+* **Units:** 
+	* millimeters,
+	* meters,
+	* inches.
+* **Raport types:**
+	* visibility,
+	* quantity (dimensions),
+	* objects names (listing),
+	* groups (folders)
+	* constraints names (custom report)
+* **Calculations:** 
+	* thickness,
+	* area,
+	* edge size.
 * **Supported furniture parts:** 
-    * `Part :: Cube`, 
-    * `PartDesign :: Pad`.
+    * Part :: Cube,
+    * PartDesign :: Pad.
 * **Supported transformations:** 
-    * `Part :: Mirroring`, 
-    * `Draft :: Array`, 
-    * `Draft :: Array Polar`, 
-    * `PartDesign :: Mirrored`, 
-    * `PartDesign :: MultiTransform`.
+    * Part :: Mirroring,
+    * Draft :: Array,
+    * Draft :: Array Polar,
+    * PartDesign :: Mirrored,
+    * PartDesign :: MultiTransform.
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 
@@ -28,8 +41,8 @@ For more details see documentation page: [in Docs folder](https://github.com/dpr
 
 |   |   |   |
 |---|---|---|
-| [![001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/001.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/001.png) | [![002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/002.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/002.png) | [![003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/003.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/003.png) |
-| [![004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/004.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/004.png) | [![005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/005.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/005.png) | [![006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/006.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/006.png) |
+| [![001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/001.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/001.png) | [![003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/003.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/003.png) | [![005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/005.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/005.png) |
+| [![002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/002.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/002.png) | [![004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/004.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/004.png) | [![006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/006.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/006.png) |
 
 # Contact
 

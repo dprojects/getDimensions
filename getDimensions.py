@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.22
+# Version: 2021.12.23
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -40,6 +40,7 @@ sTVF = "edge"
 # "n" - show name of the element first for each group
 # "q" - show quantity first for each group
 # "g" - show group name first for each group (grandparent or parent folder)
+# "c" - show only constraints names and dimensions (custom report)
 sLTF = "q"
 
 
@@ -81,6 +82,13 @@ dbTA = dict() # area
 
 # init database for edge
 dbES = 0 # edge size
+
+# init database for constraints with names
+dbCNO = [] # objects
+dbCNL = dict() # length
+dbCNQ = dict() # quantity
+dbCNN = dict() # names
+dbCNV = dict() # values
 
 
 # ###################################################################################################################
@@ -318,25 +326,6 @@ def showError(iObj, iPlace, iError):
 
 
 # ###################################################################################################################
-def selectFurniturePart(iObj):
-
-	# support for Cube furniture part
-	if iObj.isDerivedFrom("Part::Box"):
-		setCube(iObj)
-    
-	# support for Pad furniture part
-	elif iObj.isDerivedFrom("PartDesign::Pad"):
-		setPad(iObj)
-	
-	# skip not supported furniture parts with no error
-	# Sheet, Transformations will be handling later
-	else:
-		return 0
-
-	return 0	
-
-
-# ###################################################################################################################
 def setCube(iObj):
 
 	try:
@@ -379,6 +368,98 @@ def setPad(iObj):
 		return -1
 
 	return 0
+
+
+# ###################################################################################################################
+def setConstraints(iObj):
+
+	# support for Pad furniture part
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+
+		try:
+
+			# init variable
+			isSet = 0
+
+			# set reference point
+			vCons = iObj.Profile[0].Constraints
+
+			for c in vCons:
+				if c.Name != "":
+					if isSet == 0:
+
+						# set key
+						vKey = iObj.Label
+								
+						# set quantity
+						if vKey in dbCNQ:
+
+							# increase quantity
+							dbCNQ[vKey] = dbCNQ[vKey] + 1
+
+							# show only one object at report
+							return 0
+						else:
+							dbCNQ[vKey] = 1
+
+						# add object with no empty constraints names
+						dbCNO.append(iObj)
+
+						# assign values to the fake Cube dimensions
+						gFakeCube.Length = iObj.Length.Value
+					
+						# get values as the correct dimensions and set database
+						dbCNL[vKey] = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+
+						# init db for the object
+						dbCNN[vKey] = ""
+						dbCNV[vKey] = ""
+
+						# not add object again, only constraints
+						isSet = 1
+
+					# set name
+					dbCNN[vKey] += str(c.Name) + ":"
+
+					# assign values to the fake Cube dimensions
+					gFakeCube.Width = c.Value
+					
+					# get values as the correct dimensions and set database
+					dbCNV[vKey] += str(gFakeCube.Width.getValueAs(gUnitC).Value) + ":"
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iObj, "setConstraints", "wrong structure")
+			return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def selectFurniturePart(iObj):
+
+	# support for Cube furniture part
+	if iObj.isDerivedFrom("Part::Box"):
+		setCube(iObj)
+    
+	# support for Pad furniture part
+	elif iObj.isDerivedFrom("PartDesign::Pad"):
+		
+		# if report for constraints (custom report)
+		if sLTF == "c":
+			setConstraints(iObj)
+			
+		# for other types of report
+		else:
+			setPad(iObj)
+	
+	# skip not supported furniture parts with no error
+	# Sheet, Transformations will be handling later
+	else:
+		return 0
+
+	return 0	
 
 
 # ###################################################################################################################
@@ -534,38 +615,42 @@ for obj in gOBs:
 	setPartDesignMirrored(obj)
 	setPartDesignMultiTransform(obj)
 
-# remove existing fake Cube object before recompute
-if gAD.getObject("gFakeCube"):
-	gAD.removeObject("gFakeCube")
-
 
 # ###################################################################################################################
 # MAIN LOOP - set database for dimensions
 # ###################################################################################################################
 
 
-# search all correct objects and set database for dimensions
-for obj in dbFCO:
+# skip if report for constraints (custom report)
+if sLTF != "c":
 
-	# assign values
-	vW = dbFCW[obj.Label]
-	vH = dbFCH[obj.Label]
-	vL = dbFCL[obj.Label]
-
-	# set db for dimensions
-	setDB(obj, vW, vH, vL, "d")
-
-	# set db for thickness
-	setDB(obj, vW, vH, vL, "thick")
-
-	# set db for edge
-	edge = getEdge(obj, vW, vH, vL)
+	# search all correct objects and set database for dimensions
+	for obj in dbFCO:
 	
-	if sTVF == "edge":
-		if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-			edge = 0 # skip if object is not visible			
- 
-	dbES = dbES + edge
+		# assign values
+		vW = dbFCW[obj.Label]
+		vH = dbFCH[obj.Label]
+		vL = dbFCL[obj.Label]
+	
+		# set db for dimensions
+		setDB(obj, vW, vH, vL, "d")
+	
+		# set db for thickness
+		setDB(obj, vW, vH, vL, "thick")
+	
+		# set db for edge
+		edge = getEdge(obj, vW, vH, vL)
+		
+		if sTVF == "edge":
+			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
+				edge = 0 # skip if object is not visible			
+	 
+		dbES = dbES + edge
+
+
+# remove existing fake Cube object before recompute
+if gAD.getObject("gFakeCube"):
+	gAD.removeObject("gFakeCube")
 
 
 # ###################################################################################################################
@@ -575,39 +660,46 @@ for obj in dbFCO:
 
 # Polish language
 if sLang  == "pl":
-    vLang1 = "Element"
-    vLang2 = "Wymiary"
-    vLang3 = "Grubość"
-    vLang4 = "Sztuki"
-    
-    if sUnitsArea == "mm":
-        vLang5 = "Milimetry kwadratowe"
-    if sUnitsArea == "m":
-        vLang5 = "Metry kwadratowe"
-    if sUnitsArea == "in":
-        vLang5 = "Cale kwadratowe"        
 
-    vLang6 = "Podsumowanie dla koloru elementu"
-    vLang7 = "Podsumowanie dla grubości elementu"
-    vLang8 = "Długość obrzeża"
+	vLang1 = "Element"
+	vLang2 = "Wymiary"
+	vLang3 = "Grubość"
+	vLang4 = "Sztuki"
+    
+	if sUnitsArea == "mm":
+		vLang5 = "Milimetry kwadratowe"
+	if sUnitsArea == "m":
+		vLang5 = "Metry kwadratowe"
+	if sUnitsArea == "in":
+		vLang5 = "Cale kwadratowe"        
+
+	vLang6 = "Podsumowanie dla koloru elementu"
+	vLang7 = "Podsumowanie dla grubości elementu"
+	vLang8 = "Długość obrzeża"
+	vLang9 = "Opis"
+	vLang10 = "Wymiar"
 
 # English language
 else:
-    vLang1 = "Name"
-    vLang2 = "Dimensions"
-    vLang3 = "Thickness"
-    vLang4 = "Quantity"
 
-    if sUnitsArea == "mm":
-        vLang5 = "Square millimeters"
-    if sUnitsArea == "m":
-        vLang5 = "Square meters"
-    if sUnitsArea == "in":
-        vLang5 = "Square inches"        
+	vLang1 = "Name"
+	vLang2 = "Dimensions"
+	vLang3 = "Thickness"
+	vLang4 = "Quantity"
 
-    vLang6 = "Summary by colors"
-    vLang7 = "Summary by thickness"
-    vLang8 = "Edge size"
+	if sUnitsArea == "mm":
+		vLang5 = "Square millimeters"
+	if sUnitsArea == "m":
+		vLang5 = "Square meters"
+	if sUnitsArea == "in":
+		vLang5 = "Square inches"        
+
+	vLang6 = "Summary by colors"
+	vLang7 = "Summary by thickness"
+	vLang8 = "Edge size"
+	vLang9 = "Description"
+	vLang10 = "Dimension"
+    
 
 # create spreadsheet and prepere it for data
 if gAD.getObject("toCut"):
@@ -758,17 +850,20 @@ if sLTF == "g":
 # ###################################################################################################################
 
 
-# colors
-result.setForeground("A1:G" + str(i), (0,0,0))
-result.setBackground("A1:G" + str(i), (1,1,1))
+# skip if report for constraints (custom report)
+if sLTF != "c":
 
-# fix for center header text in merged cells
-result.setAlignment("B1:B1", "center", "keep")
-result.setAlignment("C1:C1", "center", "keep")
-result.setAlignment("D1:D1", "center", "keep")
-
-# text header decoration
-result.setStyle("A1:G1", "bold", "add")
+	# colors
+	result.setForeground("A1:G" + str(i), (0,0,0))
+	result.setBackground("A1:G" + str(i), (1,1,1))
+	
+	# fix for center header text in merged cells
+	result.setAlignment("B1:B1", "center", "keep")
+	result.setAlignment("C1:C1", "center", "keep")
+	result.setAlignment("D1:D1", "center", "keep")
+	
+	# text header decoration
+	result.setStyle("A1:G1", "bold", "add")
 
 
 # ###################################################################################################################
@@ -776,40 +871,43 @@ result.setStyle("A1:G1", "bold", "add")
 # ###################################################################################################################
 
 
-# add empty line separator
-i = i + 1
+# skip if report for constraints (custom report)
+if sLTF != "c":
 
-# add summary title for thickness
-vCell = "A" + str(i) + ":D" + str(i)
-result.mergeCells(vCell)
-result.set(vCell, vLang7)
-result.setStyle(vCell, "bold", "add")
-result.setAlignment(vCell, "left", "keep")
-
-# add empty line separator
-i = i + 1
-
-# for thickness	(quantity)
-if sLTF == "q":
-	for key in dbTQ.keys():
-		result.set("A" + str(i), "'" + str(dbTQ[key])+" x")
-		result.set("E" + str(i), getUnit(key, "d"))
-		result.set("F" + str(i), getUnit(dbTA[key], "area"))
-		result.setAlignment("A" + str(i), "right", "keep")
-		result.setAlignment("E" + str(i), "right", "keep")
-		result.setAlignment("F" + str(i), "right", "keep")
-		i = i + 1
-
-# for thickness	(group & name)
-if sLTF == "g" or sLTF == "n":
-	for key in dbTQ.keys():
-		result.set("E" + str(i), getUnit(key, "d"))
-		result.set("F" + str(i), "'" + str(dbTQ[key]))
-		result.set("G" + str(i), getUnit(dbTA[key], "area"))
-		result.setAlignment("E" + str(i), "right", "keep")
-		result.setAlignment("F" + str(i), "right", "keep")
-		result.setAlignment("G" + str(i), "right", "keep")
-		i = i + 1
+	# add empty line separator
+	i = i + 1
+	
+	# add summary title for thickness
+	vCell = "A" + str(i) + ":D" + str(i)
+	result.mergeCells(vCell)
+	result.set(vCell, vLang7)
+	result.setStyle(vCell, "bold", "add")
+	result.setAlignment(vCell, "left", "keep")
+	
+	# add empty line separator
+	i = i + 1
+	
+	# for thickness	(quantity)
+	if sLTF == "q":
+		for key in dbTQ.keys():
+			result.set("A" + str(i), "'" + str(dbTQ[key])+" x")
+			result.set("E" + str(i), getUnit(key, "d"))
+			result.set("F" + str(i), getUnit(dbTA[key], "area"))
+			result.setAlignment("A" + str(i), "right", "keep")
+			result.setAlignment("E" + str(i), "right", "keep")
+			result.setAlignment("F" + str(i), "right", "keep")
+			i = i + 1
+	
+	# for thickness	(group & name)
+	if sLTF == "g" or sLTF == "n":
+		for key in dbTQ.keys():
+			result.set("E" + str(i), getUnit(key, "d"))
+			result.set("F" + str(i), "'" + str(dbTQ[key]))
+			result.set("G" + str(i), getUnit(dbTA[key], "area"))
+			result.setAlignment("E" + str(i), "right", "keep")
+			result.setAlignment("F" + str(i), "right", "keep")
+			result.setAlignment("G" + str(i), "right", "keep")
+			i = i + 1
 
 
 # ###################################################################################################################
@@ -817,20 +915,122 @@ if sLTF == "g" or sLTF == "n":
 # ###################################################################################################################
 
 
-# add empty line separator
-i = i + 1
+# skip if report for constraints (custom report)
+if sLTF != "c":
 
-# add summary for edge size
-vCell = "A" + str(i) + ":B" + str(i)
-result.mergeCells(vCell)
-result.set(vCell, vLang8)
-result.setStyle(vCell, "bold", "add")
-result.setAlignment(vCell, "left", "keep")
+	# add empty line separator
+	i = i + 1
+	
+	# add summary for edge size
+	vCell = "A" + str(i) + ":B" + str(i)
+	result.mergeCells(vCell)
+	result.set(vCell, vLang8)
+	result.setStyle(vCell, "bold", "add")
+	result.setAlignment(vCell, "left", "keep")
+	
+	vCell = "C" + str(i) + ":E" + str(i)
+	result.mergeCells(vCell)
+	result.set(vCell, getUnit(dbES, "d"))
+	result.setAlignment(vCell, "right", "keep")
 
-vCell = "C" + str(i) + ":E" + str(i)
-result.mergeCells(vCell)
-result.set(vCell, getUnit(dbES, "d"))
-result.setAlignment(vCell, "right", "keep")
+
+# ###################################################################################################################
+# Spreadsheet main report - constraints (custom)
+# ###################################################################################################################
+
+
+if sLTF == "c":
+	
+	# search objects for constraints (custom report)
+	for o in dbCNO:
+
+		# set object info
+		vCell = "A" + str(i)
+		vStr = ""
+		vStr += str(dbCNQ[o.Label])
+		vStr += "x "
+		vStr += str(o.Label)
+		vStr += ", " 
+		vStr += getUnit(dbCNL[o.Label], "d")[1:]
+
+		result.set(vCell, vStr)
+
+		vCell = "A" + str(i) + ":G" + str(i)
+		result.mergeCells(vCell)	
+
+		vCell = "A" + str(i) + ":G" + str(i)
+		result.setStyle(vCell, "bold", "add")
+
+		vCell = "A" + str(i) + ":F" + str(i)
+		result.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(i)
+		result.setAlignment(vCell, "left", "keep")
+
+		# go to next spreadsheet row
+		i = i + 1
+
+		# set headers for constraints
+		vCell = "B" + str(i)
+		result.set(vCell, vLang9)
+
+		vCell = "G" + str(i)
+		result.set(vCell, vLang10)
+
+		vCell = "B" + str(i) + ":F" + str(i)
+		result.mergeCells(vCell)	
+
+		vCell = "A" + str(i) + ":G" + str(i)
+		result.setStyle(vCell, "bold", "add")
+
+		vCell = "A" + str(i) + ":F" + str(i)
+		result.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(i)
+		result.setAlignment(vCell, "right", "keep")
+
+		# create constraints lists
+		keyN = dbCNN[o.Label].split(":")
+		keyV = dbCNV[o.Label].split(":")
+
+		# go to next spreadsheet row
+		i = i + 1
+
+		# set all constraints
+		k = 0
+		while k < len(keyN)-1: 
+	
+			# the first A column is empty for better look					
+			result.set("B" + str(i), "'" + str(keyN[k]))
+			result.set("G" + str(i), getUnit(keyV[k], "d"))
+			
+			vCell = "B" + str(i) + ":F" + str(i)
+			result.mergeCells(vCell)
+
+			vCell = "B" + str(i) + ":F" + str(i)
+			result.setAlignment(vCell, "left", "keep")
+
+			vCell = "G" + str(i)
+			result.setAlignment(vCell, "right", "keep")
+
+			# go to next spreadsheet row
+			i = i + 1
+
+			# go to next constraint
+			k = k + 1
+			
+	# set cell width
+	result.setColumnWidth("A", 20)
+	result.setColumnWidth("B", 195)
+	result.setColumnWidth("C", 120)
+	result.setColumnWidth("D", 80)
+	result.setColumnWidth("E", 100)
+	result.setColumnWidth("F", 100)
+	result.setColumnWidth("G", 100)
+
+	# set colors
+	result.setForeground("A1:G" + str(i), (0,0,0))
+	result.setBackground("A1:G" + str(i), (1,1,1))
 
 
 # ###################################################################################################################

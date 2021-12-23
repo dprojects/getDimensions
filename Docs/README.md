@@ -23,6 +23,7 @@
 		2. [Quantity report](#quantity-report)
 		3. [Group report](#group-report)
 	3. [Edge size](#edge-size)
+	4. [Constraints](#constraints)
 5. [Known issues](#known-issues)
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
@@ -311,6 +312,20 @@ To use any mirror type of feature part with Your furniture project just follow t
 * If You want to calculate the `edge size` for all furniture parts just set `sTVF` to `off`:
 	
 	![edge005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge005.png)
+
+## Constraints
+
+* To create `constraints` report You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All `constraints` with empty name will be skipped at report:
+
+	![ltf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf005.png)
+	
+* For this type of report You can use any drawing at `Sketch`:
+
+	![ltf006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf006.png)
+
+* To create `constraints` report just set `sLTF` variable to `c` and run macro:
+
+    ![ltf007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf007.png)
 
 # Known issues
 
