@@ -8,23 +8,15 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 # Main features
 
-* **Languages:** 
-	* Polish,
-	* English.
-* **Units:** 
-	* millimeters,
-	* meters,
-	* inches.
+* **Languages:** Polish, English.
+* **Units:** millimeters, meters, inches.
 * **Raport types:**
-	* visibility,
-	* quantity (dimensions),
-	* objects names (listing),
-	* groups (folders)
-	* constraints names (custom report)
-* **Calculations:** 
-	* thickness,
-	* area,
-	* edge size.
+	* automatic by quantity (dimensions),
+	* automatic by objects names (listing),
+	* automatic by groups (folder names),
+	* custom by objects toggle visibility,
+	* custom by constraints names (totally custom report).
+* **Calculations:** thickness, area, edge size.
 * **Supported furniture parts:** 
     * Part :: Cube,
     * PartDesign :: Pad.
