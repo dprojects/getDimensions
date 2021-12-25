@@ -2,51 +2,63 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2021.12.23
+# Version: 2021.12.25
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
 
 
 # ###################################################################################################################
-# SETTINGS ( SET HERE )
+# Default Settings ( CHANGE HERE IF NEEDED )
 # ###################################################################################################################
 
 
-# set language:
+# Languages:
 # "pl" - Polish
 # "en" - English
 sLang = "en"
 
-# set metric system for all elements:
+# Units for dimensions:
 # "mm" - millimeter
 # "m" - meter
 # "in" - inch
 sUnitsMetric = "mm"
 
-# set square area units:
-# "m"  - meter
+# Units for edge size:
 # "mm" - millimeter
+# "m" - meter
 # "in" - inch
+sUnitsEdge = "m"
+
+# Units for area:
+# "m" - square meter (m2)
+# "mm" - square millimeter (mm2)
+# "in" - square inch (inch2)
 sUnitsArea = "m"
 
-# Toggle Visibility Feature:
-# "on" - all hidden items with visibility = false will be skipped
-# "edge" - hidden elements will not be added to edge size only
-# "off" - all items will be listed and calculated
+# Visibility (Toggle Visibility Feature):
+# "on" - skip all hidden objects and groups
+# "edge" - show all hidden objects and groups but not add to the edge size
+# "off" - show and calculate all objects and groups
 sTVF = "edge"
 
-# Label Type Feature:
-# "n" - show name of the element first for each group
-# "q" - show quantity first for each group
-# "g" - show group name first for each group (grandparent or parent folder)
-# "c" - show only constraints names and dimensions (custom report)
+# Report customization (Label Type Feature):
+# "n" - automatic by objects names (listing)
+# "g" - automatic by groups (folder names)
+# "q" - automatic by quantity (dimensions)
+# "c" - custom by constraints names (totally custom report)
 sLTF = "q"
+
+# Report print quality:
+# "eco" - low ink mode (good for printing)
+# "hq" - high quality mode (good for pdf)
+sRPQ = "hq"
 
 
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
 # ###################################################################################################################
+
 
 # set reference point to Active Document
 gAD = FreeCAD.activeDocument()
@@ -57,7 +69,15 @@ gOBs = gAD.Objects
 # unit for calculation purposes (not change)
 gUnitC = "mm"
 
-# create fake Cube but not call recompute
+# header color
+gHeadCS = (0.862745,0.862745,0.862745,1.000000) # strong
+gHeadCW = (0.941176,0.941176,0.941176,1.000000) # weak
+
+# remove existing Fake Cube object if exists (auto clean after error)
+if gAD.getObject("gFakeCube"):
+	gAD.removeObject("gFakeCube")
+
+# create Fake Cube but not call recompute
 gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
 
 
@@ -66,7 +86,7 @@ gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
 # ###################################################################################################################
 
 
-# init database for fake Cube
+# init database for Fake Cube
 dbFCO = [] # objects
 dbFCW = dict() # width
 dbFCH = dict() # height
@@ -81,9 +101,10 @@ dbTQ = dict() # quantity
 dbTA = dict() # area
 
 # init database for edge
-dbES = 0 # edge size
+dbE = dict()
+dbE["size"] = 0 # edge size
 
-# init database for constraints with names
+# init database for Constraints Named
 dbCNO = [] # objects
 dbCNL = dict() # length
 dbCNQ = dict() # quantity
@@ -92,8 +113,79 @@ dbCNV = dict() # values
 
 
 # ###################################################################################################################
+# Support for errors
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def showError(iObj, iPlace, iError):
+
+	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+	
+	try:
+		FreeCAD.Console.PrintMessage("ERROR: ")
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iObj.Label))
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iPlace))
+		FreeCAD.Console.PrintMessage(" | ")
+		FreeCAD.Console.PrintMessage(str(iError))
+		
+	except:
+		FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
+		
+	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+	
+	return 0
+
+
+# ###################################################################################################################
 # Support for calculations
 # ###################################################################################################################
+
+
+# ###################################################################################################################
+def getUnit(iValue, iType):
+
+	iValue = float(iValue)
+
+	# for dimensions
+	if iType == "d":
+		
+		if sUnitsMetric == "mm":
+			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsMetric
+		
+		if sUnitsMetric == "m":
+			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsMetric
+		
+		if sUnitsMetric == "in":
+			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsMetric
+	
+	# for edge
+	if iType == "edge":
+		
+		if sUnitsEdge == "mm":
+			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsEdge
+		
+		if sUnitsEdge == "m":
+			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsEdge
+		
+		if sUnitsEdge == "in":
+			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsEdge
+	
+	# for area
+	if iType == "area":
+		
+		if sUnitsArea == "mm":
+			return "'" + str( int(round(iValue, 0)) )
+		
+		if sUnitsArea == "m":
+			return "'" + str( round(iValue * float(0.000001), 6) )
+		
+		if sUnitsArea == "in":
+			return "'" + str( round(iValue * float(0.0015500031), 6) )
+		
+	return -1
 
 
 # ###################################################################################################################
@@ -206,38 +298,6 @@ def getArea(iObj, iW, iH, iL):
 
 
 # ###################################################################################################################
-def setDB(iObj, iW, iH, iL, iDB):
-
-	# get area for object
-	vArea = getArea(iObj, iW, iH, iL) 
-	
-	# set DB for dimensions
-	if iDB == "d":
-
-		vKey = getKey(iObj, iW, iH, iL, "d")
-
-		if vKey in dbDQ:
-			dbDQ[vKey] = dbDQ[vKey] + 1
-			dbDA[vKey] = dbDA[vKey] + vArea
-		else:
-			dbDQ[vKey] = 1
-			dbDA[vKey] = vArea
-
-	# set DB for thickness
-	elif iDB == "thick":
-
-		# convert value to dimension string
-		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
-	
-		if vKey in dbTQ:
-			dbTQ[vKey] = dbTQ[vKey] + 1
-			dbTA[vKey] = dbTA[vKey] + vArea
-		else:
-			dbTQ[vKey] = 1
-			dbTA[vKey] = vArea
-
-
-# ###################################################################################################################
 def getEdge(iObj, iW, iH, iL):
 
 	# skip the thickness dimension
@@ -262,61 +322,104 @@ def getEdge(iObj, iW, iH, iL):
 
 
 # ###################################################################################################################
-def getUnit(iValue, iType):
-
-	iValue = float(iValue)
-
-	# for dimensions
-	if iType == "d":
-		
-		if sUnitsMetric == "mm":
-			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsMetric
-		
-		if sUnitsMetric == "m":
-			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsMetric
-		
-		if sUnitsMetric == "in":
-			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsMetric
-	
-	# for area
-	if iType == "area":
-		
-		if sUnitsArea == "mm":
-			return "'" + str( int(round(iValue, 0)) )
-		
-		if sUnitsArea == "m":
-			return "'" + str( round(iValue * float(0.000001), 6) )
-		
-		if sUnitsArea == "in":
-			return "'" + str( round(iValue * float(0.0015500031), 6) )
-		
-	return -1
-
-
-# ###################################################################################################################
-# Support for errors
+# Database controllers - set db only via this controllers
 # ###################################################################################################################
 
 
 # ###################################################################################################################
-def showError(iObj, iPlace, iError):
+def setDB(iObj, iW, iH, iL):
 
-	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
-	
 	try:
-		FreeCAD.Console.PrintMessage("ERROR: ")
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iObj.Label))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iPlace))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iError))
 		
-	except:
-		FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
-		
-	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+		# set db for Fake Cube Object 
+		dbFCO.append(iObj)
+
+		# set db for Fake Cube dimensions
+		dbFCW[iObj.Label] = iW
+		dbFCH[iObj.Label] = iH
+		dbFCL[iObj.Label] = iL
+
+		# get area for object
+		vArea = getArea(iObj, iW, iH, iL) 
 	
+		# get key  for object
+		vKey = getKey(iObj, iW, iH, iL, "d")
+	
+		# set dimensions db for quantity & area
+		if vKey in dbDQ:
+	
+			dbDQ[vKey] = dbDQ[vKey] + 1
+			dbDA[vKey] = dbDA[vKey] + vArea
+		else:
+	
+			dbDQ[vKey] = 1
+			dbDA[vKey] = vArea
+
+		# get key  for object (convert value to dimension string)
+		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
+	
+		# set thickness db for quantity & area
+		if vKey in dbTQ:
+	
+			dbTQ[vKey] = dbTQ[vKey] + 1
+			dbTA[vKey] = dbTA[vKey] + vArea
+		else:
+	
+			dbTQ[vKey] = 1
+			dbTA[vKey] = vArea
+
+		# set edge db for edge size
+		vEdge = getEdge(iObj, iW, iH, iL)
+
+		if sTVF == "edge":
+			if FreeCADGui.ActiveDocument.getObject(iObj.Name).Visibility == False:
+				vEdge = 0 # skip if object is not visible			
+
+		dbE["size"] = dbE["size"] + vEdge
+
+	except:
+
+		# set db error
+		showError(iObj, "setDB", "set db error")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def setDBConstraints(iObj, iL, iN, iV):
+
+	try:
+
+		# set key
+		vKey = iObj.Label
+				
+		# set quantity
+		if vKey in dbCNQ:
+
+			# increase quantity only
+			dbCNQ[vKey] = dbCNQ[vKey] + 1
+
+			# show only one object at report
+			return 0
+			
+		# init quantity
+		dbCNQ[vKey] = 1
+
+		# add object with no empty constraints names
+		dbCNO.append(iObj)
+
+		# set length, names, values
+		dbCNL[vKey] = iL
+		dbCNN[vKey] = iN
+		dbCNV[vKey] = iV
+
+	except:
+
+		# set db error
+		showError(iObj, "setDBConstraints", "set db error")
+		return -1
+
 	return 0
 
 
@@ -331,10 +434,12 @@ def setCube(iObj):
 	try:
 
 		# get correct dimensions as values
-		dbFCO.append(iObj)
-		dbFCW[iObj.Label] = iObj.Width.getValueAs(gUnitC).Value
-		dbFCH[iObj.Label] = iObj.Height.getValueAs(gUnitC).Value
-		dbFCL[iObj.Label] = iObj.Length.getValueAs(gUnitC).Value
+		vW = iObj.Width.getValueAs(gUnitC).Value
+		vH = iObj.Height.getValueAs(gUnitC).Value
+		vL = iObj.Length.getValueAs(gUnitC).Value
+
+		# set db for quantity & area & edge size
+		setDB(iObj, vW, vH, vL)
 
 	except:
 
@@ -350,16 +455,18 @@ def setPad(iObj):
 
 	try:
 		
-		# assign values to the fake Cube dimensions
+		# assign values to the Fake Cube dimensions
 		gFakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
 		gFakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
 		gFakeCube.Length = iObj.Length.Value
 		
-		# get values as the correct dimensions and set database
-		dbFCO.append(iObj)
-		dbFCW[iObj.Label] = gFakeCube.Width.getValueAs(gUnitC).Value
-		dbFCH[iObj.Label] = gFakeCube.Height.getValueAs(gUnitC).Value
-		dbFCL[iObj.Label] = gFakeCube.Length.getValueAs(gUnitC).Value
+		# get values as the correct dimensions
+		vW = gFakeCube.Width.getValueAs(gUnitC).Value
+		vH = gFakeCube.Height.getValueAs(gUnitC).Value
+		vL = gFakeCube.Length.getValueAs(gUnitC).Value
+
+		# set db for quantity & area & edge size
+		setDB(iObj, vW, vH, vL)
 
 	except:
 
@@ -373,92 +480,79 @@ def setPad(iObj):
 # ###################################################################################################################
 def setConstraints(iObj):
 
-	# support for Pad furniture part
-	if iObj.isDerivedFrom("PartDesign::Pad"):
+	try:
 
-		try:
+		# init variables
+		isSet = 0
+		vNames = ""
+		vValues = ""
+	
+		# set reference point
+		vCons = iObj.Profile[0].Constraints
+	
+		for c in vCons:
+			if c.Name != "":
+				
+				# set Constraint Name
+				vNames += str(c.Name) + ":"
+	
+				# assign values to the Fake Cube dimensions
+				gFakeCube.Width = c.Value
+				
+				# get values as the correct dimensions
+				vValues += str(gFakeCube.Width.getValueAs(gUnitC).Value) + ":"
+	
+				# non empty names, so object can be set
+				isSet = 1
+	
+		if isSet == 1:
+	
+			# assign values to the Fake Cube dimensions
+			gFakeCube.Length = iObj.Length.Value
+				
+			# get values as the correct dimensions
+			vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+	
+			# set db for Constraints
+			setDBConstraints(iObj, vLength, vNames, vValues)
 
-			# init variable
-			isSet = 0
-
-			# set reference point
-			vCons = iObj.Profile[0].Constraints
-
-			for c in vCons:
-				if c.Name != "":
-					if isSet == 0:
-
-						# set key
-						vKey = iObj.Label
-								
-						# set quantity
-						if vKey in dbCNQ:
-
-							# increase quantity
-							dbCNQ[vKey] = dbCNQ[vKey] + 1
-
-							# show only one object at report
-							return 0
-						else:
-							dbCNQ[vKey] = 1
-
-						# add object with no empty constraints names
-						dbCNO.append(iObj)
-
-						# assign values to the fake Cube dimensions
-						gFakeCube.Length = iObj.Length.Value
-					
-						# get values as the correct dimensions and set database
-						dbCNL[vKey] = str(gFakeCube.Length.getValueAs(gUnitC).Value)
-
-						# init db for the object
-						dbCNN[vKey] = ""
-						dbCNV[vKey] = ""
-
-						# not add object again, only constraints
-						isSet = 1
-
-					# set name
-					dbCNN[vKey] += str(c.Name) + ":"
-
-					# assign values to the fake Cube dimensions
-					gFakeCube.Width = c.Value
-					
-					# get values as the correct dimensions and set database
-					dbCNV[vKey] += str(gFakeCube.Width.getValueAs(gUnitC).Value) + ":"
+	except:
 		
-		except:
-			
-			# if there is wrong structure
-			showError(iObj, "setConstraints", "wrong structure")
-			return -1
+		# if there is wrong structure
+		showError(iObj, "setConstraints", "wrong structure")
+		return -1
 
 	return 0
 
 
 # ###################################################################################################################
+# Furniture parts selector - add objects to db only via this selector
+# ###################################################################################################################
+
+
+# ###################################################################################################################
 def selectFurniturePart(iObj):
 
-	# support for Cube furniture part
-	if iObj.isDerivedFrom("Part::Box"):
-		setCube(iObj)
+	# normal report
+	if sLTF != "c":
+
+		# support for Cube furniture part
+		if iObj.isDerivedFrom("Part::Box"):
+			setCube(iObj)
     
-	# support for Pad furniture part
-	elif iObj.isDerivedFrom("PartDesign::Pad"):
-		
-		# if report for constraints (custom report)
-		if sLTF == "c":
-			setConstraints(iObj)
-			
-		# for other types of report
-		else:
+		# support for Pad furniture part
+		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj)
-	
+
+	# custom report
+	else:
+
+		# support for Pad furniture part with constraints
+		if iObj.isDerivedFrom("PartDesign::Pad"):
+			setConstraints(iObj)
+		
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
-	else:
-		return 0
-
 	return 0	
 
 
@@ -594,7 +688,7 @@ def setPartDesignMultiTransform(iObj):
 
 
 # ###################################################################################################################
-# MAIN LOOP - set database for objects
+# MAIN LOOP - calculate and set databases for supported objects
 # ###################################################################################################################
 
 
@@ -615,46 +709,13 @@ for obj in gOBs:
 	setPartDesignMirrored(obj)
 	setPartDesignMultiTransform(obj)
 
-
-# ###################################################################################################################
-# MAIN LOOP - set database for dimensions
-# ###################################################################################################################
-
-
-# skip if report for constraints (custom report)
-if sLTF != "c":
-
-	# search all correct objects and set database for dimensions
-	for obj in dbFCO:
-	
-		# assign values
-		vW = dbFCW[obj.Label]
-		vH = dbFCH[obj.Label]
-		vL = dbFCL[obj.Label]
-	
-		# set db for dimensions
-		setDB(obj, vW, vH, vL, "d")
-	
-		# set db for thickness
-		setDB(obj, vW, vH, vL, "thick")
-	
-		# set db for edge
-		edge = getEdge(obj, vW, vH, vL)
-		
-		if sTVF == "edge":
-			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-				edge = 0 # skip if object is not visible			
-	 
-		dbES = dbES + edge
-
-
 # remove existing fake Cube object before recompute
 if gAD.getObject("gFakeCube"):
 	gAD.removeObject("gFakeCube")
 
 
 # ###################################################################################################################
-# Spreadsheet data init
+# Spreadsheet - data init
 # ###################################################################################################################
 
 
@@ -676,8 +737,7 @@ if sLang  == "pl":
 	vLang6 = "Podsumowanie dla koloru elementu"
 	vLang7 = "Podsumowanie dla grubości elementu"
 	vLang8 = "Długość obrzeża"
-	vLang9 = "Opis"
-	vLang10 = "Wymiar"
+	vLang9 = "Długość"
 
 # English language
 else:
@@ -697,8 +757,7 @@ else:
 	vLang6 = "Summary by colors"
 	vLang7 = "Summary by thickness"
 	vLang8 = "Edge size"
-	vLang9 = "Description"
-	vLang10 = "Dimension"
+	vLang9 = "Length"
     
 
 # create spreadsheet and prepere it for data
@@ -712,7 +771,7 @@ i = 1
 
 
 # ###################################################################################################################
-# Spreadsheet main report - name
+# Spreadsheet - main report - name
 # ###################################################################################################################
 
 
@@ -726,10 +785,17 @@ if sLTF == "n":
 	result.set("G1", vLang5)
 	result.mergeCells("B1:D1")
 
+	vCell = "A" + str(i) + ":G" + str(i)
+	result.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	i = i + 1
+
 	# add values
 	for key in dbDA.keys():
-		i = i + 1
+
 		a = key.split(":")
+
 		result.set("A" + str(i), "'" + str(a[3]))
 		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "'" + "x")
@@ -737,6 +803,9 @@ if sLTF == "n":
 		result.set("E" + str(i), getUnit(a[0], "d"))
 		result.set("F" + str(i), "'" + str(dbDQ[key]))
 		result.set("G" + str(i), getUnit(dbDA[key], "area"))
+
+		# go to next spreadsheet row
+		i = i + 1
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -758,7 +827,7 @@ if sLTF == "n":
 
 
 # ###################################################################################################################
-# Spreadsheet main report - quantity
+# Spreadsheet - main report - quantity
 # ###################################################################################################################
 
 
@@ -770,17 +839,27 @@ if sLTF == "q":
 	result.set("E1", vLang3)
 	result.set("F1", vLang5)
 	result.mergeCells("B1:D1")
+
+	vCell = "A" + str(i) + ":G" + str(i)
+	result.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	i = i + 1
 		
 	# add values
 	for key in dbDQ.keys():
-		i = i + 1
+
 		a = key.split(":")
+
 		result.set("A" + str(i), "'" + str(dbDQ[key])+" x")
 		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "x")
 		result.set("D" + str(i), getUnit(a[2], "d"))
 		result.set("E" + str(i), getUnit(a[0], "d"))
 		result.set("F" + str(i), getUnit(dbDA[key], "area"))
+
+		# go to next spreadsheet row
+		i = i + 1
 
 	# cell sizes
 	result.setColumnWidth("A", 80)
@@ -800,7 +879,7 @@ if sLTF == "q":
 
 
 # ###################################################################################################################
-# Spreadsheet main report - group
+# Spreadsheet - main report - group
 # ###################################################################################################################
 
 
@@ -814,10 +893,17 @@ if sLTF == "g":
 	result.set("G1", vLang5)
 	result.mergeCells("B1:D1")
 
+	vCell = "A" + str(i) + ":G" + str(i)
+	result.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	i = i + 1
+
 	# add values
 	for key in dbDA.keys():
-		i = i + 1
+
 		a = key.split(":")
+
 		result.set("A" + str(i), "'" + str(a[3]))
 		result.set("B" + str(i), getUnit(a[1], "d"))
 		result.set("C" + str(i), "'" + "x")
@@ -825,6 +911,9 @@ if sLTF == "g":
 		result.set("E" + str(i), getUnit(a[0], "d"))
 		result.set("F" + str(i), "'" + str(dbDQ[key]))
 		result.set("G" + str(i), getUnit(dbDA[key], "area"))
+
+		# go to next spreadsheet row
+		i = i + 1
 
 	# cell sizes
 	result.setColumnWidth("A", 135)
@@ -846,96 +935,82 @@ if sLTF == "g":
 
 
 # ###################################################################################################################
-# Spreadsheet main report - final decoration
+# Spreadsheet - thickness
 # ###################################################################################################################
 
 
 # skip if report for constraints (custom report)
 if sLTF != "c":
 
-	# colors
-	result.setForeground("A1:G" + str(i), (0,0,0))
-	result.setBackground("A1:G" + str(i), (1,1,1))
-	
-	# fix for center header text in merged cells
-	result.setAlignment("B1:B1", "center", "keep")
-	result.setAlignment("C1:C1", "center", "keep")
-	result.setAlignment("D1:D1", "center", "keep")
-	
-	# text header decoration
-	result.setStyle("A1:G1", "bold", "add")
-
-
-# ###################################################################################################################
-# Spreadsheet report for thickness
-# ###################################################################################################################
-
-
-# skip if report for constraints (custom report)
-if sLTF != "c":
-
-	# add empty line separator
-	i = i + 1
-	
 	# add summary title for thickness
-	vCell = "A" + str(i) + ":D" + str(i)
+	vCell = "A" + str(i) + ":G" + str(i)
 	result.mergeCells(vCell)
 	result.set(vCell, vLang7)
 	result.setStyle(vCell, "bold", "add")
 	result.setAlignment(vCell, "left", "keep")
-	
-	# add empty line separator
+	result.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
 	i = i + 1
 	
-	# for thickness	(quantity)
+	# for thickness	 (quantity)
 	if sLTF == "q":
 		for key in dbTQ.keys():
+
 			result.set("A" + str(i), "'" + str(dbTQ[key])+" x")
 			result.set("E" + str(i), getUnit(key, "d"))
 			result.set("F" + str(i), getUnit(dbTA[key], "area"))
 			result.setAlignment("A" + str(i), "right", "keep")
 			result.setAlignment("E" + str(i), "right", "keep")
 			result.setAlignment("F" + str(i), "right", "keep")
+
+			# go to next spreadsheet row
 			i = i + 1
 	
-	# for thickness	(group & name)
+	# for thickness	 (group & name)
 	if sLTF == "g" or sLTF == "n":
 		for key in dbTQ.keys():
+
 			result.set("E" + str(i), getUnit(key, "d"))
 			result.set("F" + str(i), "'" + str(dbTQ[key]))
 			result.set("G" + str(i), getUnit(dbTA[key], "area"))
 			result.setAlignment("E" + str(i), "right", "keep")
 			result.setAlignment("F" + str(i), "right", "keep")
 			result.setAlignment("G" + str(i), "right", "keep")
+
+			# go to next spreadsheet row
 			i = i + 1
 
 
 # ###################################################################################################################
-# Spreadsheet report for edge
+# Spreadsheet - edge
 # ###################################################################################################################
 
 
 # skip if report for constraints (custom report)
 if sLTF != "c":
 
-	# add empty line separator
+	# go to next spreadsheet row
 	i = i + 1
-	
+
 	# add summary for edge size
 	vCell = "A" + str(i) + ":B" + str(i)
 	result.mergeCells(vCell)
 	result.set(vCell, vLang8)
 	result.setStyle(vCell, "bold", "add")
 	result.setAlignment(vCell, "left", "keep")
-	
+
 	vCell = "C" + str(i) + ":E" + str(i)
 	result.mergeCells(vCell)
-	result.set(vCell, getUnit(dbES, "d"))
+	result.set(vCell, getUnit(dbE["size"], "edge"))
 	result.setAlignment(vCell, "right", "keep")
+
+	vCell = "A" + str(i) + ":E" + str(i)
+	result.setBackground(vCell, gHeadCS)
 
 
 # ###################################################################################################################
-# Spreadsheet main report - constraints (custom)
+# Spreadsheet - main report - constraints (custom report)
 # ###################################################################################################################
 
 
@@ -944,54 +1019,49 @@ if sLTF == "c":
 	# search objects for constraints (custom report)
 	for o in dbCNO:
 
-		# set object info
+		# set key for db
+		vKey = o.Label
+		
+		# set object header
 		vCell = "A" + str(i)
-		vStr = ""
-		vStr += str(dbCNQ[o.Label])
-		vStr += "x "
-		vStr += str(o.Label)
-		vStr += ", " 
-		vStr += getUnit(dbCNL[o.Label], "d")[1:]
-
+		vStr = str(dbCNQ[vKey]) + " x "
 		result.set(vCell, vStr)
-
-		vCell = "A" + str(i) + ":G" + str(i)
-		result.mergeCells(vCell)	
-
-		vCell = "A" + str(i) + ":G" + str(i)
+		result.setAlignment(vCell, "right", "keep")
 		result.setStyle(vCell, "bold", "add")
+		result.setBackground(vCell, gHeadCS)
 
-		vCell = "A" + str(i) + ":F" + str(i)
+		vCell = "B" + str(i) + ":G" + str(i)
+		vStr = str(vKey)
+		result.set(vCell, vStr)
+		result.mergeCells(vCell)	
 		result.setAlignment(vCell, "left", "keep")
-
-		vCell = "G" + str(i)
-		result.setAlignment(vCell, "left", "keep")
+		result.setStyle(vCell, "bold", "add")
+		result.setBackground(vCell, gHeadCS)
 
 		# go to next spreadsheet row
 		i = i + 1
 
-		# set headers for constraints
-		vCell = "B" + str(i)
-		result.set(vCell, vLang9)
-
-		vCell = "G" + str(i)
-		result.set(vCell, vLang10)
+		# set object length
+		vCell = "A" + str(i)
+		result.setBackground(vCell, (1,1,1))
 
 		vCell = "B" + str(i) + ":F" + str(i)
+		result.set(vCell, vLang9)
 		result.mergeCells(vCell)	
-
-		vCell = "A" + str(i) + ":G" + str(i)
-		result.setStyle(vCell, "bold", "add")
-
-		vCell = "A" + str(i) + ":F" + str(i)
 		result.setAlignment(vCell, "left", "keep")
+		result.setStyle(vCell, "bold", "add")
+		result.setBackground(vCell, gHeadCW)
 
 		vCell = "G" + str(i)
+		vStr = getUnit(dbCNL[vKey], "d")
+		result.set(vCell, vStr)
 		result.setAlignment(vCell, "right", "keep")
+		result.setStyle(vCell, "bold", "add")
+		result.setBackground(vCell, gHeadCW)
 
 		# create constraints lists
-		keyN = dbCNN[o.Label].split(":")
-		keyV = dbCNV[o.Label].split(":")
+		keyN = dbCNN[vKey].split(":")
+		keyV = dbCNV[vKey].split(":")
 
 		# go to next spreadsheet row
 		i = i + 1
@@ -1000,17 +1070,19 @@ if sLTF == "c":
 		k = 0
 		while k < len(keyN)-1: 
 	
-			# the first A column is empty for better look					
-			result.set("B" + str(i), "'" + str(keyN[k]))
-			result.set("G" + str(i), getUnit(keyV[k], "d"))
-			
-			vCell = "B" + str(i) + ":F" + str(i)
-			result.mergeCells(vCell)
+			# the first A column is empty for better look
+			vCell = "A" + str(i)
+			result.setBackground(vCell, (1,1,1))
 
+			# set constraint name
 			vCell = "B" + str(i) + ":F" + str(i)
+			result.set(vCell, "'" + str(keyN[k]))
+			result.mergeCells(vCell)
 			result.setAlignment(vCell, "left", "keep")
 
+			# set dimension
 			vCell = "G" + str(i)
+			result.set(vCell, getUnit(keyV[k], "d"))
 			result.setAlignment(vCell, "right", "keep")
 
 			# go to next spreadsheet row
@@ -1020,21 +1092,17 @@ if sLTF == "c":
 			k = k + 1
 			
 	# set cell width
-	result.setColumnWidth("A", 20)
-	result.setColumnWidth("B", 195)
+	result.setColumnWidth("A", 60)
+	result.setColumnWidth("B", 155)
 	result.setColumnWidth("C", 120)
 	result.setColumnWidth("D", 80)
 	result.setColumnWidth("E", 100)
 	result.setColumnWidth("F", 100)
 	result.setColumnWidth("G", 100)
 
-	# set colors
-	result.setForeground("A1:G" + str(i), (0,0,0))
-	result.setBackground("A1:G" + str(i), (1,1,1))
-
 
 # ###################################################################################################################
-# Code link
+# Spreadsheet main report - code link
 # ###################################################################################################################
 
 
@@ -1046,6 +1114,32 @@ vCell = "A" + str(i) + ":G" + str(i)
 result.mergeCells(vCell)
 result.set(vCell, "Generated by FreeCAD macro: github.com/dprojects/getDimensions")
 result.setAlignment(vCell, "left", "keep")
+result.setBackground(vCell, gHeadCW)
+
+
+# ###################################################################################################################
+# Spreadsheet - final decoration
+# ###################################################################################################################
+
+
+# skip if report for constraints (custom report)
+if sLTF != "c":
+
+	# colors
+	result.setForeground("A1:G" + str(i), (0,0,0))
+	
+	# fix for center header text in merged cells
+	result.setAlignment("B1:B1", "center", "keep")
+	result.setAlignment("C1:C1", "center", "keep")
+	result.setAlignment("D1:D1", "center", "keep")
+	
+	# text header decoration
+	result.setStyle("A1:G1", "bold", "add")
+
+# reset settings for eco mode
+if sRPQ == "eco":
+	vCell = "A1" + ":G" + str(i)
+	result.setBackground(vCell, (1,1,1))
 
 
 # ###################################################################################################################
@@ -1082,6 +1176,9 @@ except:
 	gAD.getObject("Sheet").Font = "Arial"
 
 gAD.getObject("Sheet").TextSize = 13
+
+# set border line width
+gAD.getObject("Sheet").LineWidth = 0.10
 
 # fix FreeCAD bug
 gAD.getObject("Sheet").CellEnd = "G" + str(i)

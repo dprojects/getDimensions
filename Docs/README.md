@@ -1,6 +1,6 @@
 # Table of Contents
 
-1. [Default settings](#default-settings)
+1. [Default Settings](#default-settings)
 2. [Furniture parts](#furniture-parts)
 	1. [Cube - quickstart](#cube---quickstart)
 	2. [Pad - quickstart](#pad---quickstart)
@@ -28,7 +28,7 @@
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
 
-# Default settings
+# Default Settings
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ds001.png)
 
@@ -315,7 +315,7 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 ## Constraints
 
-* To create `constraints` report You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All `constraints` with empty name will be skipped at report:
+* To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All `constraints` with empty name will be skipped at report:
 
 	![ltf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf005.png)
 	

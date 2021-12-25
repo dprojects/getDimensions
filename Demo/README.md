@@ -24,6 +24,10 @@ This demo shows all the stable features supported by the macro. Also, I use this
 * `sLTF` variable set to `q`:
 
 	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s004.png)
+	
+* `sLTF` variable set to `c`:
+
+	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s005.png)
 
 ## Demo002_cube
 
