@@ -30,7 +30,7 @@
 
 # Default Settings
 
-![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ds001.png)
+![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ds001.png)
 
 **Note:** Most of all `toPrint` reports screenshots are made with `sLTF` variable set to `n`, for better readability.
 
@@ -47,13 +47,13 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 * Set `Width` to e.g. 600
 * Set `Height` to e.g. 18
 
-	![cubes001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes001.png)
+	![FPartCube001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartCube001.png)
 
 	**Note**: Now You should have furniture part `300 mm x 600 mm x 18 mm`. You can create any furniture You like using such furniture part, even group them in folders.
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![cubes002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/cubes002.png)
+	![FPartCube002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartCube002.png)
 
 ## Pad - quickstart
 
@@ -61,25 +61,25 @@ Pad is not base object. In fact, it is a transformation on the `Sketch` object. 
 
 * To create `Sketch` compliant with the macro You should use only the drawing object marked with the red border and zoommed below:
 	
-	![sketch001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sketch001.png)
+	![FPartPad001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartPad001.png)
 
 	**Note:** `Sketch` object do not recognize what shape it is and do not keep such information, so if this will be something different than rectangle or square the macro will not be able to get dimensions for the final Pad object. 
 	
 * You should have `Sketch` like this:
 
-	![sketch002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/sketch002.png)
+	![FPartPad002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartPad002.png)
 
 	**Note:** This `Sketch` is fully constrained because the right bottom corner is connected with the center of `XY`.
 
 * If You have the `Sketch` created already, just click the `Sketch` object and then the icon bordered in red at the screenshot below. The icon is also zoomed at the image:
 
-	![pads001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads001.png)
+	![FPartPad003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartPad003.png)
 
 	**Note**: Now You should have furniture part `300 mm x 600 mm x 18 mm`. You can create any furniture You like using such furniture part, even group them in folders.
 	
 * Now, just run the macro, to get report `toPrint`:
 
-	![pads002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/pads002.png)
+	![FPartPad004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartPad004.png)
 
 	**Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
 
@@ -97,23 +97,23 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
 
 * Create `Cube` furniture part using the `Cube` dimensions bordered at the image:
 
-    ![exB001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB001.png)
+    ![exB001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB001.png)
  
 * Click the created `Cube` and press `CTRL-C` and `CTRL-V`, to make a copy of the `Cube` furniture part. You should have new `Cube1` created:
 
-    ![exB002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB002.png)
+    ![exB002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB002.png)
     
 *  The `Cube1` is at the same place as `Cube`, this is why it is not visible at the 3D model. To move the `Cube1` to the right place, click the `Cube1` at the `Tree` view and change its `Placement` values:
     
-    ![exB003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB003.png)
+    ![exB003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB003.png)
     
 * You can create any furniture using this method very quickly, rename the folders and objects names:
     
-    ![exB004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB004.png)
+    ![exB004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB004.png)
 
 * Now, just run the macro, to get report `toPrint`:
     
-    ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exB005.png)
+    ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB005.png)
 
 # Transformations
 
@@ -127,19 +127,19 @@ Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. 
 
 * To start with `Part :: Mirroring :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part:
 
-	![tpmc001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc001.png)
+	![TPartMirroring001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring001.png)
 
 * Click the `Cube` furniture part and create `Part :: Mirroring :: Cube` transformation as it is demonstrated below:
 
-	![tpmc002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc002.png)
+	![TPartMirroring002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring002.png)
 
 * You should have `Part :: Mirroring :: Cube` transformation created :
 
-	![tpmc003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc003.png)
+	![TPartMirroring003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring003.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![tpmc004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmc004.png)
+	![TPartMirroring004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring004.png)
 
 ## Part :: Mirroring :: Pad
 
@@ -147,11 +147,11 @@ To start with `Part :: Mirroring :: Pad` transformation, You have to create the 
 
 * Click the `Pad` furniture part and create `Part :: Mirroring :: Pad` as it is demonstrated below:
 
-	![tpmp001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmp001.png)
+	![TPartMirroring005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring005.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![tpmp002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tpmp002.png)
+	![TPartMirroring006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring006.png)
 
 ## Draft :: Array :: Cube
 
@@ -159,11 +159,11 @@ To start with `Draft :: Array :: Cube` transformation, You have to create the fu
 
 * Click the `Cube` furniture part and create `Draft :: Array :: Cube` as it is demonstrated below:
 
-	![arrays001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays001.png)
+	![TDraftArray001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray001.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![arrays002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays002.png)
+	![TDraftArray002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray002.png)
 
 ## Draft :: Array :: Pad
 
@@ -171,15 +171,15 @@ To start with `Draft :: Array :: Pad` transformation, You have to create the fur
 
 * Click the `Pad` furniture part and create `Draft :: Array :: Pad` as it is demonstrated below:
 
-	![arrays003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays003.png)
+	![TDraftArray003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray003.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![arrays004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays004.png)
+	![TDraftArray004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray004.png)
 	
 * FreeCAD transformations have hidden base elements. Only the final transformed object is visible. Hovewer, it is not the issue, to have the `edge size` calculated as well just e.g. press the `Spacebar` key while on the `Pad` to make it visible and run the macro again:
 	
-	![arrays005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays005.png)
+	![TDraftArray005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray005.png)
 	
 	**Note:** Now You should see the `edge size` is calculated correctly.
 
@@ -189,11 +189,11 @@ To start with `Draft :: Array Polar :: Cube` transformation, You have to create 
 
 * Click the `Cube` furniture part and create `Draft :: Array Polar :: Cube` as it is demonstrated below:
 
-	![arrays006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays006.png)
+	![TDraftArrayPolar001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar001.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![arrays007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays007.png)
+	![TDraftArrayPolar002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar002.png)
 
 ## Draft :: Array Polar :: Pad
 
@@ -201,11 +201,11 @@ To start with `Draft :: Array Polar :: Pad` transformation, You have to create t
 
 * Click the `Pad` furniture part and create `Draft :: Array Polar :: Pad` as it is demonstrated below:
 
-	![arrays008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays008.png)
+	![TDraftArrayPolar003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar003.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![arrays009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/arrays009.png)
+	![TDraftArrayPolar004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar004.png)
 
 ## PartDesign :: Mirrored :: Pad
 
@@ -213,11 +213,11 @@ To start with `PartDesign :: Mirrored :: Pad` transformation, You have to create
 
 * Click the `Pad` furniture part and create `PartDesign :: Mirrored :: Pad` as it is demonstrated below:
 
-	![padsSM001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM001.png)
+	![TPartDesignMirrored001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored001.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![padsSM002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsSM002.png)
+	![TPartDesignMirrored002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored002.png)
 
 ## PartDesign :: MultiTransform :: Pad
 
@@ -225,11 +225,11 @@ The `PartDesign :: MultiTransform :: Pad` allows for many transformations at the
 
 * Click the `Pad` furniture part and create `PartDesign :: MultiTransform :: Pad` as it is demonstrated below:
 
-	![padsMT001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT001.png)
+	![TPartDesignMultiTransform001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform001.png)
 
 * Now, just run the macro, to get report `toPrint`:
 	
-	![padsMT002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/padsMT002.png)
+	![TPartDesignMultiTransform002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform002.png)
 
 ## Advanced furniture example
 
@@ -237,15 +237,15 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 * Create any furniture using Pads and Sketches. You can use `PartDesign :: Mirrored :: Pad` and `PartDesign :: MultiTransform :: Pad` at the same project. For example legs are four, so You can use `PartDesign :: MultiTransform :: Pad` from the single leg and `PartDesign :: Mirrored :: Pad` for each pair of supporters between them:
 
-	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA001.png)
+	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA001.png)
 	
 * You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
     
-	![exA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA002.png)
+	![exA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA002.png)
         
 * Now, just run the macro, to get report `toPrint`:
 
-	![exA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/exA003.png)
+	![exA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA003.png)
 	
 	**Note:** If You want to calculate the `edge size` correctly, You have to use the visibility to show e.g. top and hide legs and other parts.
 
@@ -257,9 +257,9 @@ To use any mirror type of feature part with Your furniture project just follow t
 * Set `sTVF` variable to `on`.
 * Now You can create any report You want just by toggle visibility items or group of items.
 
-    ![tvf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf001.png)
+    ![RVisibility001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility001.png)
 
-    ![tvf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/tvf002.png)
+    ![RVisibility002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility002.png)
 
     **Note:** You can generate different reports at the same furniture project. Just rename the TechDraw page `toPrint` to store it and prevent it from an overwrite or save it as `pdf` file.
 
@@ -272,60 +272,60 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 * To create list of names just set `sLTF` variable to `n` and run macro:
 
-    ![ltf001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf001.png)
+    ![RGroup001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RGroup001.png)
 
 ### Quantity report
 
 * To create quantity report just set `sLTF` variable to `q` and run macro:
 
-    ![ltf002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf002.png)
+    ![RGroup002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RGroup002.png)
     
 ### Group report
 
 * To create quantity report just set `sLTF` variable to `g` and run macro. However, for group mode, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder and also grandparent folder. For example, an element named `Foot L` needs to be in the parent folder (e.g. named `Foot`). Also the `Foot` folder needs to be in the grandparent folder (e.g. named `White color`). For the `Pad` furniture part, the `Body` object is considered as parent folder. See the screenshot tree:
 
-    ![ltf003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf003.png)
+    ![RGroup003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RGroup003.png)
     
 * Now, just run the macro, to get report `toPrint`:
 
-    ![ltf004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf004.png)
+    ![RGroup004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RGroup004.png)
     
 ## Edge size
 
 * Search `Toggle Visibility Feature` part in the `Default Settings` section in the macro code.
 * By default the feature `Toggle Visibility Feature` is set to `edge` because in the real world the `edge size` that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize Your project tree with exact visibility, because this feature works for any folder and transformation like `Array`:
 
-    ![edge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge001.png)
+    ![REdge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge001.png)
     
-    ![edge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge002.png)
+    ![REdge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge002.png)
     
 * Hide parts You do not wish to calculate (e.g. press the `Spacebar` key while on the `Array`) as it is demonstrated below:
 
-    ![edge003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge003.png)
+    ![REdge003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge003.png)
     
 * Now, just run the macro, to get report `toPrint`:
     
-    ![edge004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge004.png)
+    ![REdge004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge004.png)
 
     **Note:** The `edge size` should be different now.
 
 * If You want to calculate the `edge size` for all furniture parts just set `sTVF` to `off`:
 	
-	![edge005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edge005.png)
+	![REdge005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge005.png)
 
 ## Constraints
 
 * To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All `constraints` with empty name will be skipped at report:
 
-	![ltf005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf005.png)
+	![RConstraints001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints001.png)
 	
 * For this type of report You can use any drawing at `Sketch`:
 
-	![ltf006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf006.png)
+	![RConstraints002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints002.png)
 
 * To create `constraints` report just set `sLTF` variable to `c` and run macro:
 
-    ![ltf007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/ltf007.png)
+    ![RConstraints003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints003.png)
 
 # Known issues
 

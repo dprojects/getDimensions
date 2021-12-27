@@ -9,53 +9,53 @@
 
 This demo shows all the stable features supported by the macro. Also, I use this demo for testing macro purposes.
 
-![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s001.png)
+![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/001.png)
 
 **Tests passed:** If the final report looks like below, it is highly possible that all features are working fine and there is no broken functionality. Make sure You have the latest version of FreeCAD (it was tested at FreeCAD 0.19.3 AppImage under Ubuntu).
 
 * `sLTF` variable set to `n`:
 
-	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s002.png)
+	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/002.png)
 
 * `sLTF` variable set to `g`:
 
-	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s003.png)
+	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/003.png)
 
 * `sLTF` variable set to `q`:
 
-	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s004.png)
+	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/004.png)
 	
 * `sLTF` variable set to `c`:
 
-	![demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo001/s005.png)
+	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/005.png)
 
 ## Demo002_cube
 
 This is sample furniture I made in my garage. So, this is real-life project made with FreeCAD and this macro. The furniture is made using FreeCAD Cube objects, as I usually do for my private purposes (hobby).
 
-![demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo002/s001.png)
+![Demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo002/001.png)
 
-![demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo002/s002.png)
+![Demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo002/002.png)
 
-![demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo002/s003.png)
+![Demo002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo002/003.png)
 
 ## Demo003_pads_basic
 
 This is sample furniture but made using Pads and Sketches. 
 
-![demo003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo003/s001.png)
+![Demo003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo003/001.png)
 
-![demo003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo003/s002.png)
+![Demo003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo003/002.png)
 
 
 ## Demo004_pads_mirror
 
 This is sample furniture for Pads but uses FreeCAD Pads transformations features like: Single Mirror and MultiTransform Mirror.
 
-![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo004/s001.png)
+![Demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo004/001.png)
 
-![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo004/s002.png)
+![Demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo004/002.png)
 
-![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo004/s003.png)
+![Demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo004/003.png)
 
-![demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/demo004/s004.png)
+![Demo004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo004/004.png)
