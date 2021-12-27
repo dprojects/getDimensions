@@ -315,7 +315,7 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 ## Constraints - totally custom report
 
-This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the `Pad` option value, so macro can be sure for that. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is ofsset or something else.
+This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the `Pad` option value, so macro can be sure for that. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
 If everyone was disciplined enough and they would be naming the `constraints` correctly or FreeCAD would add extra option for that, this would be possible for automatic handlig such thing and calculate area as well. This is why this kind of report is not supported by the macro right now ;-)
 
