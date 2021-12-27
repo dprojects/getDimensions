@@ -23,7 +23,7 @@
 		2. [Quantity report](#quantity-report)
 		3. [Group report](#group-report)
 	3. [Edge size](#edge-size)
-	4. [Constraints](#constraints)
+	4. [Constraints - totally custom report](#constraints---totally-custom-report)
 5. [Known issues](#known-issues)
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
@@ -313,9 +313,15 @@ To use any mirror type of feature part with Your furniture project just follow t
 	
 	![REdge005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge005.png)
 
-## Constraints
+## Constraints - totally custom report
 
-* To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All `constraints` with empty name will be skipped at report:
+This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the `Pad` option value, so macro can be sure for that. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is ofsset or something else.
+
+If everyone was disciplined enough and they would be naming the `constraints` correctly or FreeCAD would add extra option for that, this would be possible for automatic handlig such thing and calculate area as well. This is why this kind of report is not supported by the macro right now ;-)
+
+However, You can create pretty usefull report with all important `constraints` and the macro will calculate the quantity for You automatically, becuse macro supports all the transformations for custom report of `constraints`, as well.
+
+* To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All other `constraints` with empty names will be skipped at report:
 
 	![RConstraints001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints001.png)
 	
@@ -334,6 +340,9 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 * **Issue**: Units at TechDraw page `toPrint` disappear after open project again.
 	* **Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
+
+* **Issue**: Long report not fits to the TechDraw page `toPrint`.
+	* **Workaround**: FreeCAD not support multipage `pdf` export. Long report can be generated especially for `Constraints` (`sLTF` variable set to `c`) or for objects names listing (`sLTF` variable set to `n`). You can change the `sLTF` variable to `q` to sum up all the same dimensions and get the shortest possible report. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
 
 # Special thanks
 
