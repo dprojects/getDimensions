@@ -342,7 +342,10 @@ However, You can create pretty usefull report with all important `constraints` a
 	* **Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
 
 * **Issue**: Long report not fits to the TechDraw page `toPrint`.
-	* **Workaround**: FreeCAD not support multipage `pdf` export. Long report can be generated especially for `Constraints` (`sLTF` variable set to `c`) or for objects names listing (`sLTF` variable set to `n`). You can change the `sLTF` variable to `q` to sum up all the same dimensions and get the shortest possible report. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
+	* **Workaround**: FreeCAD not support multipage `pdf` export. Long report can be generated especially for `Constraints` (`sLTF` variable set to `c`) or for objects names listing (`sLTF` variable set to `n`). 
+		1. You can change the `sLTF` variable to `q` to sum up all the same dimensions and get the shortest possible report. 
+		2. You can use my "helping hand" project [sheet2export](https://github.com/dprojects/sheet2export).
+		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
 
 # Special thanks
 
