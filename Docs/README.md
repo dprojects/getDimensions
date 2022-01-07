@@ -32,6 +32,10 @@
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ds001.png)
 
+This macro supports Qt Graphical User Interface (GUI).
+
+![ds002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ds002.png)
+
 **Note:** Most of all `toPrint` reports screenshots are made with `sLTF` variable set to `n`, for better readability.
 
 # Furniture parts
@@ -344,7 +348,7 @@ However, You can create pretty usefull report with all important `constraints` a
 * **Issue**: Long report not fits to the TechDraw page `toPrint`.
 	* **Workaround**: FreeCAD not support multipage `pdf` export. Long report can be generated especially for `Constraints` (`sLTF` variable set to `c`) or for objects names listing (`sLTF` variable set to `n`). 
 		1. You can change the `sLTF` variable to `q` to sum up all the same dimensions and get the shortest possible report. 
-		2. You can use my "helping hand" project [sheet2export](https://github.com/dprojects/sheet2export).
+		2. You can use my project [sheet2export](https://github.com/dprojects/sheet2export).
 		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
 
 # Special thanks

@@ -1,33 +1,15 @@
 # Table of Contents
 
-1. [Demo001_features](#demo001_features)
+1. [Demo001_quickstart](#demo001_quickstart)
 2. [Demo002_cube](#demo002_cube)
 3. [Demo003_pads_basic](#demo003_pads_basic)
 4. [Demo004_pads_mirror](#demo004_pads_mirror)
 
-## Demo001_features
+## Demo001_quickstart
 
-This demo shows all the stable features supported by the macro. Also, I use this demo for testing macro purposes.
+This demo is quickstart with furniture parts examples.
 
 ![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/001.png)
-
-**Tests passed:** If the final report looks like below, it is highly possible that all features are working fine and there is no broken functionality. Make sure You have the latest version of FreeCAD (it was tested at FreeCAD 0.19.3 AppImage under Ubuntu).
-
-* `sLTF` variable set to `n`:
-
-	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/002.png)
-
-* `sLTF` variable set to `g`:
-
-	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/003.png)
-
-* `sLTF` variable set to `q`:
-
-	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/004.png)
-	
-* `sLTF` variable set to `c`:
-
-	![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/005.png)
 
 ## Demo002_cube
 
