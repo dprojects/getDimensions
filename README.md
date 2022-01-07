@@ -26,6 +26,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Draft :: Array Polar,
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform.
+* **Settings by:** Qt Graphical User Interface (GUI), code variables.
+* **Outputs:** Spreadsheet, TechDraw page.
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 

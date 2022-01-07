@@ -60,4 +60,4 @@ This demo shows all the stable features supported by the macro. Also, I use this
 	|   |   |   |   |   |   |      |
 
 
-** Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export).
+**Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export).

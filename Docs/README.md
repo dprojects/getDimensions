@@ -32,7 +32,7 @@
 
 ![ds001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ds001.png)
 
-This macro supports Qt Graphical User Interface (GUI).
+This macro supports Qt Graphical User Interface (GUI), so you can quickly change the settings with the help of the mouse wheel:
 
 ![ds002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ds002.png)
 
