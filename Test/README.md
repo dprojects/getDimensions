@@ -20,7 +20,7 @@ This demo shows all the stable features supported by the macro. Also, I use this
 
 * `sLTF` variable set to `g`:
 
-	![Test001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Test/Screenshots/Test001/003.png)
+	![Test001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Test/Screenshots/Test001/004.png)
 
 * `sLTF` variable set to `n`:
 
@@ -60,4 +60,4 @@ This demo shows all the stable features supported by the macro. Also, I use this
 	|   |   |   |   |   |   |      |
 
 
-**Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export).
+**Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export) (export to MarkDown .md file type).
