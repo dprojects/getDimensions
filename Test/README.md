@@ -4,11 +4,11 @@
 
 ## Test001_features
 
-This demo shows all the stable features supported by the macro. Also, I use this demo for testing macro purposes.
+This example FreeCAD 3D model shows all the stable features supported by the macro. I use this for testing macro purposes.
 
 ![Test001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Test/Screenshots/Test001/001.png)
 
-**Tests passed:** If the final report looks like below, it is highly possible that all features are working fine and there is no broken functionality. Make sure You have the latest version of FreeCAD (it was tested at FreeCAD 0.19.3 AppImage under Ubuntu).
+**Tests passed:** If the final reports looks like below, it is highly possible that all features are working fine and there is no broken functionality. Make sure You have the latest version of FreeCAD (it was tested at FreeCAD 0.19.3 AppImage under Ubuntu).
 
 * `sLTF` variable set to `c`:
 
@@ -60,4 +60,6 @@ This demo shows all the stable features supported by the macro. Also, I use this
 	|   |   |   |   |   |   |      |
 
 
-**Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export) (export to MarkDown .md file type).
+**Note:** This long report has been created using [sheet2export](https://github.com/dprojects/sheet2export) (export to MarkDown `.md` file type). This is good step forward into direction of testing automation (just diff `.md` files). However, human always will be needed for veryfication and check user experience. 
+
+

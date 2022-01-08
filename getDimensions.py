@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.07
+# Version: 2022.01.08
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -154,8 +154,8 @@ def showQtGUI():
 
 			# window
 			self.result = userCancelled
-			self.setGeometry(250, 200, 500, 500)
-			self.setWindowTitle("getDimensions - settings")
+			self.setGeometry(250, 180, 500, 500)
+			self.setWindowTitle("getDimensions - default settings")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# set line start point
@@ -398,15 +398,43 @@ def showQtGUI():
 			if selectedText == "n":
 				sLTF = "n"
 				self.rcIS.setText("automatic by objects names (listing)")
+				# show if hidden
+				self.ufaL.show()
+				self.ufaO.show()
+				self.ufaIS.show()
+				self.ufsL.show()
+				self.ufsO.show()
+				self.ufsIS.show()
 			if selectedText == "g":
 				sLTF = "g"
 				self.rcIS.setText("automatic by groups (folder names)")
+				# show if hidden
+				self.ufaL.show()
+				self.ufaO.show()
+				self.ufaIS.show()
+				self.ufsL.show()
+				self.ufsO.show()
+				self.ufsIS.show()
 			if selectedText == "q":
 				sLTF = "q"
 				self.rcIS.setText("automatic by quantity (dimensions)")
+				# show if hidden
+				self.ufaL.show()
+				self.ufaO.show()
+				self.ufaIS.show()
+				self.ufsL.show()
+				self.ufsO.show()
+				self.ufsIS.show()
 			if selectedText == "c":
 				sLTF = "c"
 				self.rcIS.setText("custom by constraints names (totally custom report)")
+				# hide not supported
+				self.ufaL.hide()
+				self.ufaO.hide()
+				self.ufaIS.hide()
+				self.ufsL.hide()
+				self.ufsO.hide()
+				self.ufsIS.hide()
 				
 		def setUFA(self, selectedText):
 			global sUnitsArea
@@ -1527,7 +1555,7 @@ def selectView():
 		
 	codeLink()
 
-		# reset settings for eco mode
+	# reset settings for eco mode
 	if sRPQ == "eco":
 		vCell = "A1" + ":G" + str(gSheetRow)
 		gSheet.setBackground(vCell, (1,1,1))
