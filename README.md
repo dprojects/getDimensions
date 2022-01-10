@@ -19,6 +19,7 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* custom by objects toggle visibility,
 	* custom by constraints names (totally custom report).
 * **Calculations:** thickness, area, edge size.
+* **Support for wood properties:** grain direction, type of wood, wood color.
 * **Supported furniture parts:** 
     * Part :: Cube,
     * PartDesign :: Pad.

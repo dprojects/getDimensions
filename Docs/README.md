@@ -24,6 +24,7 @@
 		3. [Group report](#group-report)
 	3. [Edge size](#edge-size)
 	4. [Constraints - totally custom report](#constraints---totally-custom-report)
+	5. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
 5. [Known issues](#known-issues)
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
@@ -339,6 +340,22 @@ However, You can create pretty usefull report with all important `constraints` a
 
     ![RConstraints003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints003.png)
 
+## Wood Properties - grain, type, color, etc.
+
+FreeCAD not support description for objects. There is not possible to add any note or custom text to the object during furniture design process. You can use `constraints name` at `Sketch` but this is not supported for `Cube` furniture part. Best way to do it is to use currently supported `group type of report` (`sLTF` variable set to `g`). You can just organize You tree structure and create any report You want.
+
+* For example for grain direction:
+
+	![WoodProperties001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/WoodProperties001.png)
+
+* For example for type of wood:
+	
+	![WoodProperties002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/WoodProperties002.png)
+
+* For example for wood color:
+	
+	![WoodProperties003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/WoodProperties003.png)
+
 # Known issues
 
 * **Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
@@ -354,6 +371,8 @@ However, You can create pretty usefull report with all important `constraints` a
 		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
 
 # Special thanks
+
+* Very important thing like `Grain Direction` has been reminded to me at the [FreeCAD forum thread by zohozer](https://forum.freecadweb.org/viewtopic.php?p=560407#p560407), This was already supported but `Grain Direction` had to be more clearly decribed at the documentation, Thanks.
 
 * `Array` feature has been suggested to me at the [FreeCAD forum thread by jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072), Thanks.
 
