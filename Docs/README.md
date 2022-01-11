@@ -359,11 +359,11 @@ FreeCAD not support description for objects. This is not possible to add any not
 
 ## Edgeband
 
-The edgeband is a very problematic matter. It is not possible to calculate the exact size of the veneer type. Mainly because the edge You want to cover is up to human's choice. The macro cannot guess the edge to cover. For example, You may want to cover the front part of the shelf, or the back part too, or all the edges. The same for the other furniture parts. To solve this problem the human needs to select and marked the edge (surface in fact) that needs to be covered. However, FreeCAD not simplifies this process. I could say, this is not supported by FreeCAD.
+The edgeband is a very problematic matter. It is not possible to calculate the exact length of the veneer tape. Mainly because the edge You want to cover is up to human's choice. The macro cannot guess the edge to cover. For example, You may want to cover the front part of the shelf, or the back part too, or all the edges. The same for the other furniture parts. To solve this problem, a person has to select and mark the edge (or rather the surface) to be covered. However, FreeCAD not simplifies this process. I could say, this is not supported by FreeCAD. You can add preferences such as color, material, to an object, not a surface or an exact edge.
 
-From the other side, in the production of furniture, there are always some leftover veneers for edge banding. But it is always better to have more than less veneer. If You buy a veneer for the entire edge, You can be sure that this veneer is enough for edge banding. However, by using some macro functions, You can approximate the real value of the veneer that will be needed and save money.
+From the other side, during the furniture production process, there are always some leftover veneers for edge banding. But it is always better to have more than less veneer. If You buy a veneer for the entire edge, You can be sure that this veneer is enough for edge banding. However, by using some macro functions, You can approximate the real value of the veneer that will be needed and save money.
 
-The best way to do this is to use the `Visibility` feature and `Group report` (`sLTF` variable set to `g`) feature together. You can organize items in groups and hide the furniture parts without edgeband. All you have to do is create groups and name them appropriately.
+The best way to do this is to use the `Visibility` feature and `Group report` (`sLTF` variable set to `g`) feature together. You can organize furniture parts in groups and hide the furniture parts without edgeband. All You have to do is to create groups and name them appropriately.
 
 * See the screenshot example below:
 
@@ -375,7 +375,7 @@ If You want more detailed report about the edgeband You should consider `Constra
 	
 	![Edgeband002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband002.png)
 
-* To do this, this must be `Pad` furniture part and You have to edit the `Sketch` to have constraints for each edge:
+* To do this, this must be `Pad` furniture part and You have to edit the `Sketch` to have constraints for each edge, to be able to describe each edgeband precisely:
 	
 	![Edgeband003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband003.png)
 
