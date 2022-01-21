@@ -18,21 +18,21 @@
 	9. [Advanced furniture example](#advanced-furniture-example)
 4. [Report customization](#report-customization)
 	1. [Report types](#report-types)
-		1. [q - report type](#q---report-type)
-		2. [n - report type](#n---report-type)
-		3. [g - report type](#g---report-type)
-		4. [e - report type](#e---report-type)
-		5. [c - report type](#c---report-type)
+		* [q - report type](#q---report-type)
+		* [n - report type](#n---report-type)
+		* [g - report type](#g---report-type)
+		* [e - report type](#e---report-type)
+		* [c - report type](#c---report-type)
 	2. [Visibility](#visibility)
 	3. [Edge size](#edge-size)
 	4. [Report - export](#report---export)
 	5. [Report - usage examples](#report---usage-examples)
-		1. [Constraints - totally custom report](#constraints---totally-custom-report)
-		2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
-		3. [Edgeband](#edgeband)
-			1. [Edgeband - quick way](#edgeband---quick-way)
-			2. [Edgeband - described](#edgeband---described)
-			3. [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
+		* [Constraints - totally custom report](#constraints---totally-custom-report)
+		* [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
+		* [Edgeband](#edgeband)
+			* [Edgeband - quick way](#edgeband---quick-way)
+			* [Edgeband - described](#edgeband---described)
+			* [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
 5. [Known issues](#known-issues)
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
@@ -268,9 +268,9 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 ### q - report type
 
-This type of report is `default` type of report. It is the shortest one. It can be used for huge projects to make simple short report. Also if You do not need to take care of something like `grain direction`, `detailed edgeband`, `wood type`, `wood color`, this type of report is just for You. Personally, I prefer this type of report the most. Also this type of report has space at the left side, so You can have to add extra notes later after print.
+This type of report is `default` type of report. It is the shortest one. It can be used for huge projects to make simple short report. Also if You do not need to take care of something like `grain direction`, `detailed edgeband`, `wood type`, `wood color`, this type of report is just for You. Personally, I prefer this type of report the most. Also this type of report has space at the left side, so You can add extra notes later after print.
 
-* To create quantity report just set `Report type` variable to `q` and run the macro:
+* To create the quantity report just set `Report type` variable to `q` and run the macro:
 
     ![ReportTypeQ001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeQ001.png)
 
@@ -278,7 +278,7 @@ This type of report is `default` type of report. It is the shortest one. It can 
 
 This type of report is mostly used by me for documentation purposes. It is simple objects listing. However, it can be very useful for project veryfication. You can list all objects and see if the dimensions are set correctly.
 
-* To create quantity report just set `Report type` variable to `n` and run the macro:
+* To create the name report just set `Report type` variable to `n` and run the macro:
 
     ![ReportTypeN001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeN001.png)
 
@@ -286,39 +286,44 @@ This type of report is mostly used by me for documentation purposes. It is simpl
 
 This type of report is very useful to divide furniture parts into categories. It can be used for `grain direction`, `detailed edgeband`, `wood type`, `wood color` or for any other category. Also, the `Thickness` column is just after the `Name` column. This is because if You go to cutting chipboards service, first You give `wood color`, second the `thickness`, next `dimensions` and `quantity` at the end. This aproach simplifies the more detailed ordering process.
 
-* To create quantity report just set `Report type` variable to `g` and run the macro:
+* To create the group report just set `Report type` variable to `g` and run the macro:
 
     ![ReportTypeG001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeG001.png)
 
-	**Note:** For this report type, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder or also grandparent folder. First the grandparent folder is getting and if there is no grandparent there will be parent folder name at the report. For the `Pad` furniture part, the `Body` object is considered as parent folder, so to add grandparent folder the `Pad` needs to be in the parent folder (e.g. named `Furniture_pad`). For more details see: [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc) section.
+**Note:** For this report type, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder or also grandparent folder. First the grandparent folder is getting and if there is no grandparent folder there will be parent folder name at the report. For the `Pad` furniture part, the `Body` object is considered as parent folder. To add grandparent folder for `Pad` it needs to be in the parent folder (e.g. named `Furniture_pad`) together with its `Body`. 
+	
+For more details see: [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc) section.
 
 ### e - report type
 
 This type of report is designed for more advanced edge report. It is mostly used for edgeband. Also You can verify if Your 3D model have correctly applied veneer. This type of report recognize automatically if the covered `face` is `surface` or `edge` type. Also shows the dimension for `edge` type of face and given veneer description.
 
-* To create quantity report just set `Report type` variable to `e` and run the macro:
+* To create the extended edge report just set `Report type` variable to `e` and run the macro:
 
     ![ReportTypeE001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeE001.png)
 
-	**Note:** 
-		* Each column represents `face` object number from 3D model.
-		* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the column `5`, `6` may be covered with venner but this will be recommend as `edge` type. 
-		* Some transformations can have more than 6 faces. To apply veneer correctly make sure You add `face color` at base object only.
-		* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+**Note:** 
+
+* Each column represents `face` object number at 3D model.
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
+* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
+* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
 ### c - report type
 
 This type of report is totally custom and it is supported only for `Pad` furniture parts. It can be used as additional report for any other type of report. This type of report can provide such information as: offset, radius, doweling, holes, bar codes, reference numbers, detailed edge banding or any other description You add for dimension (`constraints name`).
 
-* To create quantity report just set `Report type` variable to `c` and run the macro:
+* To create the constraints report just set `Report type` variable to `c` and run the macro:
 
     ![ReportTypeC001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeC001.png)
 
-	**Note:** 
-		* Eeach row represents `constraints name` description. 
-		* The `Length` dimension is the `Length` dimension for `Sketch > Pad` option.
-		* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
-		* For more details see: [Constraints - totally custom report](#constraints---totally-custom-report) section.
+**Note:**
+
+* Eeach row represents `constraints name` description. 
+* The `Length` dimension is the `Length` dimension for `Sketch > Pad` option.
+* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+
+For more details see: [Constraints - totally custom report](#constraints---totally-custom-report) section.
 
 ## Visibility
 
@@ -340,25 +345,23 @@ This type of report is totally custom and it is supported only for `Pad` furnitu
 
     ![REdge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge002.png)
     
-    **Note:** The `Cube` furniture part is hidden, so the `edge size` is different now. Also, the edge of the `Pad` furniture part has no veneer applied, so the extended edgeband info is automatically hidden.
+**Note:** The `Cube` furniture part is hidden, so the `edge size` is different now. Also, the edge of the `Pad` furniture part has no veneer applied, so the extended edgeband info is automatically hidden.
     
 ## Report - export
 
 * You can generate different reports at the same furniture project. Just copy (`CTRL-C` and `CTRL-V`) and rename the spreadsheet `toCut` to store it and prevent it from an overwrite or export the TechDraw page `toPrint` to `pdf` file.
 
-* This type of report can extend single TechDraw page. To export this type of report You can use my project created for this purpose here: [sheet2export](https://github.com/dprojects/sheet2export).
+* To export multi-page report or export many spreadsheets at once You can use my project created for this purpose here [sheet2export](https://github.com/dprojects/sheet2export).
 
 ## Report - usage examples
 
 ### Constraints - totally custom report
 
-This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the `Pad` option value, so macro can be sure for that. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
-
-If everyone was disciplined enough and they would be naming the `constraints` correctly or FreeCAD would add extra option for that, this would be possible for automatic handlig such thing and calculate area as well.
+This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the ` Length` of `Sketch > Pad` option. For this dimension macro can be sure. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
 However, You can create pretty useful report with all important `constraints` and the macro will calculate the quantity for You automatically, becuse macro supports all the transformations for custom report of `constraints`, as well.
 
-* To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important to You. All other `constraints` with empty names will be skipped at report:
+* To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important for You. All other `constraints` with empty names will be skipped at report:
 
 	![RConstraints001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints001.png)
 	
@@ -400,6 +403,8 @@ The quickest way to add edgeband is to use the `Visibility` and `g - report type
 
 	![Edgeband001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband001.png)
 
+	**Note:** As You see the `Edge size` is `20.4 m` which is very close to the correct value `18.8 m`.
+
 #### Edgeband - described
 
 If You want more detailed report about the edgeband You should consider [Constraints - totally custom report](#constraints---totally-custom-report). This type of report not support the `Edge size` but it can be a good addition to any other type of report.
@@ -423,17 +428,17 @@ If You want more detailed report about the edgeband You should consider [Constra
 #### Edgeband - detailed by selection
 
 * This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparision. To apply veneer for `face` use: 
-	* `Right Button` click for object.
+	* `Mouse Right Button` click for object.
 	* Choose from submenu `Set colors...`.
-	* Select all needed `faces` using `CTRL + Left Button` click.
+	* Select all needed `faces` using pressed `CTRL` keyboard key with `Mouse Left Button` click.
 
 	![Edgeband006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband006.png)
 
-* To create quantity report just set `Report type` variable to `e` and run the macro:
+* To create the extended edge report just set `Report type` variable to `e` and run the macro:
 
     ![Edgeband007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband007.png)
 
-	**Note:** This feature not works for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
+	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
 
 # Known issues
 
