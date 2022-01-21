@@ -10,15 +10,13 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 * **Languages:** Polish, English.
 * **Units:** millimeters, meters, inches.
-* **Settings by:** Qt Graphical User Interface (GUI), code variables.
-* **Outputs:** Spreadsheet, TechDraw page.
 * **Raport types:**
-	* automatic by quantity (dimensions),
-	* automatic by objects names (listing),
-	* automatic by groups (folder names),
-	* custom by objects toggle visibility,
+	* by quantity (dimensions),
+	* by objects names (listing),
+	* by groups (folder names),
+	* extended for edgeband,
 	* custom by constraints names (totally custom report).
-* **Calculations:** thickness, area, edge size.
+* **Calculations:** quantity, thickness, area, edge size, edgeband.
 * **Support for wood properties:** grain direction, type of wood, wood color.
 * **Supported furniture parts:** 
     * Part :: Cube,
@@ -29,7 +27,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Draft :: Array Polar,
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform.
-
+* **Settings by:** Qt Graphical User Interface (GUI), code variables.
+* **Outputs:** Spreadsheet, TechDraw page, multi-page by [sheet2export](https://github.com/dprojects/sheet2export).
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 

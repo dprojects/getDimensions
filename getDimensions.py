@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.08
+# Version: 2022.01.21
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -33,7 +33,7 @@ sUnitsEdge = "m"
 # Units for area:
 # "m" - square meter (m2)
 # "mm" - square millimeter (mm2)
-# "in" - square inch (inch2)
+# "in" - square inch (in2)
 sUnitsArea = "m"
 
 # Visibility (Toggle Visibility Feature):
@@ -43,11 +43,22 @@ sUnitsArea = "m"
 sTVF = "edge"
 
 # Report customization (Label Type Feature):
+# "e" - automatic extended for edge
 # "n" - automatic by objects names (listing)
 # "g" - automatic by groups (folder names)
 # "q" - automatic by quantity (dimensions)
 # "c" - custom by constraints names (totally custom report)
 sLTF = "q"
+
+# Furniture color:
+# This is used for edgeband. Edge face with other color than furniture color 
+# will be calculated as covered edge with veneer.
+# gray (no color): (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
+sFColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
+
+# Edge color code:
+# This is used for automatic extended report view for edge 
+sEColor = "PL55 PVC"
 
 # Report print quality:
 # "eco" - low ink mode (good for printing)
@@ -88,6 +99,11 @@ gLang6 = ""
 gLang7 = ""
 gLang8 = ""
 gLang9 = ""
+gLang10 = ""
+gLang11 = ""
+gLang12 = ""
+gLang13 = ""
+gLang14 = ""
 
 # spreadsheet result
 gSheet = gAD
@@ -120,9 +136,16 @@ dbTA = dict() # area
 
 # init database for edge
 dbE = dict()
-dbE["size"] = 0 # edge size
+dbE["total"] = 0 # total
+dbE["empty"] = 0 # empty
+dbE["edgeband"] = 0 # edgeband
 
-# init database for Constraints Named
+# init database for face number
+dbEFN = dict() # array names
+dbEFD = dict() # array dimensions
+dbEFV = dict() # array veneers
+
+# init database for constraints named
 dbCNO = [] # objects
 dbCNL = dict() # length
 dbCNQ = dict() # quantity
@@ -154,7 +177,7 @@ def showQtGUI():
 
 			# window
 			self.result = userCancelled
-			self.setGeometry(250, 180, 500, 500)
+			self.setGeometry(400, 100, 600, 600)
 			self.setWindowTitle("getDimensions - default settings")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -214,7 +237,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.visibilityL = QtGui.QLabel("Visibility (Toggle Visibility Feature):", self)
+			self.visibilityL = QtGui.QLabel("Visibility:", self)
 			self.visibilityL.move(10, vLine + 3)
 			
 			# options
@@ -260,11 +283,11 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.rcL = QtGui.QLabel("Report customization (sLTF):", self)
+			self.rcL = QtGui.QLabel("Report type:", self)
 			self.rcL.move(10, vLine + 3)
 			
 			# options
-			self.rcList = ("n", "g", "q", "c")
+			self.rcList = ("q", "n", "g", "e", "c")
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index("q"))
@@ -322,6 +345,70 @@ def showQtGUI():
 			self.ufsIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
+			# furniture color for edgeband
+			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
+
+			# label
+			self.fcL = QtGui.QLabel("Furniture color:", self)
+			self.fcL.move(10, vLine + 3)
+
+			# options
+			self.fcList = ("gray (no color)","white","black")
+			self.fcO = QtGui.QComboBox(self)
+			self.fcO.addItems(self.fcList)
+			self.fcO.setCurrentIndex(self.fcList.index("gray (no color)"))
+			self.fcO.activated[str].connect(self.setFColor)
+			self.fcO.move(10, vLine + vLineNextRow + 3)
+
+			# text input label
+			self.fctiL = QtGui.QLabel("Custom furniture color:", self)
+			self.fctiL.move(140, vLine + 3)
+
+			# text input
+			self.fcti = QtGui.QLineEdit(self)
+			self.fcti.setText(str(sFColor))
+			self.fcti.setFixedWidth(435)
+			self.fcti.move(140, vLine + vLineNextRow + 3)
+
+			# ############################################################################
+			# edge color for edgeband
+			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
+
+			# label
+			self.ecL = QtGui.QLabel("Edge color:", self)
+			self.ecL.move(10, vLine + 3)
+
+			# options
+			self.ecList = ("PL55 PVC","white","black", "bronze")
+			self.ecO = QtGui.QComboBox(self)
+			self.ecO.addItems(self.ecList)
+			self.ecO.setCurrentIndex(self.ecList.index("PL55 PVC"))
+			self.ecO.activated[str].connect(self.setEColor)
+			self.ecO.move(10, vLine + vLineNextRow + 3)
+
+			# text input label
+			self.ectiL = QtGui.QLabel("Custom edge color:", self)
+			self.ectiL.move(140, vLine + 3)
+
+			# text input
+			self.ecti = QtGui.QLineEdit(self)
+			self.ecti.setText(str(sEColor))
+			self.ecti.setFixedWidth(435)
+			self.ecti.move(140, vLine + vLineNextRow + 3)
+
+			# edge color hide by default
+			self.ecL.hide()
+			self.ecO.hide()
+			self.ectiL.hide()
+			self.ecti.hide()
+
+			# ############################################################################
 			# buttons
 			# ############################################################################
 
@@ -329,12 +416,12 @@ def showQtGUI():
 			cancelButton = QtGui.QPushButton('Cancel', self)
 			cancelButton.clicked.connect(self.onCancel)
 			cancelButton.setAutoDefault(True)
-			cancelButton.move(120, 450)
+			cancelButton.move(120, 550)
 			
 			# button - ok
 			okButton = QtGui.QPushButton('OK', self)
 			okButton.clicked.connect(self.onOk)
-			okButton.move(300, 450)
+			okButton.move(400, 550)
 
 			# ############################################################################
 			# show
@@ -392,50 +479,91 @@ def showQtGUI():
 				sUnitsMetric = "in"
 				self.ufdIS.setText("inch")
 
+		def setSubmenu(self, iAction):
+
+			if iAction == "show":
+				# units for area
+				self.ufaL.show()
+				self.ufaO.show()
+				self.ufaIS.show()
+				# units for edge size
+				self.ufsL.show()
+				self.ufsO.show()
+				self.ufsIS.show()
+				# furniture color
+				self.fcL.show()
+				self.fcO.show()
+				self.fctiL.show()
+				self.fcti.show()
+	
+			if iAction == "hide":
+				# units for area
+				self.ufaL.hide()
+				self.ufaO.hide()
+				self.ufaIS.hide()
+				# units for edge size
+				self.ufsL.hide()
+				self.ufsO.hide()
+				self.ufsIS.hide()
+				# furniture color
+				self.fcL.hide()
+				self.fcO.hide()
+				self.fctiL.hide()
+				self.fcti.hide()
+
 		def setRC(self, selectedText):
 			global sLTF
+
+			if selectedText == "e":
+				sLTF = "e"
+				self.rcIS.setText("automatic extended for edge")
+				self.setSubmenu("show")
+				# edge color
+				self.ecL.show()
+				self.ecO.show()
+				self.ectiL.show()
+				self.ecti.show()
 
 			if selectedText == "n":
 				sLTF = "n"
 				self.rcIS.setText("automatic by objects names (listing)")
-				# show if hidden
-				self.ufaL.show()
-				self.ufaO.show()
-				self.ufaIS.show()
-				self.ufsL.show()
-				self.ufsO.show()
-				self.ufsIS.show()
+				self.setSubmenu("show")
+				# edge color
+				self.ecL.hide()
+				self.ecO.hide()
+				self.ectiL.hide()
+				self.ecti.hide()
+
 			if selectedText == "g":
 				sLTF = "g"
 				self.rcIS.setText("automatic by groups (folder names)")
-				# show if hidden
-				self.ufaL.show()
-				self.ufaO.show()
-				self.ufaIS.show()
-				self.ufsL.show()
-				self.ufsO.show()
-				self.ufsIS.show()
+				self.setSubmenu("show")
+				# edge color
+				self.ecL.hide()
+				self.ecO.hide()
+				self.ectiL.hide()
+				self.ecti.hide()
+
 			if selectedText == "q":
 				sLTF = "q"
 				self.rcIS.setText("automatic by quantity (dimensions)")
-				# show if hidden
-				self.ufaL.show()
-				self.ufaO.show()
-				self.ufaIS.show()
-				self.ufsL.show()
-				self.ufsO.show()
-				self.ufsIS.show()
+				self.setSubmenu("show")
+				# edge color
+				self.ecL.hide()
+				self.ecO.hide()
+				self.ectiL.hide()
+				self.ecti.hide()
+
 			if selectedText == "c":
 				sLTF = "c"
 				self.rcIS.setText("custom by constraints names (totally custom report)")
-				# hide not supported
-				self.ufaL.hide()
-				self.ufaO.hide()
-				self.ufaIS.hide()
-				self.ufsL.hide()
-				self.ufsO.hide()
-				self.ufsIS.hide()
-				
+				self.setSubmenu("hide")
+				# edge color
+				self.ecL.hide()
+				self.ecO.hide()
+				self.ectiL.hide()
+				self.ecti.hide()
+
 		def setUFA(self, selectedText):
 			global sUnitsArea
 
@@ -447,7 +575,7 @@ def showQtGUI():
 				self.ufaIS.setText("square meter (m2)")
 			if selectedText == "in":
 				sUnitsArea = "in"
-				self.ufaIS.setText("square inch (inch2)")
+				self.ufaIS.setText("square inch (in2)")
 
 		def setUFS(self, selectedText):
 			global sUnitsEdge
@@ -461,6 +589,25 @@ def showQtGUI():
 			if selectedText == "in":
 				sUnitsEdge = "in"
 				self.ufsIS.setText("inch")
+
+		def setFColor(self, selectedText):
+
+			if selectedText == "gray (no color)":
+				sFColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
+				self.fcti.setText(str(sFColor))
+			if selectedText == "white":
+				sFColor = (1.0, 1.0, 1.0, 0.0)
+				self.fcti.setText(str(sFColor))
+			if selectedText == "black":
+				sFColor = (0.0, 0.0, 0.0, 0.0)
+				self.fcti.setText(str(sFColor))
+
+		def setEColor(self, selectedText):
+			global sEColor
+
+			sEColor = selectedText
+			self.ecti.setText(str(sEColor))
+		
 
 		def onCancel(self):
 			self.result = userCancelled
@@ -484,6 +631,12 @@ def showQtGUI():
 		pass
 	
 	if form.result == userOK:
+		global sFColor
+		global sEColor
+
+		sFColor = form.fcti.text()
+		sEColor = form.ecti.text()
+		
 		gExecute = "yes"
 
 
@@ -626,7 +779,7 @@ def getKey(iObj, iW, iH, iL, iType):
 		return str(vKey)
 
 	# key for name report
-	elif iType == "d" and sLTF == "n":
+	elif iType == "d" and ( sLTF == "n" or sLTF == "e"):
 		vKey = str(vKey) + ":" + str(iObj.Label)
 		return str(vKey)
 
@@ -697,6 +850,78 @@ def getEdge(iObj, iW, iH, iL):
 
 
 # ###################################################################################################################
+def getEdgeBand(iObj, iW, iH, iL):
+
+	try:
+
+		# get faces colors
+		vFacesColors = iObj.ViewObject.DiffuseColor
+
+		# edgeband for given object
+		vEdgeSum = 0	
+
+		# there can be more faces than 6 (Array Cube)
+		vFaceN = []
+		vFaceD = []
+		vFaceV = []
+
+		# search for edgeband
+		i = 0
+		for c in vFacesColors:
+
+			# there can be more faces than 6 (Array Cube)
+			vFaceN.insert(i, "")
+			vFaceD.insert(i, 0)
+			vFaceV.insert(i, "")
+
+			# if the edge face color is different than default furniture color 
+			# it means this edge is covered by user
+			if str(c)  != str(sFColor):
+	
+				# assign value to the Fake Cube dimensions
+				gFakeCube.Length = iObj.Shape.Faces[i].Length
+			
+				# get value as the correct dimensions
+				vFaceEdge = gFakeCube.Length.getValueAs(gUnitC).Value
+	
+				# get the thickness dimension
+				vT = getKey(iObj, iW, iH, iL, "thick")
+	
+				# if you know the thickness you can 
+				# calculate the edge for the face
+				vEdge = ( vFaceEdge - (2 * vT)) / 2
+	
+				# sort thickness
+				a = [ iW, iH, iL ]
+				a.sort()
+
+				# check if this is correct egde
+				if str(vEdge) == str(a[1]) or str(vEdge) == str(a[2]):
+					vFaceN[i] = gLang12
+					vFaceD[i] = getUnit(vEdge, "d")
+					vFaceV[i] = str(sEColor)
+				else:
+					vFaceN[i] = gLang13
+					vFaceD[i] = gLang14 # colomn width is too small
+					vFaceV[i] = str(sEColor)
+					vEdge = 0
+
+				# add all faces to edge size
+				vEdgeSum = vEdgeSum + vEdge
+
+			# next face index
+			i = i +1
+
+	except:
+
+		# get edgeband error
+		showError(iObj, "getEdgeBand", "getting edgeband error")
+		return -1
+
+	return [ vEdgeSum, vFaceN, vFaceD, vFaceV ]
+
+
+# ###################################################################################################################
 # Database controllers - set db only via this controllers
 # ###################################################################################################################
 
@@ -731,26 +956,39 @@ def setDB(iObj, iW, iH, iL):
 			dbDA[vKey] = vArea
 
 		# get key  for object (convert value to dimension string)
-		vKey = str(getKey(iObj, iW, iH, iL, "thick"))
+		vKeyT = str(getKey(iObj, iW, iH, iL, "thick"))
 	
 		# set thickness db for quantity & area
-		if vKey in dbTQ:
+		if vKeyT in dbTQ:
 	
-			dbTQ[vKey] = dbTQ[vKey] + 1
-			dbTA[vKey] = dbTA[vKey] + vArea
+			dbTQ[vKeyT] = dbTQ[vKeyT] + 1
+			dbTA[vKeyT] = dbTA[vKeyT] + vArea
 		else:
 	
-			dbTQ[vKey] = 1
-			dbTA[vKey] = vArea
+			dbTQ[vKeyT] = 1
+			dbTA[vKeyT] = vArea
 
-		# set edge db for edge size
-		vEdge = getEdge(iObj, iW, iH, iL)
-
+		# check visibility for edge if visibility feature is "edge"
+		# if visibility feature is "on" the whole obejct is skipped
+		# so never run this part for such object
+		vSkip = 0
 		if sTVF == "edge":
 			if FreeCADGui.ActiveDocument.getObject(iObj.Name).Visibility == False:
-				vEdge = 0 # skip if object is not visible			
+				vSkip = 1
 
-		dbE["size"] = dbE["size"] + vEdge
+		# if object is not visible not calculate the edge
+		if vSkip == 0:
+
+			# set edge db for total edge size
+			vEdge = getEdge(iObj, iW, iH, iL)
+			dbE["total"] = dbE["total"] + vEdge
+
+			# set edge db for edgeband edge size & faces
+			vEdge , dbEFN[vKey], dbEFD[vKey], dbEFV[vKey] = getEdgeBand(iObj, iW, iH, iL)
+			dbE["edgeband"] = dbE["edgeband"] + vEdge
+
+			# set edge db for empty edge size
+			dbE["empty"] = dbE["total"] - dbE["edgeband"]
 
 	except:
 
@@ -1094,7 +1332,7 @@ def scanObjects():
 
 
 # ###################################################################################################################
-def initView():
+def initLang():
 
 	global gLang1
 	global gLang2
@@ -1105,56 +1343,161 @@ def initView():
 	global gLang7
 	global gLang8
 	global gLang9
-	
-	global gSheet
-	
+	global gLang10
+	global gLang11
+	global gLang12
+	global gLang13
+	global gLang14
+
 	# Polish language
 	if sLang  == "pl":
 
-		gLang1 = "Element"
-		gLang2 = "Wymiary"
-		gLang3 = "Grubość"
-		gLang4 = "Sztuki"
+		gLang1 = "Nazwa"
+		gLang2 = "Ilość"
+		gLang3 = "Wymiary"
+		gLang4 = "Grubość"
 		
 		if sUnitsArea == "mm":
-			gLang5 = "Milimetry kwadratowe"
+			gLang5 = "mm2"
 		if sUnitsArea == "m":
-			gLang5 = "Metry kwadratowe"
+			gLang5 = "m2"
 		if sUnitsArea == "in":
-			gLang5 = "Cale kwadratowe"        
+			gLang5 = "in2"
 
-		gLang6 = "Podsumowanie dla koloru elementu"
-		gLang7 = "Podsumowanie dla grubości elementu"
+		gLang6 = "Podsumowanie dla grup"
+		gLang7 = "Podsumowanie dla grubości"
 		gLang8 = "Długość obrzeża"
 		gLang9 = "Długość"
+		gLang10 = "Obrzeże bez okleiny"
+		gLang11 = "Potrzebna okleina"
+		gLang12 = "brzeg"
+		gLang13 = "wierzch"
+		gLang14 = "wymiary"
 
 	# English language
 	else:
 
 		gLang1 = "Name"
-		gLang2 = "Dimensions"
-		gLang3 = "Thickness"
-		gLang4 = "Quantity"
+		gLang2 = "Quantity"
+		gLang3 = "Dimensions"
+		gLang4 = "Thickness"
 
 		if sUnitsArea == "mm":
-			gLang5 = "Square millimeters"
+			gLang5 = "mm2"
 		if sUnitsArea == "m":
-			gLang5 = "Square meters"
+			gLang5 = "m2"
 		if sUnitsArea == "in":
-			gLang5 = "Square inches"        
+			gLang5 = "in2"
 
-		gLang6 = "Summary by colors"
+		gLang6 = "Summary by groups"
 		gLang7 = "Summary by thickness"
 		gLang8 = "Edge size"
 		gLang9 = "Length"
-		
+		gLang10 = "Edge without veneer"
+		gLang11 = "Needed veneer for edge"
+		gLang12 = "edge"
+		gLang13 = "surface"
+		gLang14 = "dimensions"
 
-	# remove spreadsheet if exists
-	if gAD.getObject("toCut"):
-		gAD.removeObject("toCut")
+# ###################################################################################################################
+def setViewQ():
 
-	# create empty spreadsheet
-	gSheet = gAD.addObject("Spreadsheet::Sheet","toCut")
+	global gSheet
+	global gSheetRow
+
+	# set headers
+	gSheet.set("A1", gLang2)
+	gSheet.set("C1", gLang3)
+	gSheet.set("F1", gLang4)
+	gSheet.set("G1", gLang5)
+
+	# text header decoration
+	gSheet.setStyle("A1:G1", "bold", "add")
+
+	# merge cells
+	gSheet.mergeCells("A1:B1")
+	gSheet.mergeCells("C1:E1")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# add values
+	for key in dbDA.keys():
+
+		a = key.split(":")
+
+		gSheet.set("A" + str(gSheetRow), "'" + str(dbDQ[key])+" x")
+		gSheet.set("C" + str(gSheetRow), getUnit(a[1], "d"))
+		gSheet.set("D" + str(gSheetRow), "'" + "x")
+		gSheet.set("E" + str(gSheetRow), getUnit(a[2], "d"))
+		gSheet.set("F" + str(gSheetRow), getUnit(a[0], "d"))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area"))
+
+		# merge cells
+		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
+		gSheet.mergeCells(vCell)
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 80)
+	gSheet.setColumnWidth("C", 90)
+	gSheet.setColumnWidth("D", 20)
+	gSheet.setColumnWidth("E", 90)
+	gSheet.setColumnWidth("F", 100)
+	gSheet.setColumnWidth("G", 120)
+
+	# alignment
+	gSheet.setAlignment("A1:A" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "center", "keep")
+	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+
+	# fix for center header text in merged cells
+	gSheet.setAlignment("C1:C1", "center", "keep")
+	gSheet.setAlignment("D1:D1", "center", "keep")
+	gSheet.setAlignment("E1:E1", "center", "keep")
+
+         # ########################################################
+	# thickness part - depends on view columns order, so better here
+         # ########################################################
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("A" + str(gSheetRow), "'" + str(dbTQ[key])+" x")
+		gSheet.set("F" + str(gSheetRow), getUnit(key, "d"))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
+		gSheet.setAlignment("A" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# merge cells
+		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
+		gSheet.mergeCells(vCell)
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
 
 
 # ###################################################################################################################
@@ -1163,14 +1506,20 @@ def setViewN():
 	global gSheet
 	global gSheetRow
 
-	# add headers
+	# set headers
 	gSheet.set("A1", gLang1)
-	gSheet.set("B1", gLang2)
-	gSheet.set("E1", gLang3)
-	gSheet.set("F1", gLang4)
+	gSheet.set("B1", gLang3)
+	gSheet.set("E1", gLang4)
+	gSheet.set("F1", gLang2)
 	gSheet.set("G1", gLang5)
+
+	# text header decoration
+	gSheet.setStyle("A1:G1", "bold", "add")
+
+	# merge cells
 	gSheet.mergeCells("B1:D1")
 
+	# set background
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
 
@@ -1194,13 +1543,13 @@ def setViewN():
 		gSheetRow = gSheetRow + 1
 
 	# cell sizes
-	gSheet.setColumnWidth("A", 135)
-	gSheet.setColumnWidth("B", 80)
-	gSheet.setColumnWidth("C", 40)
-	gSheet.setColumnWidth("D", 80)
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 90)
+	gSheet.setColumnWidth("C", 20)
+	gSheet.setColumnWidth("D", 90)
 	gSheet.setColumnWidth("E", 100)
-	gSheet.setColumnWidth("F", 100)
-	gSheet.setColumnWidth("G", 180)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
 
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
@@ -1211,56 +1560,37 @@ def setViewN():
 	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
 
+	# fix for center header text in merged cells
+	gSheet.setAlignment("B1:B1", "center", "keep")
+	gSheet.setAlignment("C1:C1", "center", "keep")
+	gSheet.setAlignment("D1:D1", "center", "keep")
 
-# ###################################################################################################################
-def setViewQ():
+         # ########################################################
+	# thickness part - depends on view columns order, so better here
+         # ########################################################
 
-	global gSheet
-	global gSheetRow
-
-	# add headers
-	gSheet.set("A1", gLang4)
-	gSheet.set("B1", gLang2)
-	gSheet.set("E1", gLang3)
-	gSheet.set("F1", gLang5)
-	gSheet.mergeCells("B1:D1")
-
+	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
 	gSheet.setBackground(vCell, gHeadCS)
 
 	# go to next spreadsheet row
 	gSheetRow = gSheetRow + 1
-		
-	# add values
-	for key in dbDQ.keys():
+	
+	for key in dbTQ.keys():
 
-		a = key.split(":")
-
-		gSheet.set("A" + str(gSheetRow), "'" + str(dbDQ[key])+" x")
-		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d"))
-		gSheet.set("C" + str(gSheetRow), "x")
-		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d"))
-		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d"))
-		gSheet.set("F" + str(gSheetRow), getUnit(dbDA[key], "area"))
+		gSheet.set("E" + str(gSheetRow), getUnit(key, "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
 
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
-
-	# cell sizes
-	gSheet.setColumnWidth("A", 80)
-	gSheet.setColumnWidth("B", 80)
-	gSheet.setColumnWidth("C", 20)
-	gSheet.setColumnWidth("D", 80)
-	gSheet.setColumnWidth("E", 100)
-	gSheet.setColumnWidth("F", 180)
-
-	# alignment
-	gSheet.setAlignment("A1:A" + str(gSheetRow), "right", "keep")
-	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
-	gSheet.setAlignment("C1:C" + str(gSheetRow), "center", "keep")
-	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
-	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
-	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
 
 
 # ###################################################################################################################
@@ -1269,14 +1599,20 @@ def setViewG():
 	global gSheet
 	global gSheetRow
 
-	# add headers
+	# set headers
 	gSheet.set("A1", gLang1)
-	gSheet.set("B1", gLang2)
-	gSheet.set("E1", gLang3)
-	gSheet.set("F1", gLang4)
+	gSheet.set("B1", gLang4)
+	gSheet.set("C1", gLang3)
+	gSheet.set("F1", gLang2)
 	gSheet.set("G1", gLang5)
-	gSheet.mergeCells("B1:D1")
 
+	# text header decoration
+	gSheet.setStyle("A1:G1", "bold", "add")
+
+	# merge cells
+	gSheet.mergeCells("C1:E1")
+
+	# set background
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
 
@@ -1289,10 +1625,10 @@ def setViewG():
 		a = key.split(":")
 
 		gSheet.set("A" + str(gSheetRow), "'" + str(a[3]))
-		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d"))
-		gSheet.set("C" + str(gSheetRow), "'" + "x")
-		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d"))
-		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d"))
+		gSheet.set("B" + str(gSheetRow), getUnit(a[0], "d"))
+		gSheet.set("C" + str(gSheetRow), getUnit(a[1], "d"))
+		gSheet.set("D" + str(gSheetRow), "'" + "x")
+		gSheet.set("E" + str(gSheetRow), getUnit(a[2], "d"))
 		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
 		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area"))
 
@@ -1300,22 +1636,257 @@ def setViewG():
 		gSheetRow = gSheetRow + 1
 
 	# cell sizes
-	gSheet.setColumnWidth("A", 135)
-	gSheet.setColumnWidth("B", 80)
-	gSheet.setColumnWidth("C", 40)
-	gSheet.setColumnWidth("D", 80)
-	gSheet.setColumnWidth("E", 100)
-	gSheet.setColumnWidth("F", 100)
-	gSheet.setColumnWidth("G", 180)
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 100)
+	gSheet.setColumnWidth("C", 90)
+	gSheet.setColumnWidth("D", 20)
+	gSheet.setColumnWidth("E", 90)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
 
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
 	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
-	gSheet.setAlignment("C1:C" + str(gSheetRow), "center", "keep")
-	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "center", "keep")
 	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+
+	# fix for center header text in merged cells
+	gSheet.setAlignment("C1:C1", "center", "keep")
+	gSheet.setAlignment("D1:D1", "center", "keep")
+	gSheet.setAlignment("E1:E1", "center", "keep")
+
+         # ########################################################
+	# thickness part - depends on view columns order, so better here
+         # ########################################################
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("B" + str(gSheetRow), getUnit(key, "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
+		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
+def setViewE():
+
+	global gSheet
+	global gSheetRow
+
+
+	# add values
+	for key in dbDA.keys():
+
+		# set headers
+		gSheet.set("A" + str(gSheetRow), gLang1)
+		gSheet.set("B" + str(gSheetRow), gLang3)
+		gSheet.set("E" + str(gSheetRow), gLang4)
+		gSheet.set("F" + str(gSheetRow), gLang2)
+		gSheet.set("G" + str(gSheetRow), gLang5)
+	
+		# text header decoration
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+	
+		# alignment
+		gSheet.setAlignment("A" + str(gSheetRow), "left", "keep")
+		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("C" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("D" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+	
+		# merge cells
+		vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+	
+		# fix for center header text in merged cells
+		gSheet.setAlignment("B" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("C" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("D" + str(gSheetRow), "center", "keep")
+	
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		a = key.split(":")
+
+		gSheet.set("A" + str(gSheetRow), "'" + str(a[3]))
+		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d"))
+		gSheet.set("C" + str(gSheetRow), "'" + "x")
+		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d"))
+		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area"))
+
+		# alignment
+		gSheet.setAlignment("A" + str(gSheetRow), "left", "keep")
+		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+		
+		# ####################################################
+		# faces numbers
+		# ####################################################
+
+		# set header
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+		gSheet.setStyle(vCell, "bold", "add")
+
+		gSheet.set("A" + str(gSheetRow), "5")
+		gSheet.set("B" + str(gSheetRow), "6")
+		gSheet.set("D" + str(gSheetRow), "1")
+		gSheet.set("E" + str(gSheetRow), "2")
+		gSheet.set("F" + str(gSheetRow), "3")
+		gSheet.set("G" + str(gSheetRow), "4")
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces names
+		# ####################################################
+
+		try:
+			# try get values
+			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFN[key][4]))
+			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFN[key][5]))
+			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFN[key][0]))
+			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFN[key][1]))
+			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFN[key][2]))
+			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFN[key][3]))
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces dimensions
+		# ####################################################
+
+		try:
+			# try get values
+			if dbEFD[key][4] != 0:
+				gSheet.set("A" + str(gSheetRow), dbEFD[key][4])
+			if dbEFD[key][5] != 0:
+				gSheet.set("B" + str(gSheetRow), dbEFD[key][5])
+			if dbEFD[key][0] != 0:
+				gSheet.set("D" + str(gSheetRow), dbEFD[key][0])
+			if dbEFD[key][1] != 0:
+				gSheet.set("E" + str(gSheetRow), dbEFD[key][1])
+			if dbEFD[key][2] != 0:
+				gSheet.set("F" + str(gSheetRow), dbEFD[key][2])
+			if dbEFD[key][3] != 0:
+				gSheet.set("G" + str(gSheetRow), dbEFD[key][3])
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces veneers
+		# ####################################################
+
+		try:
+			# try get values
+			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFV[key][4]))
+			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFV[key][5]))
+			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFV[key][0]))
+			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFV[key][1]))
+			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFV[key][2]))
+			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFV[key][3]))
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# merge cells
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 90)
+	gSheet.setColumnWidth("C", 20)
+	gSheet.setColumnWidth("D", 90)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
+
+         # ########################################################
+	# thickness part - depends on view columns order, so better here
+         # ########################################################
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("E" + str(gSheetRow), getUnit(key, "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
 
 
 # ###################################################################################################################
@@ -1408,51 +1979,8 @@ def setViewC():
 	gSheet.setColumnWidth("F", 100)
 	gSheet.setColumnWidth("G", 100)
 
-
-# ###################################################################################################################
-def setViewThickness():
-
-	global gSheet
-	global gSheetRow
-
-	# add summary title for thickness
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-	gSheet.set(vCell, gLang7)
-	gSheet.setStyle(vCell, "bold", "add")
-	gSheet.setAlignment(vCell, "left", "keep")
-	gSheet.setBackground(vCell, gHeadCS)
-
-	# go to next spreadsheet row
-	gSheetRow = gSheetRow + 1
-	
-	# for thickness	 (quantity)
-	if sLTF == "q":
-		for key in dbTQ.keys():
-
-			gSheet.set("A" + str(gSheetRow), "'" + str(dbTQ[key])+" x")
-			gSheet.set("E" + str(gSheetRow), getUnit(key, "d"))
-			gSheet.set("F" + str(gSheetRow), getUnit(dbTA[key], "area"))
-			gSheet.setAlignment("A" + str(gSheetRow), "right", "keep")
-			gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
-			gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
-
-			# go to next spreadsheet row
-			gSheetRow = gSheetRow + 1
-	
-	# for thickness	 (group & name)
-	if sLTF == "g" or sLTF == "n":
-		for key in dbTQ.keys():
-
-			gSheet.set("E" + str(gSheetRow), getUnit(key, "d"))
-			gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
-			gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
-			gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
-			gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
-			gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
-
-			# go to next spreadsheet row
-			gSheetRow = gSheetRow + 1
+	# remove empty line separator
+	gSheetRow = gSheetRow - 1
 
 
 # ###################################################################################################################
@@ -1461,23 +1989,63 @@ def setViewEdge():
 	global gSheet
 	global gSheetRow
 
+	# merge cells for better look line separation
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
 	# go to next spreadsheet row
 	gSheetRow = gSheetRow + 1
 
-	# add summary for edge size
-	vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)
+	# add summary for total edge size
+	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, gLang8)
 	gSheet.setStyle(vCell, "bold", "add")
 	gSheet.setAlignment(vCell, "left", "keep")
 
-	vCell = "C" + str(gSheetRow) + ":E" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-	gSheet.set(vCell, getUnit(dbE["size"], "edge"))
+	vCell = "G" + str(gSheetRow)
+	gSheet.set(vCell, getUnit(dbE["total"], "edge"))
 	gSheet.setAlignment(vCell, "right", "keep")
 
-	vCell = "A" + str(gSheetRow) + ":E" + str(gSheetRow)
+	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
+
+	# skip if furniture color is not set correctly
+	if dbE["empty"] >= 0 and dbE["edgeband"] > 0:
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+	
+		# add summary for empty edge size
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang10)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+	
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, getUnit(dbE["empty"], "edge"))
+		gSheet.setAlignment(vCell, "right", "keep")
+	
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+	
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+	
+		# add summary for edgeband edge size
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang11)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+	
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, getUnit(dbE["edgeband"], "edge"))
+		gSheet.setAlignment(vCell, "right", "keep")
+	
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
 
 
 # ###################################################################################################################
@@ -1485,17 +2053,14 @@ def finalViewSettings():
 
 	global gSheet
 	global gSheetRow
-	
+
 	# colors
 	gSheet.setForeground("A1:G" + str(gSheetRow), (0,0,0))
 	
-	# fix for center header text in merged cells
-	gSheet.setAlignment("B1:B1", "center", "keep")
-	gSheet.setAlignment("C1:C1", "center", "keep")
-	gSheet.setAlignment("D1:D1", "center", "keep")
-	
-	# text header decoration
-	gSheet.setStyle("A1:G1", "bold", "add")
+	# reset settings for eco mode
+	if sRPQ == "eco":
+		vCell = "A1" + ":G" + str(gSheetRow)
+		gSheet.setBackground(vCell, (1,1,1))
 
 
 # ###################################################################################################################
@@ -1505,7 +2070,21 @@ def codeLink():
 	global gSheetRow
 
 	# add empty line separator
-	gSheetRow = gSheetRow + 3
+	gSheetRow = gSheetRow + 1
+
+	# merge cells for better look line separation
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
+	# add empty line separator
+	gSheetRow = gSheetRow + 1
+
+	# merge cells for better look line separation
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
+	# add empty line separator
+	gSheetRow = gSheetRow + 1
 
 	# add link 
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -1526,39 +2105,40 @@ def selectView():
 	global gSheet
 	global gSheetRow
 
-	initView()
+	# remove spreadsheet if exists
+	if gAD.getObject("toCut"):
+		gAD.removeObject("toCut")
+
+	# create empty spreadsheet
+	gSheet = gAD.addObject("Spreadsheet::Sheet","toCut")
+
+	# main report - quantity
+	if sLTF == "q":
+		setViewQ()
+		setViewEdge()
 
 	# main report - name
 	if sLTF == "n":
 		setViewN()
-		setViewThickness()
 		setViewEdge()
-		finalViewSettings()
-		
-	# main report - quantity
-	if sLTF == "q":
-		setViewQ()
-		setViewThickness()
-		setViewEdge()
-		finalViewSettings()
-		
+
 	# main report - group
 	if sLTF == "g":
 		setViewG()
-		setViewThickness()
 		setViewEdge()
-		finalViewSettings()
-		
+
+	# main report - edge extended
+	if sLTF == "e":
+		setViewE()
+		setViewEdge()
+
 	# main report - constraints (custom report)
 	if sLTF == "c":
 		setViewC()
 		
 	codeLink()
 
-	# reset settings for eco mode
-	if sRPQ == "eco":
-		vCell = "A1" + ":G" + str(gSheetRow)
-		gSheet.setBackground(vCell, (1,1,1))
+	finalViewSettings()
 
 
 # ###################################################################################################################
@@ -1621,6 +2201,9 @@ if sQT == "yes":
 
 # if Qt GUI ok button
 if gExecute == "yes":
+
+	# set language
+	initLang()
 	
 	# remove existing Fake Cube object if exists (auto clean after error)
 	if gAD.getObject("gFakeCube"):
