@@ -33,6 +33,7 @@
 			* [Edgeband - quick way](#edgeband---quick-way)
 			* [Edgeband - described](#edgeband---described)
 			* [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
+		* [Dowels, pilot holes, countersinks](#dowels-pilot-holes-countersinks)
 5. [Known issues](#known-issues)
 6. [Special thanks](#special-thanks)
 7. [Feature requests](#feature-requests)
@@ -439,6 +440,47 @@ If You want more detailed report about the edgeband You should consider [Constra
     ![Edgeband007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband007.png)
 
 	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
+
+### Dowels, pilot holes, countersinks
+
+* To create dowel You have to create `Pad` so first start with `Sketch` at the furniture part:
+
+	![PDHole001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole001.png)
+	
+	**Note:** Make sure You added desired `constraints name`. Only constraints with no empty `constraints name` 
+	will be visisble at the final report. Not add `constraints name` for those that should be hidden.
+
+* You can use `PartDesign :: MultiTransform` at this dowel using `DatumPlane` to make more copies:
+
+	![PDHole002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole002.png)
+
+* Also You can add new dowel and do the same:
+
+	![PDHole003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole003.png)
+	![PDHole004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole004.png)
+
+* To create pilot hole You have to create `Hole` transformation but first start with `Sketch` at the furniture part:
+
+	![PDHole005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole005.png)
+	
+	**Note:** Make sure You added desired `constraints name`. Only constraints with no empty `constraints name` 
+	will be visisble at the final report. Not add `constraints name` for those that should be hidden.
+
+* The same for countersink:
+
+	![PDHole006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole006.png)
+
+* You can use `PartDesign :: MultiTransform` at the pilot hole and countersink using `DatumPlane` to make more copies:
+
+	![PDHole007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole007.png)
+
+* The final 3D model should look like this:
+
+	![PDHole008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole008.png)
+
+* To create `constraints` report just set `Report type` variable to `c` and run macro:
+
+    ![PDHole009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole009.png)
 
 # Known issues
 

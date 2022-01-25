@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.21
+# Version: 2022.01.25
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -779,7 +779,7 @@ def getKey(iObj, iW, iH, iL, iType):
 		return str(vKey)
 
 	# key for name report
-	elif iType == "d" and ( sLTF == "n" or sLTF == "e"):
+	elif iType == "d" and (sLTF == "n" or sLTF == "e"):
 		vKey = str(vKey) + ":" + str(iObj.Label)
 		return str(vKey)
 
@@ -1102,7 +1102,7 @@ def setConstraints(iObj):
 	
 		# set reference point
 		vCons = iObj.Profile[0].Constraints
-	
+
 		for c in vCons:
 			if c.Name != "":
 				
@@ -1120,12 +1120,17 @@ def setConstraints(iObj):
 	
 		if isSet == 1:
 	
-			# assign values to the Fake Cube dimensions
-			gFakeCube.Length = iObj.Length.Value
-				
-			# get values as the correct dimensions
-			vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
-	
+			# support for Pad furniture part
+			if iObj.isDerivedFrom("PartDesign::Pad"):
+
+				# convert float to the correct dimension
+				gFakeCube.Length = iObj.Length.Value
+				vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+
+			# support for pilot hole and countersink
+			if iObj.isDerivedFrom("PartDesign::Hole"):
+				vLength = ""
+
 			# set db for Constraints
 			setDBConstraints(iObj, vLength, vNames, vValues)
 
@@ -1163,10 +1168,28 @@ def selectFurniturePart(iObj):
 		# support for Pad furniture part with constraints
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setConstraints(iObj)
-		
+
+		# if there is something not recognized 
+		# try check transformations		
+		else:
+			selectTransformation(iObj)
+
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0	
+
+
+# ###################################################################################################################
+# Transformations selector
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def selectTransformation(iObj):
+
+	# support for pilot hole and countersink
+	if iObj.isDerivedFrom("PartDesign::Hole"):
+		setConstraints(iObj)
 
 
 # ###################################################################################################################
@@ -1900,7 +1923,7 @@ def setViewC():
 
 		# set key for db
 		vKey = o.Label
-		
+
 		# set object header
 		vCell = "A" + str(gSheetRow)
 		vStr = str(dbCNQ[vKey]) + " x "
@@ -1917,27 +1940,30 @@ def setViewC():
 		gSheet.setStyle(vCell, "bold", "add")
 		gSheet.setBackground(vCell, gHeadCS)
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+		# set Length header only for Pads
+		if dbCNL[vKey] != "":
 
-		# set object length
-		vCell = "A" + str(gSheetRow)
-		gSheet.setBackground(vCell, (1,1,1))
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-		gSheet.set(vCell, gLang9)
-		gSheet.mergeCells(vCell)	
-		gSheet.setAlignment(vCell, "left", "keep")
-		gSheet.setStyle(vCell, "bold", "add")
-		gSheet.setBackground(vCell, gHeadCW)
-
-		vCell = "G" + str(gSheetRow)
-		vStr = getUnit(dbCNL[vKey], "d")
-		gSheet.set(vCell, vStr)
-		gSheet.setAlignment(vCell, "right", "keep")
-		gSheet.setStyle(vCell, "bold", "add")
-		gSheet.setBackground(vCell, gHeadCW)
-
+			# set object length
+			vCell = "A" + str(gSheetRow)
+			gSheet.setBackground(vCell, (1,1,1))
+	
+			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
+			gSheet.set(vCell, gLang9)
+			gSheet.mergeCells(vCell)	
+			gSheet.setAlignment(vCell, "left", "keep")
+			gSheet.setStyle(vCell, "bold", "add")
+			gSheet.setBackground(vCell, gHeadCW)
+	
+			vCell = "G" + str(gSheetRow)
+			vStr = getUnit(dbCNL[vKey], "d")
+			gSheet.set(vCell, vStr)
+			gSheet.setAlignment(vCell, "right", "keep")
+			gSheet.setStyle(vCell, "bold", "add")
+			gSheet.setBackground(vCell, gHeadCW)
+	
 		# create constraints lists
 		keyN = dbCNN[vKey].split(":")
 		keyV = dbCNV[vKey].split(":")

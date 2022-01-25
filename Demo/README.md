@@ -1,7 +1,7 @@
 # Table of Contents
 
 1. [Demo001_quickstart](#demo001_quickstart)
-2. [Demo002_cube](#demo002_cube)
+2. [Demo002_constraints](#demo002_constraints)
 3. [Demo003_pads_basic](#demo003_pads_basic)
 4. [Demo004_pads_mirror](#demo004_pads_mirror)
 5. [Demo005_edgeband](#demo005_edgeband)
@@ -14,9 +14,9 @@ This is the quickstart with furniture parts examples.
 |---|---|
 | ![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/001.png) | ![Demo001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo001/002.png) |
 
-## Demo002_cube
+## Demo002_constraints
 
-This is the furniture I made in my garage. So, this is real-life project made with FreeCAD and this macro. The furniture is made using FreeCAD Cube objects, as I usually do for my private purposes (hobby).
+This demo example shows how to use dowels, pilot holes and countersink with constraints report type.
 
 |   |   |
 |---|---|
