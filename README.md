@@ -25,9 +25,12 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Part :: Mirroring,
     * Draft :: Array,
     * Draft :: Array Polar,
+    * Draft :: Clone,
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform,
-    * PartDesign :: Hole.
+    * PartDesign :: Hole,
+    * Draft :: Clone on Body,
+    * Part :: Mirroring on Body.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, multi-page by [sheet2export](https://github.com/dprojects/sheet2export).
 

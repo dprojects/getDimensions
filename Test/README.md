@@ -13,7 +13,6 @@ FreeCAD 0.19.3 AppImage under Ubuntu 20.04.2 LTS 64-bit.
 1. **Test001_features:** 
 	* Test all the stable features supported by the macro.
 	* **Settings:** `Report type` to `n`.
-	* Create Markdown file via [sheet2export](https://github.com/dprojects/sheet2export) in the main directory.
 2. **Test002_edgeband:** 
     * Test edgeband and extended edge report type view.
     * **Settings:** 

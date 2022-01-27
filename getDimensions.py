@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.25
+# Version: 2022.01.27
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -1149,7 +1149,7 @@ def setConstraints(iObj):
 
 
 # ###################################################################################################################
-def selectFurniturePart(iObj):
+def selectFurniturePart(iObj, iPlace):
 
 	# normal report
 	if sLTF != "c":
@@ -1169,10 +1169,20 @@ def selectFurniturePart(iObj):
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setConstraints(iObj)
 
-		# if there is something not recognized 
-		# try check transformations		
-		else:
-			selectTransformation(iObj)
+		# support for pilot holes and countersinks
+		if iObj.isDerivedFrom("PartDesign::Hole"):
+			setConstraints(iObj)
+
+		# skip main scan loop
+		if iPlace != "main":
+
+			# support for Mirror on Body
+			if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
+				setPartMirroringBody(iObj)
+
+			# support for Mirror on Clone
+			if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+				setDraftClone(iObj)
 
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
@@ -1180,21 +1190,31 @@ def selectFurniturePart(iObj):
 
 
 # ###################################################################################################################
-# Transformations selector
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def selectTransformation(iObj):
-
-	# support for pilot hole and countersink
-	if iObj.isDerivedFrom("PartDesign::Hole"):
-		setConstraints(iObj)
-
-
-# ###################################################################################################################
 # Support for transformations of base furniture parts
 # ###################################################################################################################
+
+
+# ###################################################################################################################
+def setPartMirroringBody(iObj):
+
+	# support for Mirror on Body
+	if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
+
+		try:
+
+			# set reference point to the Body objects list
+			key = iObj.Group
+
+			# call scan for each object at the list
+			scanObjects(key)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iObj, "setPartMirroringBody", "wrong structure")
+			return -1
+	
+	return 0
 
 
 # ###################################################################################################################
@@ -1209,7 +1229,7 @@ def setPartMirroring(iObj):
 			key = iObj.Source
 
 			# select and add furniture part
-			selectFurniturePart(key)
+			selectFurniturePart(key, "transform")
 
 		except:
 
@@ -1224,7 +1244,7 @@ def setPartMirroring(iObj):
 def setDraftArray(iObj):
 
 	# support for Array FreeCAD feature
-	if iObj.isDerivedFrom("Part::FeaturePython"):
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Array"):
 
 		try:
 
@@ -1246,13 +1266,44 @@ def setDraftArray(iObj):
 			while k < vArray:
 
 				# select and add furniture part
-				selectFurniturePart(key)
+				selectFurniturePart(key, "transform")
 				k = k + 1
 		
 		except:
 			
 			# if there is wrong structure
 			showError(iObj, "setDraftArray", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setDraftClone(iObj):
+
+	# support for Draft :: Clone FreeCAD feature
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+
+		try:
+
+			# set reference point to the Clone objects list
+			try:
+
+				# for group clone
+				key = iObj.Objects[0].Group
+
+			except:
+
+				# for single object clone
+				key = iObj.Objects
+
+			# call scanner for each object at the list
+			scanObjects(key)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iObj, "setDraftClone", "wrong structure")
 			return -1
 	
 	return 0
@@ -1273,7 +1324,7 @@ def setPartDesignMirrored(iObj):
 				key = iObj.Originals[0]
 
 				# if object is Mirror this create new furniture part
-				selectFurniturePart(key)
+				selectFurniturePart(key, "transform")
 		
 		except:
 			
@@ -1291,7 +1342,7 @@ def setPartDesignMultiTransform(iObj):
 	if iObj.isDerivedFrom("PartDesign::MultiTransform"):
 
 		try:
-			
+
 			# set number of transformations available    
 			lenT = len(iObj.Transformations)
 			k = 0
@@ -1311,7 +1362,7 @@ def setPartDesignMultiTransform(iObj):
 					# Note: you cannot call setPartDesignMirrored here on this because 
 					# it is transformation with empty array, there is no access
 					# to the base furniture part
-					selectFurniturePart(key)
+					selectFurniturePart(key, "transform")
 					k = k + 1
 
 		except:
@@ -1329,10 +1380,10 @@ def setPartDesignMultiTransform(iObj):
 
 
 # ###################################################################################################################
-def scanObjects():
+def scanObjects(iOBs):
 
 	# search all objects in document and set database for correct ones
-	for obj in gOBs:
+	for obj in iOBs:
 
 		# if feature is on, just skip all hidden elements
 		if sTVF == "on":
@@ -1340,11 +1391,12 @@ def scanObjects():
 				continue
 
 		# select and set furniture part
-		selectFurniturePart(obj)
+		selectFurniturePart(obj, "main")
 
 		# set transformations
 		setPartMirroring(obj)
 		setDraftArray(obj)
+		setDraftClone(obj)
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
 
@@ -1421,6 +1473,7 @@ def initLang():
 		gLang12 = "edge"
 		gLang13 = "surface"
 		gLang14 = "dimensions"
+
 
 # ###################################################################################################################
 def setViewQ():
@@ -2239,7 +2292,7 @@ if gExecute == "yes":
 	gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
 
 	# main loop for calculations
-	scanObjects()
+	scanObjects(gOBs)
 
 	# remove existing fake Cube object before recompute
 	if gAD.getObject("gFakeCube"):

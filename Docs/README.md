@@ -6,17 +6,7 @@
 	2. [Pad - quickstart](#pad---quickstart)
 	3. [Design furniture not the furniture parts](#design-furniture-not-the-furniture-parts)
 	4. [Basic furniture example](#basic-furniture-example)
-3. [Transformations](#transformations)
-	1. [Part :: Mirroring :: Cube](#part--mirroring--cube)
-	2. [Part :: Mirroring :: Pad](#part--mirroring--pad)
-	3. [Draft :: Array :: Cube](#draft--array--cube)
-	4. [Draft :: Array :: Pad](#draft--array--pad)
-	5. [Draft :: Array Polar :: Cube](#draft--array-polar--cube)
-	6. [Draft :: Array Polar :: Pad](#draft--array-polar--pad)
-	7. [PartDesign :: Mirrored :: Pad](#partdesign--mirrored--pad)
-	8. [PartDesign :: MultiTransform :: Pad](#partdesign--multitransform--pad)
-	9. [Advanced furniture example](#advanced-furniture-example)
-4. [Report customization](#report-customization)
+3. [Report customization](#report-customization)
 	1. [Report types](#report-types)
 		* [q - report type](#q---report-type)
 		* [n - report type](#n---report-type)
@@ -26,17 +16,28 @@
 	2. [Visibility](#visibility)
 	3. [Edge size](#edge-size)
 	4. [Report - export](#report---export)
-	5. [Report - usage examples](#report---usage-examples)
-		* [Constraints - totally custom report](#constraints---totally-custom-report)
-		* [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
-		* [Edgeband](#edgeband)
-			* [Edgeband - quick way](#edgeband---quick-way)
-			* [Edgeband - described](#edgeband---described)
-			* [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
-		* [Dowels, pilot holes, countersinks](#dowels-pilot-holes-countersinks)
-5. [Known issues](#known-issues)
-6. [Special thanks](#special-thanks)
-7. [Feature requests](#feature-requests)
+4. [Transformations](#transformations)
+	1. [Part :: Mirroring](#part--mirroring)
+	2. [Draft :: Array :: Cube](#draft--array--cube)
+	3. [Draft :: Array :: Pad](#draft--array--pad)
+	4. [Draft :: Array Polar :: Cube](#draft--array-polar--cube)
+	5. [Draft :: Array Polar :: Pad](#draft--array-polar--pad)
+	6. [Draft :: Clone](#draft--clone)
+	7. [PartDesign :: Mirrored :: Pad](#partdesign--mirrored--pad)
+	8. [PartDesign :: MultiTransform :: Pad](#partdesign--multitransform--pad)
+	9. [Advanced furniture example](#advanced-furniture-example)
+5. [Woodworking - usage examples](#woodworking---usage-examples)
+	1. [Constraints - totally custom report](#constraints---totally-custom-report)
+	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
+	3. [Edgeband](#edgeband)
+		* [Edgeband - quick way](#edgeband---quick-way)
+		* [Edgeband - described](#edgeband---described)
+		* [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
+	4. [Dowels, pilot holes, countersinks](#dowels-pilot-holes-countersinks)
+	5. [Custom furniture part](#custom-furniture-part)
+6. [Known issues](#known-issues)
+7. [Special thanks](#special-thanks)
+8. [Feature requests](#feature-requests)
 
 # Default Settings
 
@@ -129,140 +130,6 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
     
     ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB005.png)
 
-# Transformations
-
-For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for furniture parts, `Cube` and `Pad`. 
-
-Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get the correct dimensions for the final `Pad` object.
-
-**Note:** FreeCAD allows for many objects transformations but some combinations are not supported by FreeCAD e.g.: `PartDesign :: Mirrored :: Cube` or `PartDesign :: MultiTransform :: Cube`. However, this macro support any furniture part for each transformation. 
-
-## Part :: Mirroring :: Cube
-
-* To start with `Part :: Mirroring :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part:
-
-	![TPartMirroring001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring001.png)
-
-* Click the `Cube` furniture part and create `Part :: Mirroring :: Cube` transformation as it is demonstrated below:
-
-	![TPartMirroring002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring002.png)
-
-* You should have `Part :: Mirroring :: Cube` transformation created :
-
-	![TPartMirroring003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring003.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TPartMirroring004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring004.png)
-
-## Part :: Mirroring :: Pad
-
-To start with `Part :: Mirroring :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Click the `Pad` furniture part and create `Part :: Mirroring :: Pad` as it is demonstrated below:
-
-	![TPartMirroring005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring005.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TPartMirroring006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring006.png)
-
-## Draft :: Array :: Cube
-
-To start with `Draft :: Array :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
-
-* Click the `Cube` furniture part and create `Draft :: Array :: Cube` as it is demonstrated below:
-
-	![TDraftArray001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TDraftArray002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray002.png)
-
-## Draft :: Array :: Pad
-
-To start with `Draft :: Array :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Click the `Pad` furniture part and create `Draft :: Array :: Pad` as it is demonstrated below:
-
-	![TDraftArray003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray003.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TDraftArray004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray004.png)
-	
-* FreeCAD transformations have hidden base elements. Only the final transformed object is visible. Hovewer, it is not the issue, to have the `edge size` calculated as well just e.g. press the `Spacebar` key while on the `Pad` to make it visible and run the macro again:
-	
-	![TDraftArray005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray005.png)
-	
-	**Note:** Now You should see the `edge size` is calculated correctly.
-
-## Draft :: Array Polar :: Cube
-
-To start with `Draft :: Array Polar :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
-
-* Click the `Cube` furniture part and create `Draft :: Array Polar :: Cube` as it is demonstrated below:
-
-	![TDraftArrayPolar001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TDraftArrayPolar002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar002.png)
-
-## Draft :: Array Polar :: Pad
-
-To start with `Draft :: Array Polar :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Click the `Pad` furniture part and create `Draft :: Array Polar :: Pad` as it is demonstrated below:
-
-	![TDraftArrayPolar003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar003.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TDraftArrayPolar004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar004.png)
-
-## PartDesign :: Mirrored :: Pad
-
-To start with `PartDesign :: Mirrored :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Click the `Pad` furniture part and create `PartDesign :: Mirrored :: Pad` as it is demonstrated below:
-
-	![TPartDesignMirrored001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TPartDesignMirrored002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored002.png)
-
-## PartDesign :: MultiTransform :: Pad
-
-The `PartDesign :: MultiTransform :: Pad` allows for many transformations at the single step. To start with `PartDesign :: MultiTransform :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Click the `Pad` furniture part and create `PartDesign :: MultiTransform :: Pad` as it is demonstrated below:
-
-	![TPartDesignMultiTransform001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-	
-	![TPartDesignMultiTransform002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform002.png)
-
-## Advanced furniture example
-
-To use any mirror type of feature part with Your furniture project just follow the steps:
-
-* Create any furniture using Pads and Sketches. You can use `PartDesign :: Mirrored :: Pad` and `PartDesign :: MultiTransform :: Pad` at the same project. For example legs are four, so You can use `PartDesign :: MultiTransform :: Pad` from the single leg and `PartDesign :: Mirrored :: Pad` for each pair of supporters between them:
-
-	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA001.png)
-	
-* You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
-    
-	![exA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA002.png)
-        
-* Now, just run the macro, to get report `toPrint`:
-
-	![exA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA003.png)
-	
-	**Note:** If You want to calculate the `edge size` correctly, You have to use the visibility to show e.g. top and hide legs and other parts.
-
 # Report customization
 
 ## Report types
@@ -354,9 +221,151 @@ For more details see: [Constraints - totally custom report](#constraints---total
 
 * To export multi-page report or export many spreadsheets at once You can use my project created for this purpose here [sheet2export](https://github.com/dprojects/sheet2export).
 
-## Report - usage examples
+# Transformations
 
-### Constraints - totally custom report
+For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for furniture parts, `Cube` and `Pad`. 
+
+Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro. The main reason for that is that `Sketch` object do not recognize what shape You drew and do not keep such information. If You draw something different than rectangle or square the macro will not be able to recognize the shape and get the correct dimensions for the final `Pad` object.
+
+**Note:** FreeCAD allows for many objects transformations but some combinations are not supported by FreeCAD e.g.: `PartDesign :: Mirrored :: Cube` or `PartDesign :: MultiTransform :: Cube`. However, this macro support any furniture part for each transformation. 
+
+## Part :: Mirroring
+
+* To start with `Part :: Mirroring` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part:
+
+	![TPartMirroring001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring001.png)
+
+* Click the `Cube` furniture part and create `Part :: Mirroring` transformation as it is demonstrated below:
+
+	![TPartMirroring002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring002.png)
+
+* You should have `Part :: Mirroring` transformation created :
+
+	![TPartMirroring003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring003.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TPartMirroring004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring004.png)
+	
+	**Note:** You can do the same for `Cube`, `Body` or any other object supported by the macro.
+
+## Draft :: Array :: Cube
+
+To start with `Draft :: Array :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+
+* Click the `Cube` furniture part and create `Draft :: Array :: Cube` as it is demonstrated below:
+
+	![TDraftArray001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TDraftArray002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray002.png)
+
+## Draft :: Array :: Pad
+
+To start with `Draft :: Array :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `Draft :: Array :: Pad` as it is demonstrated below:
+
+	![TDraftArray003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray003.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TDraftArray004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray004.png)
+	
+* FreeCAD transformations have hidden base elements. Only the final transformed object is visible. Hovewer, it is not the issue, to have the `edge size` calculated as well just e.g. press the `Spacebar` key while on the `Pad` to make it visible and run the macro again:
+	
+	![TDraftArray005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray005.png)
+	
+	**Note:** Now You should see the `edge size` is calculated correctly.
+
+## Draft :: Array Polar :: Cube
+
+To start with `Draft :: Array Polar :: Cube` transformation, You have to create the furniture part for transformation first. In this case this will be `Cube` furniture part. If You already have the `Cube` created, just follow steps: 
+
+* Click the `Cube` furniture part and create `Draft :: Array Polar :: Cube` as it is demonstrated below:
+
+	![TDraftArrayPolar001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TDraftArrayPolar002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar002.png)
+
+## Draft :: Array Polar :: Pad
+
+To start with `Draft :: Array Polar :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `Draft :: Array Polar :: Pad` as it is demonstrated below:
+
+	![TDraftArrayPolar003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar003.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TDraftArrayPolar004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar004.png)
+
+## Draft :: Clone
+
+To start with `Draft :: Clone` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `Draft :: Clone` with the cute dolly sheep icon:
+
+	![TDraftClone001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftClone001.png)
+
+* You can also change the `Position` of the cloned `Pad`:
+
+	![TDraftClone002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftClone002.png)
+
+* Now, just run the macro, to get report `toPrint`:
+
+    ![TDraftClone003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftClone003.png)
+
+	**Note:** You can do the same for `Cube`, `Body` or any other object supported by the macro.
+
+## PartDesign :: Mirrored :: Pad
+
+To start with `PartDesign :: Mirrored :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `PartDesign :: Mirrored :: Pad` as it is demonstrated below:
+
+	![TPartDesignMirrored001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TPartDesignMirrored002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored002.png)
+
+## PartDesign :: MultiTransform :: Pad
+
+The `PartDesign :: MultiTransform :: Pad` allows for many transformations at the single step. To start with `PartDesign :: MultiTransform :: Pad` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Click the `Pad` furniture part and create `PartDesign :: MultiTransform :: Pad` as it is demonstrated below:
+
+	![TPartDesignMultiTransform001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TPartDesignMultiTransform002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform002.png)
+
+## Advanced furniture example
+
+To use any mirror type of feature part with Your furniture project just follow the steps:
+
+* Create any furniture using Pads and Sketches. You can use `PartDesign :: Mirrored :: Pad` and `PartDesign :: MultiTransform :: Pad` at the same project. For example legs are four, so You can use `PartDesign :: MultiTransform :: Pad` from the single leg and `PartDesign :: Mirrored :: Pad` for each pair of supporters between them:
+
+	![exA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA001.png)
+	
+* You can also create global furniture dimensions in a separate spreadsheet that gives You the ability to change the global furniture size later:
+    
+	![exA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA002.png)
+        
+* Now, just run the macro, to get report `toPrint`:
+
+	![exA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exA003.png)
+	
+	**Note:** If You want to calculate the `edge size` correctly, You have to use the visibility to show e.g. top and hide legs and other parts.
+
+# Woodworking - usage examples
+
+## Constraints - totally custom report
 
 This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the ` Length` of `Sketch > Pad` option. For this dimension macro can be sure. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
@@ -374,7 +383,7 @@ However, You can create pretty useful report with all important `constraints` an
 
     ![RConstraints003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints003.png)
 
-### Wood Properties - grain, type, color, etc.
+## Wood Properties - grain, type, color, etc.
 
 FreeCAD not support description for objects. This is not possible to add any note or custom text to the object during furniture design process. You can use `constraints name` at `Sketch` but this is not supported for `Cube` furniture part. Best way to do it is to use currently supported group report (`Report type` variable set to `g`). You can just organize You tree structure and create any report You want.
 
@@ -390,13 +399,13 @@ FreeCAD not support description for objects. This is not possible to add any not
 	
 	![WoodProperties003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/WoodProperties003.png)
 
-### Edgeband
+## Edgeband
 
 The edgeband is a very problematic matter. Mainly because the edge You want to cover is up to human's choice. The macro cannot guess the edge to cover. For example, You may want to cover the front part of the shelf, or the back part too, or all the edges. The same for the other furniture parts. To solve this problem, a person has to select and mark the edge (or rather the `face`) to be covered. 
 
 From the other side, during the furniture production process, there are always some leftover veneers for edge banding. But it is always better to have more than less veneer. If You buy a veneer for the entire edge, You can be sure that this veneer is enough for edge banding.
 
-#### Edgeband - quick way
+### Edgeband - quick way
 
 The quickest way to add edgeband is to use the `Visibility` and `g - report type` (`Report type` variable set to `g`) feature together. You can organize furniture parts in groups and hide the furniture parts without edgeband. All You have to do is to create groups and name them appropriately. This is very quick way and in some cases may be very precised.
 
@@ -406,7 +415,7 @@ The quickest way to add edgeband is to use the `Visibility` and `g - report type
 
 	**Note:** As You see the `Edge size` is `20.4 m` which is very close to the correct value `18.8 m`.
 
-#### Edgeband - described
+### Edgeband - described
 
 If You want more detailed report about the edgeband You should consider [Constraints - totally custom report](#constraints---totally-custom-report). This type of report not support the `Edge size` but it can be a good addition to any other type of report.
 
@@ -426,7 +435,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 	
 	![Edgeband005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband005.png)
 
-#### Edgeband - detailed by selection
+### Edgeband - detailed by selection
 
 * This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparision. To apply veneer for `face` use: 
 	* `Mouse Right Button` click for object.
@@ -441,7 +450,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 
 	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
 
-### Dowels, pilot holes, countersinks
+## Dowels, pilot holes, countersinks
 
 * To create dowel You have to create `Pad` so first start with `Sketch` at the furniture part:
 
@@ -481,6 +490,27 @@ If You want more detailed report about the edgeband You should consider [Constra
 * To create `constraints` report just set `Report type` variable to `c` and run macro:
 
     ![PDHole009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole009.png)
+
+## Custom furniture part
+
+You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirroring) features to create custom furniture part. To do this You can use the whole `Body` content as custom furniture part. 
+
+* To make more copis of the `Body` object use the `Draft :: Clone`:
+
+	![CustomPart001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart001.png)
+
+* To make mirror of all the elements use the `Part :: Mirroring` on all cloned `Body` objects:
+
+	![CustomPart002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart002.png)
+
+* As You see the countersinks are at the correct side now:
+
+	![CustomPart003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart003.png)
+	![CustomPart004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart004.png)
+
+* To create `constraints` report just set `Report type` variable to `c` and run macro:
+
+    ![CustomPart005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart005.png)
 
 # Known issues
 
