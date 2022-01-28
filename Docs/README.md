@@ -1,6 +1,4 @@
-___
 # Table of Contents
-___
 
 1. [Default Settings](#default-settings)
 2. [Furniture parts](#furniture-parts)
@@ -44,7 +42,6 @@ ___
 
 ___
 # Default Settings
-___
 
 This macro supports `Qt Graphical User Interface (GUI)`, so You can quickly change the settings by scrolling the mouse wheel. This screenshot below represents the `Default Settings`:
 
@@ -56,13 +53,11 @@ If for some reasons would You like to turn off the `Qt Graphical User Interface 
 
 ___
 # Furniture parts
-___
 
 Furniture parts are base objects for building furniture, base construction element. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have rectangular shape (four edges), to calculate area and edge size. You can consider furniture part as wood board, or even better, the rectangular chipboard. 
 
 ___
 ## Cube - quickstart
-___
 
 Cube is the easiest way to create furniture. You can create it just by single button click. To do that, just follow steps:
 
@@ -81,7 +76,6 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 
 ___
 ## Pad - quickstart
-___
 
 Pad is not base object. In fact, it is a transformation on the `Sketch` object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the `Sketch` is not real-life object, because it has only two dimensions. To start with Pad furniture part, You have to create `Sketch` object first.
 
@@ -111,7 +105,6 @@ Pad is not base object. In fact, it is a transformation on the `Sketch` object. 
 
 ___
 ## Design furniture not the furniture parts
-___
 
 Personally, I used to design everything with `Cube` furniture part. With calculator and `Placement` option I was able to design any furniture I needed, even some tools like doweling jig. Designing simple furniture with `Cube` takes about 5 minutes and You can just use `CTRL-C` and `CTRL-V` keys to multiply quickly the `Cube` furniture part, move it and change some dimensions, if needed.
 
@@ -123,7 +116,6 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
 
 ___
 ## Basic furniture example
-___
 
 * Create `Cube` furniture part using the `Cube` dimensions bordered at the image:
 
@@ -147,7 +139,6 @@ ___
 
 ___
 # Report customization
-___
 
 ## Report types
 
@@ -221,7 +212,6 @@ For more details see: [Constraints - totally custom report](#constraints---total
 
 ___
 ## Visibility
-___
 
 * Search `Visibility` part in the [Default Settings](#default-settings) and set to `on`.
 * Now You can create any report You want just by toggle visibility items or group of items.
@@ -232,7 +222,6 @@ ___
 
 ___
 ## Edge size
-___
 
 * Search `Visibility` part in the [Default Settings](#default-settings).
 * By default the feature `Visibility` is set to `edge` because in the real world the `edge size` that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize Your project tree with exact visibility:
@@ -247,7 +236,6 @@ ___
 
 ___    
 ## Report - export
-___
 
 * You can generate different reports at the same furniture project. Just copy (`CTRL-C` and `CTRL-V`) and rename the spreadsheet `toCut` to store it and prevent it from an overwrite or export the TechDraw page `toPrint` to `pdf` file.
 
@@ -255,7 +243,6 @@ ___
 
 ___
 # Transformations
-___
 
 For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for supported furniture parts. Each transformation has information about supported objects (tested combinations).
 
@@ -416,7 +403,6 @@ The `PartDesign :: MultiTransform` allows for many transformations at the single
 
 ___
 ## Advanced furniture example
-___
 
 To use any mirror type of feature part with Your furniture project just follow the steps:
 	
@@ -436,11 +422,9 @@ To use any mirror type of feature part with Your furniture project just follow t
 
 ___
 # Woodworking - usage examples
-___
 
 ___
 ## Constraints - totally custom report
-___
 
 This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the ` Length` of `Sketch > Pad` option. For this dimension macro can be sure. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
@@ -460,7 +444,6 @@ However, You can create pretty useful report with all important `constraints` an
 
 ___
 ## Wood Properties - grain, type, color, etc.
-___
 
 FreeCAD not support description for objects. This is not possible to add any note or custom text to the object during furniture design process. You can use `constraints name` at `Sketch` but this is not supported for `Cube` furniture part. Best way to do it is to use currently supported group report (`Report type` variable set to `g`). You can just organize You tree structure and create any report You want.
 
@@ -478,7 +461,6 @@ FreeCAD not support description for objects. This is not possible to add any not
 
 ___
 ## Edgeband
-___
 
 The edgeband is a very problematic matter. Mainly because the edge You want to cover is up to human's choice. The macro cannot guess the edge to cover. For example, You may want to cover the front part of the shelf, or the back part too, or all the edges. The same for the other furniture parts. To solve this problem, a person has to select and mark the edge (or rather the `face`) to be covered. 
 
@@ -576,7 +558,6 @@ ___
 
 ___
 ## Custom furniture part
-___
 
 You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirroring) features to create custom furniture part. To do this You can use the whole `Body` content as custom furniture part. 
 
@@ -599,7 +580,6 @@ You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirro
 
 ___
 ## 32 mm cabinetmaking system
-___
 
 To make very quickly many holes for shelf support You can use [PartDesign :: MultiTransform](#partdesign--multitransform) with [PartDesign :: Hole](#partdesign--hole).
 
@@ -633,7 +613,6 @@ To make very quickly many holes for shelf support You can use [PartDesign :: Mul
 
 ___
 # Known issues
-___
 
 * **Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
 	* **Workaround**: You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names.
@@ -649,7 +628,6 @@ ___
 
 ___
 # Special thanks
-___
 
 * [jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072): for the `Array` suggestion.
 * [acousticguy](https://forum.freecadweb.org/viewtopic.php?p=286030#p286030): for the `Inches` suggestion.
@@ -659,7 +637,6 @@ ___
 
 ___
 # Feature requests
-___
 
 Best way to ask for new feature is [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127). 
 
