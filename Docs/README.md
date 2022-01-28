@@ -1,4 +1,6 @@
+___
 # Table of Contents
+___
 
 1. [Default Settings](#default-settings)
 2. [Furniture parts](#furniture-parts)
@@ -40,7 +42,9 @@
 7. [Special thanks](#special-thanks)
 8. [Feature requests](#feature-requests)
 
+___
 # Default Settings
+___
 
 This macro supports `Qt Graphical User Interface (GUI)`, so You can quickly change the settings by scrolling the mouse wheel. This screenshot below represents the `Default Settings`:
 
@@ -50,11 +54,15 @@ If for some reasons would You like to turn off the `Qt Graphical User Interface 
 
 **Note:** Some reports screenshots are presented with `Report type` variable set to `n` and `Report quality` set to `eco`, for better readability.
 
+___
 # Furniture parts
+___
 
 Furniture parts are base objects for building furniture, base construction element. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have rectangular shape (four edges), to calculate area and edge size. You can consider furniture part as wood board, or even better, the rectangular chipboard. 
 
+___
 ## Cube - quickstart
+___
 
 Cube is the easiest way to create furniture. You can create it just by single button click. To do that, just follow steps:
 
@@ -71,7 +79,9 @@ Cube is the easiest way to create furniture. You can create it just by single bu
 	
 	![FPartCube002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartCube002.png)
 
+___
 ## Pad - quickstart
+___
 
 Pad is not base object. In fact, it is a transformation on the `Sketch` object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the `Sketch` is not real-life object, because it has only two dimensions. To start with Pad furniture part, You have to create `Sketch` object first.
 
@@ -99,7 +109,9 @@ Pad is not base object. In fact, it is a transformation on the `Sketch` object. 
 
 	**Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
 
+___
 ## Design furniture not the furniture parts
+___
 
 Personally, I used to design everything with `Cube` furniture part. With calculator and `Placement` option I was able to design any furniture I needed, even some tools like doweling jig. Designing simple furniture with `Cube` takes about 5 minutes and You can just use `CTRL-C` and `CTRL-V` keys to multiply quickly the `Cube` furniture part, move it and change some dimensions, if needed.
 
@@ -109,7 +121,9 @@ However, if You are new FreeCAD user and You want design single furniture, I wou
 
 The main problem with `Pad` is that the `Sketch` does not know what shape You drew, so You have to know what You are doing, to use the macro later. If You draw strange shape and `Pad` it later, You will not be able to get the correct dimensions from the final `Pad` object. However, You can always extend Your knowledge, to use transformations supported by FreeCAD for `Pad` only.
 
+___
 ## Basic furniture example
+___
 
 * Create `Cube` furniture part using the `Cube` dimensions bordered at the image:
 
@@ -131,10 +145,13 @@ The main problem with `Pad` is that the `Sketch` does not know what shape You dr
     
     ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB005.png)
 
+___
 # Report customization
+___
 
 ## Report types
 
+___
 ### q - report type
 
 This type of report is `default` type of report. It is the shortest one. It can be used for huge projects to make simple short report. Also if You do not need to take care of something like `grain direction`, `detailed edgeband`, `wood type`, `wood color`, this type of report is just for You. Personally, I prefer this type of report the most. Also this type of report has space at the left side, so You can add extra notes later after print.
@@ -143,6 +160,7 @@ This type of report is `default` type of report. It is the shortest one. It can 
 
     ![ReportTypeQ001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeQ001.png)
 
+___
 ### n - report type
 
 This type of report is mostly used by me for documentation purposes. It is simple objects listing. However, it can be very useful for project veryfication. You can list all objects and see if the dimensions are set correctly.
@@ -151,6 +169,7 @@ This type of report is mostly used by me for documentation purposes. It is simpl
 
     ![ReportTypeN001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeN001.png)
 
+___
 ### g - report type
 
 This type of report is very useful to divide furniture parts into categories. It can be used for `grain direction`, `detailed edgeband`, `wood type`, `wood color` or for any other category. Also, the `Thickness` column is just after the `Name` column. This is because if You go to cutting chipboards service, first You give `wood color`, second the `thickness`, next `dimensions` and `quantity` at the end. This aproach simplifies the more detailed ordering process.
@@ -163,6 +182,7 @@ This type of report is very useful to divide furniture parts into categories. It
 	
 For more details see: [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc) section.
 
+___
 ### e - report type
 
 This type of report is designed for more advanced edge report. It is mostly used for edgeband. Also You can verify if Your 3D model have correctly applied veneer. This type of report recognize automatically if the covered `face` is `surface` or `edge` type. Also shows the dimension for `edge` type of face and given veneer description.
@@ -178,6 +198,7 @@ This type of report is designed for more advanced edge report. It is mostly used
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
+___
 ### c - report type
 
 This type of report is totally custom and it is supported only for `Pad` furniture parts. It can be used as additional report for any other type of report. This type of report can provide such information as: offset, radius, doweling, holes, bar codes, reference numbers, detailed edge banding or any other description You add for dimension (`constraints name`).
@@ -198,7 +219,9 @@ This type of report is totally custom and it is supported only for `Pad` furnitu
 
 For more details see: [Constraints - totally custom report](#constraints---totally-custom-report) section.
 
+___
 ## Visibility
+___
 
 * Search `Visibility` part in the [Default Settings](#default-settings) and set to `on`.
 * Now You can create any report You want just by toggle visibility items or group of items.
@@ -207,7 +230,9 @@ For more details see: [Constraints - totally custom report](#constraints---total
 
     ![RVisibility002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility002.png)
 
+___
 ## Edge size
+___
 
 * Search `Visibility` part in the [Default Settings](#default-settings).
 * By default the feature `Visibility` is set to `edge` because in the real world the `edge size` that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize Your project tree with exact visibility:
@@ -219,21 +244,25 @@ For more details see: [Constraints - totally custom report](#constraints---total
     ![REdge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge002.png)
     
 	**Note:** The `Cube` furniture part is hidden, so the `edge size` is different now. Also, the edge of the `Pad` furniture part has no veneer applied, so the extended edgeband info is automatically hidden.
-    
+
+___    
 ## Report - export
+___
 
 * You can generate different reports at the same furniture project. Just copy (`CTRL-C` and `CTRL-V`) and rename the spreadsheet `toCut` to store it and prevent it from an overwrite or export the TechDraw page `toPrint` to `pdf` file.
 
 * To export multi-page report or export many spreadsheets at once You can use my project created for this purpose here [sheet2export](https://github.com/dprojects/sheet2export).
 
+___
 # Transformations
+___
 
 For the macro purposes the transformation of a furniture part will be considered as any FreeCAD operation that creates a new object and simplifies the process of furniture design. To use the macro You should use the transformation only for supported furniture parts. Each transformation has information about supported objects (tested combinations).
 
 Do not use any transformation at `Sketch`, even if the FreeCAD allows for that. It might be good for FreeCAD purposes and the FreeCAD point of view but it is not supported by the macro for now.
 
-## Part :: Mirroring
 ___
+## Part :: Mirroring
 **Supported:** `Cube`, `Pad`, `Body`, `Clone`.
 ___
 
@@ -252,9 +281,9 @@ ___
 * Now, just run the macro, to get report `toPrint`:
 	
 	![TPartMirroring004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartMirroring004.png)
-	
-## Draft :: Array
+
 ___
+## Draft :: Array
 **Supported:** `Cube`, `Pad`.
 ___
 
@@ -274,8 +303,8 @@ To start with `Draft :: Array` transformation, You have to create the furniture 
 	
 	**Note:** Now You should see the `edge size` is calculated correctly.
 
-## Draft :: Array Polar
 ___
+## Draft :: Array Polar
 **Supported:** `Cube`, `Pad`.
 ___
 
@@ -289,8 +318,8 @@ To start with `Draft :: Array Polar` transformation, You have to create the furn
 	
 	![TDraftArrayPolar002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArrayPolar002.png)
 
-## Draft :: Clone
 ___
+## Draft :: Clone
 **Supported:** `Cube`, `Pad`, `Body`.
 ___
 
@@ -308,8 +337,8 @@ To start with `Draft :: Clone` transformation, You have to create the furniture 
 
     ![TDraftClone003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftClone003.png)
 
-## PartDesign :: Hole
 ___
+## PartDesign :: Hole
 **Supported:** `Cube`, `Pad`.
 ___
 
@@ -334,9 +363,9 @@ To start with `PartDesign :: Hole` transformation, You have to create the furnit
     ![TPDHole004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPDHole004.png)
 
 	**Note:** The `PartDesign :: Hole` is supported only by the [c - report type](#c---report-type).
-	
-## PartDesign :: LinearPattern
+
 ___
+## PartDesign :: LinearPattern
 **Supported:** `Cube`, `Pad`, `Hole`.
 ___
 
@@ -354,8 +383,8 @@ To start with `PartDesign :: LinearPattern` transformation, You have to create t
 
     ![TPDLinearPattern003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPDLinearPattern003.png)
 
-## PartDesign :: Mirrored
 ___
+## PartDesign :: Mirrored
 **Supported:** `Pad`. Not supported by FreeCAD: `Cube`.
 ___
 
@@ -369,10 +398,10 @@ To start with `PartDesign :: Mirrored` transformation, You have to create the fu
 	
 	![TPartDesignMirrored002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMirrored002.png)
 
-## PartDesign :: MultiTransform
 ___
-**Supported objects:** `Pad`, `Hole`. Not supported by FreeCAD: `Cube`, `Body`.
-**Supported transformations:** `Mirror`, `LinearPattern`.
+## PartDesign :: MultiTransform
+* **Supported objects:** `Pad`, `Hole`. Not supported by FreeCAD: `Cube`, `Body`.
+* **Supported transformations:** `Mirror`, `LinearPattern`.
 ___
 
 The `PartDesign :: MultiTransform` allows for many transformations at the single step. To start with `PartDesign :: MultiTransform` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
@@ -385,7 +414,9 @@ The `PartDesign :: MultiTransform` allows for many transformations at the single
 	
 	![TPartDesignMultiTransform002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform002.png)
 
+___
 ## Advanced furniture example
+___
 
 To use any mirror type of feature part with Your furniture project just follow the steps:
 	
@@ -403,9 +434,13 @@ To use any mirror type of feature part with Your furniture project just follow t
 	
 	**Note:** If You want to calculate the `edge size` correctly, You have to use the visibility to show e.g. top and hide legs and other parts.
 
+___
 # Woodworking - usage examples
+___
 
+___
 ## Constraints - totally custom report
+___
 
 This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the ` Length` of `Sketch > Pad` option. For this dimension macro can be sure. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
@@ -423,7 +458,9 @@ However, You can create pretty useful report with all important `constraints` an
 
     ![RConstraints003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RConstraints003.png)
 
+___
 ## Wood Properties - grain, type, color, etc.
+___
 
 FreeCAD not support description for objects. This is not possible to add any note or custom text to the object during furniture design process. You can use `constraints name` at `Sketch` but this is not supported for `Cube` furniture part. Best way to do it is to use currently supported group report (`Report type` variable set to `g`). You can just organize You tree structure and create any report You want.
 
@@ -439,12 +476,15 @@ FreeCAD not support description for objects. This is not possible to add any not
 	
 	![WoodProperties003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/WoodProperties003.png)
 
+___
 ## Edgeband
+___
 
 The edgeband is a very problematic matter. Mainly because the edge You want to cover is up to human's choice. The macro cannot guess the edge to cover. For example, You may want to cover the front part of the shelf, or the back part too, or all the edges. The same for the other furniture parts. To solve this problem, a person has to select and mark the edge (or rather the `face`) to be covered. 
 
 From the other side, during the furniture production process, there are always some leftover veneers for edge banding. But it is always better to have more than less veneer. If You buy a veneer for the entire edge, You can be sure that this veneer is enough for edge banding.
 
+___
 ### Edgeband - quick way
 
 The quickest way to add edgeband is to use the `Visibility` and `g - report type` (`Report type` variable set to `g`) feature together. You can organize furniture parts in groups and hide the furniture parts without edgeband. All You have to do is to create groups and name them appropriately. This is very quick way and in some cases may be very precised.
@@ -455,6 +495,7 @@ The quickest way to add edgeband is to use the `Visibility` and `g - report type
 
 	**Note:** As You see the `Edge size` is `20.4 m` which is very close to the correct value `18.8 m`.
 
+___
 ### Edgeband - described
 
 If You want more detailed report about the edgeband You should consider [Constraints - totally custom report](#constraints---totally-custom-report). This type of report not support the `Edge size` but it can be a good addition to any other type of report.
@@ -475,6 +516,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 	
 	![Edgeband005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband005.png)
 
+___
 ### Edgeband - detailed by selection
 
 * This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparision. To apply veneer for `face` use: 
@@ -490,6 +532,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 
 	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
 
+___
 ## Dowels, pilot holes, countersinks
 
 * To create dowel You have to create `Pad` so first start with `Sketch` at the furniture part:
@@ -531,7 +574,9 @@ If You want more detailed report about the edgeband You should consider [Constra
 
     ![PDHole009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole009.png)
 
+___
 ## Custom furniture part
+___
 
 You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirroring) features to create custom furniture part. To do this You can use the whole `Body` content as custom furniture part. 
 
@@ -552,7 +597,9 @@ You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirro
 
     ![CustomPart005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart005.png)
 
+___
 ## 32 mm cabinetmaking system
+___
 
 To make very quickly many holes for shelf support You can use [PartDesign :: MultiTransform](#partdesign--multitransform) with [PartDesign :: Hole](#partdesign--hole).
 
@@ -584,7 +631,9 @@ To make very quickly many holes for shelf support You can use [PartDesign :: Mul
 
 	![32System007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/32System007.png)
 
+___
 # Known issues
+___
 
 * **Issue**: Special characters (e.g. Polish) for chipboards (objects names) are not supported. 
 	* **Workaround**: You can change the names later manually in the spreadsheet `toCut` and the TechDraw report named `toPrint` will be automatically updated with new names.
@@ -598,7 +647,9 @@ To make very quickly many holes for shelf support You can use [PartDesign :: Mul
 		2. You can use my project created for this purpose here: [sheet2export](https://github.com/dprojects/sheet2export).
 		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
 
+___
 # Special thanks
+___
 
 * [jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072): for the `Array` suggestion.
 * [acousticguy](https://forum.freecadweb.org/viewtopic.php?p=286030#p286030): for the `Inches` suggestion.
@@ -606,7 +657,9 @@ To make very quickly many holes for shelf support You can use [PartDesign :: Mul
 * [zohozer](https://forum.freecadweb.org/viewtopic.php?p=560407#p560407): for the `edgeband` suggestion.
 * [kisolre](https://forum.freecadweb.org/viewtopic.php?p=565403#p565403): for the `Body Clone` suggestion.
 
+___
 # Feature requests
+___
 
 Best way to ask for new feature is [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127). 
 
