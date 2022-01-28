@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.27
+# Version: 2022.01.28
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -1129,7 +1129,15 @@ def setConstraints(iObj):
 
 			# support for pilot hole and countersink
 			if iObj.isDerivedFrom("PartDesign::Hole"):
-				vLength = ""
+
+				if iObj.DepthType == "Dimension":
+
+					# convert float to the correct dimension
+					gFakeCube.Length = iObj.Depth.Value
+					vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+				else:
+					# no length header
+					vLength = ""
 
 			# set db for Constraints
 			setDBConstraints(iObj, vLength, vNames, vValues)
@@ -1317,19 +1325,56 @@ def setPartDesignMirrored(iObj):
 
 		try:
 
-			# skip single mirrors from MultiTransform with no error
-			if len(iObj.Originals) != 0:
+			# skip Mirrored from MultiTransform with no error
+			if len(iObj.Originals) == 0:
+				return 0
 
-				# set reference point to the base furniture part
-				key = iObj.Originals[0]
+			# set reference point to the base furniture part
+			key = iObj.Originals[0]
 
-				# if object is Mirror this create new furniture part
-				selectFurniturePart(key, "transform")
+			# if object is Mirror this create new furniture part
+			selectFurniturePart(key, "transform")
 		
 		except:
 			
 			# if there is wrong structure
 			showError(iObj, "setPartDesignMirrored", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setPartDesignLinearPattern(iObj):
+	
+	# support for LinearPattern FreeCAD feature
+	if iObj.isDerivedFrom("PartDesign::LinearPattern"):
+
+		try:
+
+			# skip LinearPattern from MultiTransform with no error
+			if len(iObj.Originals) == 0:
+				return 0
+
+			# set number of occurrences
+			oc = iObj.Occurrences
+
+			k = 0
+			if oc > 0:
+				
+				# loop for each occurrence without base element
+				while k < oc - 1:
+
+					# set reference object (only one is supported for now)
+					key = iObj.Originals[0]
+
+					# select furniture part
+					selectFurniturePart(key, "transform")
+					k = k + 1
+		except:
+
+			# if there is wrong structure
+			showError(iObj, "setPartDesignLinearPattern", "wrong structure")
 			return -1
 	
 	return 0
@@ -1343,27 +1388,45 @@ def setPartDesignMultiTransform(iObj):
 
 		try:
 
-			# set number of transformations available    
-			lenT = len(iObj.Transformations)
+			# set variables
+			mirror = 0
+			linear = 0
+			
+			for t in iObj.Transformations:
+
+				if t.isDerivedFrom("PartDesign::Mirrored"):
+					mirror = mirror + 1
+
+				if t.isDerivedFrom("PartDesign::LinearPattern"):
+					linear = linear + t.Occurrences
+
+			# mirror makes 2 elements but each mirror in MultiTransform makes 
+			# next mirror but using current transformed object, so this will raise 
+			# the number of mirrors to the power, also you have to remove the 
+			# base furniture part already added
+			mirror = (2 ** mirror)
+
+			# stay as it is
+			linear = linear
+
+			# if no such transformation type
+			if linear == 0:
+				linear = 1
+			if mirror == 0:
+				mirror = 1
+
+			# calculate number of base elements
+			lenT = (linear * mirror) - 1
+
 			k = 0
+			while k < lenT:
 
-			# if this is MultiTransform, not single mirror
-			if lenT > 0:
-				
-				# mirror makes 2 elements but each mirror in MultiTransform makes next mirror but using 
-				# current transformed object, so this will raise the number of mirrors to the power, 
-				# also you have to remove the base furniture part already added
-				while k < (2 ** lenT) - 1:
+				# set reference object (only one is supported for now)
+				key = iObj.Originals[0]
 
-					# set reference point to the base furniture part
-					key = iObj.Originals[0]
-
-					# if object is mirror this create new furniture part
-					# Note: you cannot call setPartDesignMirrored here on this because 
-					# it is transformation with empty array, there is no access
-					# to the base furniture part
-					selectFurniturePart(key, "transform")
-					k = k + 1
+				# if object is mirror this create new furniture part
+				selectFurniturePart(key, "transform")
+				k = k + 1
 
 		except:
 
@@ -1399,6 +1462,7 @@ def scanObjects(iOBs):
 		setDraftClone(obj)
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
+		setPartDesignLinearPattern(obj)
 
 
 # ###################################################################################################################

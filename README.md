@@ -17,7 +17,7 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* extended for edgeband,
 	* custom by constraints names (totally custom report).
 * **Calculations:** quantity, thickness, area, edge size, edgeband.
-* **Support for:** grain direction, type of wood, wood color, dowels, pilot holes, countersinks.
+* **Support for:** grain direction, type of wood, wood color, dowels, pilot holes, countersinks, 32 mm cabinetmaking system.
 * **Supported furniture parts:** 
     * Part :: Cube,
     * PartDesign :: Pad.
@@ -29,10 +29,9 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform,
     * PartDesign :: Hole,
-    * Draft :: Clone on Body,
-    * Part :: Mirroring on Body.
+    * PartDesign :: LinearPattern.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
-* **Outputs:** Spreadsheet, TechDraw page, multi-page by [sheet2export](https://github.com/dprojects/sheet2export).
+* **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 

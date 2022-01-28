@@ -8,7 +8,7 @@
 
 ## Demo001_quickstart
 
-This is the quickstart with furniture parts examples.
+This is the quickstart with furniture parts examples. I use this demo for documentation purposes. This is good start for feature testing.
 
 |   |   |
 |---|---|
