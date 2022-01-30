@@ -5,7 +5,8 @@
 3. [Demo003_multi](#demo003_multi)
 4. [Demo004_pads_mirror](#demo004_pads_mirror)
 5. [Demo005_edgeband](#demo005_edgeband)
-
+6. [Demo006_holes](#demo006_holes)
+	
 ## Demo001_quickstart
 
 This is the quickstart with furniture parts examples. I use this demo for documentation purposes. This is good start for feature testing.
@@ -40,9 +41,17 @@ This is sample furniture for Pads but uses FreeCAD Pads transformations features
 
 ## Demo005_edgeband
 
-This is the furniture I made in my garage but this time it is updated with edgeband. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband.
+This is the real-life furniture I made in my garage. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband.
 
 |   |   |
 |---|---|
 | ![Demo005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo005/001.png) | ![Demo005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo005/002.png) |
+
+## Demo006_holes
+
+This example based on the real-life furniture I made in the past. It has open back part for wires. This example shows how to use detailed report with advanced features in practice.
+
+|   |   |
+|---|---|
+| ![Demo006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo006/001.png) | ![Demo006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo006/002.png) |
 

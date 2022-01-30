@@ -12,6 +12,7 @@
 		* [n - report type](#n---report-type)
 		* [g - report type](#g---report-type)
 		* [e - report type](#e---report-type)
+		* [d - report type](#d---report-type)
 		* [c - report type](#c---report-type)
 	2. [Visibility](#visibility)
 	3. [Edge size](#edge-size)
@@ -187,6 +188,23 @@ This type of report is designed for more advanced edge report. It is mostly used
 * Each column represents `face` object number at 3D model.
 * If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
+* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+
+___
+### d - report type
+
+This type of report is designed for very detailed view of edgeband, holes and countersinks. Also it allow long descriptions based on group names. Regarding edgeband it work like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
+
+* To create the extended edge report just set `Report type` variable to `d` and run the macro:
+
+    ![ReportTypeD001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeD001.png)
+
+**Note:** 
+
+* Each column represents `face` object number at 3D model.
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
+* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
+* The holes and countersinks are taken from `constraints names` of the base object of the group. So, the `constraints names` can be set only at base object.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
 ___

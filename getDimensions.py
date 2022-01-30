@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.28
+# Version: 2022.01.30
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -40,13 +40,14 @@ sUnitsArea = "m"
 # "on" - skip all hidden objects and groups
 # "edge" - show all hidden objects and groups but not add to the edge size
 # "off" - show and calculate all objects and groups
-sTVF = "edge"
+sTVF = "off"
 
 # Report customization (Label Type Feature):
-# "e" - automatic extended for edge
-# "n" - automatic by objects names (listing)
-# "g" - automatic by groups (folder names)
-# "q" - automatic by quantity (dimensions)
+# "q" - quantity
+# "n" - objects names (listing)
+# "g" - groups (folder names)
+# "e" - extended for edge
+# "d" - detailed
 # "c" - custom by constraints names (totally custom report)
 sLTF = "q"
 
@@ -104,6 +105,7 @@ gLang11 = ""
 gLang12 = ""
 gLang13 = ""
 gLang14 = ""
+gLang15 = ""
 
 # spreadsheet result
 gSheet = gAD
@@ -151,6 +153,8 @@ dbCNL = dict() # length
 dbCNQ = dict() # quantity
 dbCNN = dict() # names
 dbCNV = dict() # values
+dbCNH = dict() # header
+dbCNOH = dict() # objects for hole
 
 
 # ###################################################################################################################
@@ -244,7 +248,7 @@ def showQtGUI():
 			self.visibilityList = ("on", "edge", "off")
 			self.visibilityO = QtGui.QComboBox(self)
 			self.visibilityO.addItems(self.visibilityList)
-			self.visibilityO.setCurrentIndex(self.visibilityList.index("edge"))
+			self.visibilityO.setCurrentIndex(self.visibilityList.index("off"))
 			self.visibilityO.activated[str].connect(self.setVisibility)
 			self.visibilityO.move(10, vLine + vLineNextRow)
 
@@ -287,7 +291,7 @@ def showQtGUI():
 			self.rcL.move(10, vLine + 3)
 			
 			# options
-			self.rcList = ("q", "n", "g", "e", "c")
+			self.rcList = ("q", "n", "g", "e", "d", "c")
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index("q"))
@@ -295,7 +299,7 @@ def showQtGUI():
 			self.rcO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.rcIS = QtGui.QLabel("automatic by quantity (dimensions)                                     ", self)
+			self.rcIS = QtGui.QLabel("quick, quantity first                                                                 ", self)
 			self.rcIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -364,7 +368,7 @@ def showQtGUI():
 			self.fcO.move(10, vLine + vLineNextRow + 3)
 
 			# text input label
-			self.fctiL = QtGui.QLabel("Custom furniture color:", self)
+			self.fctiL = QtGui.QLabel("Custom:", self)
 			self.fctiL.move(140, vLine + 3)
 
 			# text input
@@ -381,7 +385,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.ecL = QtGui.QLabel("Edge color:", self)
+			self.ecL = QtGui.QLabel("Edgeband code:", self)
 			self.ecL.move(10, vLine + 3)
 
 			# options
@@ -393,13 +397,13 @@ def showQtGUI():
 			self.ecO.move(10, vLine + vLineNextRow + 3)
 
 			# text input label
-			self.ectiL = QtGui.QLabel("Custom edge color:", self)
+			self.ectiL = QtGui.QLabel("Custom:", self)
 			self.ectiL.move(140, vLine + 3)
 
 			# text input
 			self.ecti = QtGui.QLineEdit(self)
 			self.ecti.setText(str(sEColor))
-			self.ecti.setFixedWidth(435)
+			self.ecti.setFixedWidth(75)
 			self.ecti.move(140, vLine + vLineNextRow + 3)
 
 			# edge color hide by default
@@ -514,19 +518,19 @@ def showQtGUI():
 		def setRC(self, selectedText):
 			global sLTF
 
-			if selectedText == "e":
-				sLTF = "e"
-				self.rcIS.setText("automatic extended for edge")
+			if selectedText == "q":
+				sLTF = "q"
+				self.rcIS.setText("quick, quantity first")
 				self.setSubmenu("show")
 				# edge color
-				self.ecL.show()
-				self.ecO.show()
-				self.ectiL.show()
-				self.ecti.show()
+				self.ecL.hide()
+				self.ecO.hide()
+				self.ectiL.hide()
+				self.ecti.hide()
 
 			if selectedText == "n":
 				sLTF = "n"
-				self.rcIS.setText("automatic by objects names (listing)")
+				self.rcIS.setText("name, objects names first (listing)")
 				self.setSubmenu("show")
 				# edge color
 				self.ecL.hide()
@@ -536,7 +540,7 @@ def showQtGUI():
 
 			if selectedText == "g":
 				sLTF = "g"
-				self.rcIS.setText("automatic by groups (folder names)")
+				self.rcIS.setText("groups first (grandparent or parent folder)")
 				self.setSubmenu("show")
 				# edge color
 				self.ecL.hide()
@@ -544,19 +548,29 @@ def showQtGUI():
 				self.ectiL.hide()
 				self.ecti.hide()
 
-			if selectedText == "q":
-				sLTF = "q"
-				self.rcIS.setText("automatic by quantity (dimensions)")
+			if selectedText == "e":
+				sLTF = "e"
+				self.rcIS.setText("edge, extended for edgeband")
 				self.setSubmenu("show")
 				# edge color
-				self.ecL.hide()
-				self.ecO.hide()
-				self.ectiL.hide()
-				self.ecti.hide()
+				self.ecL.show()
+				self.ecO.show()
+				self.ectiL.show()
+				self.ecti.show()
+
+			if selectedText == "d":
+				sLTF = "d"
+				self.rcIS.setText("detailed, drill holes (holes, countersinks, edgeband)")
+				self.setSubmenu("show")
+				# edge color
+				self.ecL.show()
+				self.ecO.show()
+				self.ectiL.show()
+				self.ecti.show()
 
 			if selectedText == "c":
 				sLTF = "c"
-				self.rcIS.setText("custom by constraints names (totally custom report)")
+				self.rcIS.setText("constraints names, custom (totally custom report)")
 				self.setSubmenu("hide")
 				# edge color
 				self.ecL.hide()
@@ -774,17 +788,12 @@ def getKey(iObj, iW, iH, iL, iType):
 	vKey += ":"
 	vKey += str(vKeyArr[2])
 
-	# key for quantity report
-	if iType == "d" and sLTF == "q":
-		return str(vKey)
-
 	# key for name report
-	elif iType == "d" and (sLTF == "n" or sLTF == "e"):
+	if iType == "d" and (sLTF == "n" or sLTF == "e" or sLTF == "d"):
 		vKey = str(vKey) + ":" + str(iObj.Label)
-		return str(vKey)
 
 	# key for group report
-	elif iType == "d" and sLTF == "g":
+	if iType == "d" and (sLTF == "g" or sLTF == "d"):
 		
 		# get grandparent or parent group name
 		vGroup = getGroup(iObj)
@@ -795,7 +804,7 @@ def getKey(iObj, iW, iH, iL, iType):
 			vKey = str(vKey) + ":[...]"
 
 	# return thickness (this is value, not string)
-	elif iType == "thick":
+	if iType == "thick":
 		return vKeyArr[0]
 
 	return str(vKey)
@@ -896,7 +905,7 @@ def getEdgeBand(iObj, iW, iH, iL):
 				a.sort()
 
 				# check if this is correct egde
-				if str(vEdge) == str(a[1]) or str(vEdge) == str(a[2]):
+				if int(vEdge) == int(a[1]) or int(vEdge) == int(a[2]):
 					vFaceN[i] = gLang12
 					vFaceD[i] = getUnit(vEdge, "d")
 					vFaceV[i] = str(sEColor)
@@ -1000,7 +1009,7 @@ def setDB(iObj, iW, iH, iL):
 
 
 # ###################################################################################################################
-def setDBConstraints(iObj, iL, iN, iV):
+def setDBConstraints(iObj, iL, iN, iV, iHoleObj):
 
 	try:
 
@@ -1026,6 +1035,20 @@ def setDBConstraints(iObj, iL, iN, iV):
 		dbCNL[vKey] = iL
 		dbCNN[vKey] = iN
 		dbCNV[vKey] = iV
+		
+		# set holes for detailed report
+		if sLTF == "d":
+			try:
+				dbCNOH[str(iHoleObj)] += str(vKey) + ":"
+			except:
+				dbCNOH[str(iHoleObj)] = str(vKey) + ":"
+
+		# constraints report header for Length
+		if iObj.isDerivedFrom("PartDesign::Pad"):
+			dbCNH[vKey] = gLang9
+
+		if iObj.isDerivedFrom("PartDesign::Hole"):
+			dbCNH[vKey] = gLang15
 
 	except:
 
@@ -1099,7 +1122,8 @@ def setConstraints(iObj):
 		isSet = 0
 		vNames = ""
 		vValues = ""
-	
+		vHoleObj = ""	
+
 		# set reference point
 		vCons = iObj.Profile[0].Constraints
 
@@ -1139,8 +1163,25 @@ def setConstraints(iObj):
 					# no length header
 					vLength = ""
 
+				# detailed report for holes
+				if sLTF == "d":
+				
+					try:
+
+						# set reference point until will be something 
+						# different than hole
+						ref = iObj.BaseFeature
+
+						while ref.isDerivedFrom("PartDesign::Hole"):
+							ref = ref.BaseFeature
+
+						vHoleObj = ref.Label
+
+					except:
+						skip = 1
+
 			# set db for Constraints
-			setDBConstraints(iObj, vLength, vNames, vValues)
+			setDBConstraints(iObj, vLength, vNames, vValues, vHoleObj)
 
 	except:
 		
@@ -1170,27 +1211,31 @@ def selectFurniturePart(iObj, iPlace):
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj)
 
-	# custom report
+	# constraints report
 	else:
 
 		# support for Pad furniture part with constraints
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setConstraints(iObj)
 
+	# constraints or detailed
+	if sLTF == "c" or sLTF == "d":
+
 		# support for pilot holes and countersinks
 		if iObj.isDerivedFrom("PartDesign::Hole"):
 			setConstraints(iObj)
 
-		# skip main scan loop
-		if iPlace != "main":
+	# all reports 
+	# skip main scan loop
+	if iPlace != "main":
 
-			# support for Mirror on Body
-			if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
-				setPartMirroringBody(iObj)
+		# support for Mirror on Body
+		if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
+			setPartMirroringBody(iObj)
 
-			# support for Mirror on Clone
-			if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
-				setDraftClone(iObj)
+		# support for Mirror on Clone
+		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+			setDraftClone(iObj)
 
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
@@ -1421,11 +1466,17 @@ def setPartDesignMultiTransform(iObj):
 			k = 0
 			while k < lenT:
 
-				# set reference object (only one is supported for now)
-				key = iObj.Originals[0]
+				# for all objects
+				i = 0
+				for o in iObj.Originals:
 
-				# if object is mirror this create new furniture part
-				selectFurniturePart(key, "transform")
+					# set reference for object
+					key = iObj.Originals[i]
+					i = i + 1
+
+					# select furniture part
+					selectFurniturePart(key, "transform")
+
 				k = k + 1
 
 		except:
@@ -1487,6 +1538,7 @@ def initLang():
 	global gLang12
 	global gLang13
 	global gLang14
+	global gLang15
 
 	# Polish language
 	if sLang  == "pl":
@@ -1512,6 +1564,7 @@ def initLang():
 		gLang12 = "brzeg"
 		gLang13 = "wierzch"
 		gLang14 = "wymiary"
+		gLang15 = "Głębokość"
 
 	# English language
 	else:
@@ -1537,6 +1590,7 @@ def initLang():
 		gLang12 = "edge"
 		gLang13 = "surface"
 		gLang14 = "dimensions"
+		gLang15 = "Depth"
 
 
 # ###################################################################################################################
@@ -2030,6 +2084,312 @@ def setViewE():
 
 
 # ###################################################################################################################
+def setViewD():
+
+	global gSheet
+	global gSheetRow
+
+	# add values
+	for key in dbDA.keys():
+
+		a = key.split(":")
+
+		# text header decoration
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+		gSheet.mergeCells(vCell)
+
+		# set group name
+		gSheet.set("A" + str(gSheetRow), "'" + str(a[4]))
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# set headers
+		gSheet.set("B" + str(gSheetRow), gLang3)
+		gSheet.set("E" + str(gSheetRow), gLang4)
+		gSheet.set("F" + str(gSheetRow), gLang2)
+		gSheet.set("G" + str(gSheetRow), gLang5)
+	
+		# text header decoration
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCW)
+	
+		# alignment
+		gSheet.setAlignment("A" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("C" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("D" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+	
+		# merge cells
+		vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+	
+		# fix for center header text in merged cells
+		gSheet.setAlignment("B" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("C" + str(gSheetRow), "center", "keep")
+		gSheet.setAlignment("D" + str(gSheetRow), "center", "keep")
+	
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d"))
+		gSheet.set("C" + str(gSheetRow), "'" + "x")
+		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d"))
+		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area"))
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+		
+		# ####################################################
+		# faces numbers
+		# ####################################################
+
+		# set header
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCW)
+		gSheet.setStyle(vCell, "bold", "add")
+
+		gSheet.set("A" + str(gSheetRow), "5")
+		gSheet.set("B" + str(gSheetRow), "6")
+		gSheet.set("D" + str(gSheetRow), "1")
+		gSheet.set("E" + str(gSheetRow), "2")
+		gSheet.set("F" + str(gSheetRow), "3")
+		gSheet.set("G" + str(gSheetRow), "4")
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces names
+		# ####################################################
+
+		try:
+			# try get values
+			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFN[key][4]))
+			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFN[key][5]))
+			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFN[key][0]))
+			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFN[key][1]))
+			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFN[key][2]))
+			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFN[key][3]))
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces dimensions
+		# ####################################################
+
+		try:
+			# try get values
+			if dbEFD[key][4] != 0:
+				gSheet.set("A" + str(gSheetRow), dbEFD[key][4])
+			if dbEFD[key][5] != 0:
+				gSheet.set("B" + str(gSheetRow), dbEFD[key][5])
+			if dbEFD[key][0] != 0:
+				gSheet.set("D" + str(gSheetRow), dbEFD[key][0])
+			if dbEFD[key][1] != 0:
+				gSheet.set("E" + str(gSheetRow), dbEFD[key][1])
+			if dbEFD[key][2] != 0:
+				gSheet.set("F" + str(gSheetRow), dbEFD[key][2])
+			if dbEFD[key][3] != 0:
+				gSheet.set("G" + str(gSheetRow), dbEFD[key][3])
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ####################################################
+		# faces veneers
+		# ####################################################
+
+		try:
+			# try get values
+			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFV[key][4]))
+			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFV[key][5]))
+			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFV[key][0]))
+			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFV[key][1]))
+			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFV[key][2]))
+			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFV[key][3]))
+
+		except:
+			skip = 1
+
+		# alignment
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# ########################################################
+		# constraints part
+		# ########################################################
+		
+		try:
+			# set reference for object holes
+			vHoles = dbCNOH[str(a[3])][:-1].split(":")
+	
+			for vKey in vHoles:
+			
+				# set object header
+				vCell = "A" + str(gSheetRow)
+				vStr = str(dbCNQ[vKey]) + " x "
+				gSheet.set(vCell, vStr)
+				gSheet.setAlignment(vCell, "right", "keep")
+				gSheet.setStyle(vCell, "bold", "add")
+				gSheet.setBackground(vCell, gHeadCW)
+		
+				vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
+				vStr = str(vKey)
+				gSheet.set(vCell, vStr)
+				gSheet.mergeCells(vCell)	
+				gSheet.setAlignment(vCell, "left", "keep")
+				gSheet.setStyle(vCell, "bold", "add")
+				gSheet.setBackground(vCell, gHeadCW)
+	
+				# set Length header only for Pads
+				if dbCNL[vKey] != "":
+		
+					# go to next spreadsheet row
+					gSheetRow = gSheetRow + 1
+		
+					# set object length
+					vCell = "A" + str(gSheetRow)
+					gSheet.setBackground(vCell, (1,1,1))
+		
+					vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
+					gSheet.set(vCell, dbCNH[vKey])
+					gSheet.mergeCells(vCell)	
+					gSheet.setAlignment(vCell, "left", "keep")
+					gSheet.setStyle(vCell, "bold", "add")
+					gSheet.setBackground(vCell, gHeadCW)
+			
+					vCell = "G" + str(gSheetRow)
+					vStr = getUnit(dbCNL[vKey], "d")
+					gSheet.set(vCell, vStr)
+					gSheet.setAlignment(vCell, "right", "keep")
+					gSheet.setStyle(vCell, "bold", "add")
+					gSheet.setBackground(vCell, gHeadCW)
+			
+				# create constraints lists
+				keyN = dbCNN[vKey].split(":")
+				keyV = dbCNV[vKey].split(":")
+		
+				# go to next spreadsheet row
+				gSheetRow = gSheetRow + 1
+		
+				# set all constraints
+				k = 0
+				while k < len(keyN)-1: 
+			
+					# the first A column is empty for better look
+					vCell = "A" + str(gSheetRow)
+					gSheet.setBackground(vCell, (1,1,1))
+		
+					# set constraint name
+					vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
+					gSheet.set(vCell, "'" + str(keyN[k]))
+					gSheet.mergeCells(vCell)
+					gSheet.setAlignment(vCell, "left", "keep")
+		
+					# set dimension
+					vCell = "G" + str(gSheetRow)
+					gSheet.set(vCell, getUnit(keyV[k], "d"))
+					gSheet.setAlignment(vCell, "right", "keep")
+		
+					# go to next spreadsheet row
+					gSheetRow = gSheetRow + 1
+		
+					# go to next constraint
+					k = k + 1
+		except:
+			skip = 1
+
+		# merge cells
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# merge cells
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
+	# separator
+	gSheetRow = gSheetRow + 2
+
+         # ########################################################
+	# width part
+         # ########################################################
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 90)
+	gSheet.setColumnWidth("C", 20)
+	gSheet.setColumnWidth("D", 90)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
+
+         # ########################################################
+	# thickness part - depends on view columns order, so better here
+         # ########################################################
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("E" + str(gSheetRow), getUnit(key, "d"))
+		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
+		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area"))
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
 def setViewC():
 
 	global gSheet
@@ -2066,9 +2426,9 @@ def setViewC():
 			# set object length
 			vCell = "A" + str(gSheetRow)
 			gSheet.setBackground(vCell, (1,1,1))
-	
+
 			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-			gSheet.set(vCell, gLang9)
+			gSheet.set(vCell, dbCNH[vKey])
 			gSheet.mergeCells(vCell)	
 			gSheet.setAlignment(vCell, "left", "keep")
 			gSheet.setStyle(vCell, "bold", "add")
@@ -2273,6 +2633,11 @@ def selectView():
 	# main report - edge extended
 	if sLTF == "e":
 		setViewE()
+		setViewEdge()
+
+	# main report - detailed holes
+	if sLTF == "d":
+		setViewD()
 		setViewEdge()
 
 	# main report - constraints (custom report)

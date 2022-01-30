@@ -11,12 +11,16 @@ FreeCAD 0.19.3 AppImage under Ubuntu 20.04.2 LTS 64-bit.
 # Test cases
 
 1. **Test001_features:** 
-	* Test all the stable features supported by the macro.
+	* Test all the basic features supported by the macro.
 	* **Settings:** `Report type` to `n`.
 2. **Test002_edgeband:** 
-    * Test edgeband and extended edge report type view.
+    * Test edgeband and extended edge report.
     * **Settings:** 
         * `Report type` to `e`, 
         * `Furniture color` to `white`, 
-        * `Edge color` to `black`.
-    
+        * `Edgeband code` to `black`.
+2. **Test003_holes:** 
+    * Test detailed report with edgeband, holes and countersinks and advanced features like Mirrored on Body, Clone, multi object MultiTransform.
+    * **Settings:** 
+        * `Report type` to `d`, 
+        * `Edgeband code` to `bronze`.

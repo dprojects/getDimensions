@@ -11,13 +11,19 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 * **Languages:** Polish, English.
 * **Units:** millimeters, meters, inches.
 * **Raport types:**
-	* by quantity (dimensions),
-	* by objects names (listing),
-	* by groups (folder names),
-	* extended for edgeband,
-	* custom by constraints names (totally custom report).
+	* quick, quantity first (q - report type),
+	* names, objcts listing (n - report type),
+	* group, grandparent or parent folder name first (g - report type),
+	* edgeband, extended edge (e - report type),
+	* detailed, drill holes and countersinks (d - report type),
+	* constraints names, totally custom report (c - report type).
+* **Woodworking usage:**
+	* wood properties - grain direction, type of wood, color of wood,
+	* edgeband (quick way, described, detailed by selection),
+	* dowels, pilot holes, countersinks,
+	* custom furniture part,
+	* 32 mm cabinetmaking system.
 * **Calculations:** quantity, thickness, area, edge size, edgeband.
-* **Support for:** grain direction, type of wood, wood color, dowels, pilot holes, countersinks, 32 mm cabinetmaking system.
 * **Supported furniture parts:** 
     * Part :: Cube,
     * PartDesign :: Pad.
@@ -37,10 +43,12 @@ For more details see documentation page: [in Docs folder](https://github.com/dpr
 
 # Screenshots
 
-|   |   |   |
-|---|---|---|
-| [![c1r1](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r1.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r1.png) | [![c2r1](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r1.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r1.png) | [![c3r1](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c3r1.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c3r1.png) |
-| [![c1r2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r2.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r2.png) | [![c2r2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r2.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r2.png) | [![c3r2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c3r2.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c3r2.png) |
+|   |   |
+|---|---|
+| [![c1r1](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r1.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r1.png) | [![c2r1](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r1.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r1.png) |
+| [![c1r2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r2.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r2.png) | [![c2r2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r2.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r2.png) |
+| [![c1r3](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r3.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r3.png) | [![c2r3](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r3.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r3.png) |
+| [![c1r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png) |
 
 # Contact
 
