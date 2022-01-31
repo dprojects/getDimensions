@@ -2,69 +2,107 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.30
+# Version: 2022.01.31
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
 from PySide import QtGui, QtCore
 
 # ###################################################################################################################
-# Default Settings ( CHANGE HERE IF NEEDED )
+#
+# 				Default Settings
+#		Qt GUI gets from here to avoid inconsistency
+#
+# 			CHANGE ONLY HERE IF NEEDED
+#
 # ###################################################################################################################
 
 
 # Languages:
-# "pl" - Polish
-# "en" - English
 sLang = "en"
-
-# Units for dimensions:
-# "mm" - millimeter
-# "m" - meter
-# "in" - inch
-sUnitsMetric = "mm"
-
-# Units for edge size:
-# "mm" - millimeter
-# "m" - meter
-# "in" - inch
-sUnitsEdge = "m"
-
-# Units for area:
-# "m" - square meter (m2)
-# "mm" - square millimeter (mm2)
-# "in" - square inch (in2)
-sUnitsArea = "m"
-
-# Visibility (Toggle Visibility Feature):
-# "on" - skip all hidden objects and groups
-# "edge" - show all hidden objects and groups but not add to the edge size
-# "off" - show and calculate all objects and groups
-sTVF = "off"
-
-# Report customization (Label Type Feature):
-# "q" - quantity
-# "n" - objects names (listing)
-# "g" - groups (folder names)
-# "e" - extended for edge
-# "d" - detailed
-# "c" - custom by constraints names (totally custom report)
-sLTF = "q"
-
-# Furniture color:
-# This is used for edgeband. Edge face with other color than furniture color 
-# will be calculated as covered edge with veneer.
-# gray (no color): (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
-sFColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
-
-# Edge color code:
-# This is used for automatic extended report view for edge 
-sEColor = "PL55 PVC"
+sLangDsc = { 
+	"en" : "English language", 
+	"pl" : "Polish language"
+}
 
 # Report print quality:
-# "eco" - low ink mode (good for printing)
-# "hq" - high quality mode (good for pdf)
 sRPQ = "hq"
+sRPQDsc = {
+	"eco" : "low ink mode (good for printing)",
+	"hq" : "high quality mode (good for pdf or html export)"
+}
+
+# Visibility (Toggle Visibility Feature):
+sTVF = "off"
+sTVFDsc = {
+	"on" : "skip all hidden objects and groups",
+	"edge" : "show all hidden objects and groups but not add to the edge size",
+	"off" : "show and calculate all objects and groups"
+}
+
+# Units for dimensions:
+sUnitsMetric = "mm"
+sUnitsMetricDsc = {
+	"mm" : "millimeter",
+	"m" : "meter",
+	"in" : "inch"
+}
+
+# Report customization (Label Type Feature):
+sLTF = "q"
+sLTFDsc = {
+	"q" : "quick, quantity first",
+	"n" : "names, objects listing",
+	"g" : "group, grandparent or parent folder name first",
+	"e" : "edgeband, extended edge",
+	"d" : "detailed, edgeband, drill holes, countersinks",
+	"c" : "constraints names, totally custom report"
+}
+
+# Units for area:
+sUnitsArea = "m"
+sUnitsAreaDsc = {
+	"m" : "square meter (m2)",
+	"mm" : "square millimeter (mm2)",
+	"in" : "square inch (in2)"
+}
+
+# Units for edge size:
+sUnitsEdge = "m"
+sUnitsEdgeDsc = {
+	"mm" : "millimeter",
+	"m" : "meter",
+	"in" : "inch"
+}
+
+# Furniture color:
+# Edge face with other color than furniture color will be calculated as edgeband.
+sFColorD = "gray (no color)"
+sFColorDsc = {
+	"gray (no color)" : (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0),
+	"white" : (1.0, 1.0, 1.0, 0.0),
+	"black" :  (0.0, 0.0, 0.0, 0.0)
+}
+sFColor = sFColorDsc[sFColorD]
+
+# Edgeband code:
+sEColorD = "PL55 PVC"
+sEColorDsc = {
+	"PL55 PVC" : "PL55 PVC",
+	"white" : "white",
+	"black" : "black",
+	"bronze" : "bronze"
+}
+sEColor = sEColorDsc[sEColorD]
+
+
+# ###################################################################################################################
+# Default Settings ( CHANGE HERE IF NEEDED )
+# ###################################################################################################################
+
+
+# Qt GUI empty info width screen size
+sEmptyDsc = "                                                                                                     "
 
 # Qt GUI
 # "yes" - to show
@@ -199,15 +237,15 @@ def showQtGUI():
 			self.LangL.move(10, vLine + 3)
 			
 			# options
-			self.LangList = ("pl", "en")
+			self.LangList = tuple(sLangDsc.keys())
 			self.LangO = QtGui.QComboBox(self)
 			self.LangO.addItems(self.LangList)
-			self.LangO.setCurrentIndex(self.LangList.index("en"))
+			self.LangO.setCurrentIndex(self.LangList.index(str(sLang)))
 			self.LangO.activated[str].connect(self.setLang)
 			self.LangO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.LangIS = QtGui.QLabel("English language", self)
+			self.LangIS = QtGui.QLabel(str(sLangDsc[sLang]) + sEmptyDsc, self)
 			self.LangIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -222,15 +260,15 @@ def showQtGUI():
 			self.rpqL.move(10, vLine + 3)
 			
 			# options
-			self.rpqList = ("eco", "hq")
+			self.rpqList = tuple(sRPQDsc.keys())
 			self.rpqO = QtGui.QComboBox(self)
 			self.rpqO.addItems(self.rpqList)
-			self.rpqO.setCurrentIndex(self.rpqList.index("hq"))
+			self.rpqO.setCurrentIndex(self.rpqList.index(str(sRPQ)))
 			self.rpqO.activated[str].connect(self.setQuality)
 			self.rpqO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.rpqIS = QtGui.QLabel("high quality mode (good for pdf)", self)
+			self.rpqIS = QtGui.QLabel(str(sRPQDsc[sRPQ]) + sEmptyDsc, self)
 			self.rpqIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -245,15 +283,15 @@ def showQtGUI():
 			self.visibilityL.move(10, vLine + 3)
 			
 			# options
-			self.visibilityList = ("on", "edge", "off")
+			self.visibilityList = tuple(sTVFDsc.keys())
 			self.visibilityO = QtGui.QComboBox(self)
 			self.visibilityO.addItems(self.visibilityList)
-			self.visibilityO.setCurrentIndex(self.visibilityList.index("off"))
+			self.visibilityO.setCurrentIndex(self.visibilityList.index(str(sTVF)))
 			self.visibilityO.activated[str].connect(self.setVisibility)
 			self.visibilityO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.visibilityIS = QtGui.QLabel("show all hidden objects and groups but not add to the edge size", self)
+			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
 			self.visibilityIS.move(80, vLine + vLineNextRow + 3)
 			
 			# ############################################################################
@@ -268,15 +306,15 @@ def showQtGUI():
 			self.ufdL.move(10, vLine + 3)
 			
 			# options
-			self.ufdList = ("mm", "m", "in")
+			self.ufdList = tuple(sUnitsMetricDsc.keys())
 			self.ufdO = QtGui.QComboBox(self)
 			self.ufdO.addItems(self.ufdList)
-			self.ufdO.setCurrentIndex(self.ufdList.index("mm"))
+			self.ufdO.setCurrentIndex(self.ufdList.index(str(sUnitsMetric)))
 			self.ufdO.activated[str].connect(self.setDFO)
 			self.ufdO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.ufdIS = QtGui.QLabel("millimeter", self)
+			self.ufdIS = QtGui.QLabel(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc, self)
 			self.ufdIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -291,15 +329,15 @@ def showQtGUI():
 			self.rcL.move(10, vLine + 3)
 			
 			# options
-			self.rcList = ("q", "n", "g", "e", "d", "c")
+			self.rcList = tuple(sLTFDsc.keys())
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
-			self.rcO.setCurrentIndex(self.rcList.index("q"))
+			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
 			self.rcO.activated[str].connect(self.setRC)
 			self.rcO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.rcIS = QtGui.QLabel("quick, quantity first                                                                 ", self)
+			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
 			self.rcIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -314,15 +352,15 @@ def showQtGUI():
 			self.ufaL.move(10, vLine + 3)
 			
 			# options
-			self.ufaList = ("mm", "m", "in")
+			self.ufaList = tuple(sUnitsAreaDsc.keys())
 			self.ufaO = QtGui.QComboBox(self)
 			self.ufaO.addItems(self.ufaList)
-			self.ufaO.setCurrentIndex(self.ufaList.index("m"))
+			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
 			self.ufaO.activated[str].connect(self.setUFA)
 			self.ufaO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.ufaIS = QtGui.QLabel("square meter (m2)                                     ", self)
+			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
 			self.ufaIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
@@ -337,19 +375,20 @@ def showQtGUI():
 			self.ufsL.move(10, vLine + 3)
 			
 			# options
-			self.ufsList = ("mm", "m", "in")
+			self.ufsList = tuple(sUnitsEdgeDsc.keys())
 			self.ufsO = QtGui.QComboBox(self)
 			self.ufsO.addItems(self.ufsList)
-			self.ufsO.setCurrentIndex(self.ufsList.index("m"))
+			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
 			self.ufsO.activated[str].connect(self.setUFS)
 			self.ufsO.move(10, vLine + vLineNextRow)
 
 			# info screen
-			self.ufsIS = QtGui.QLabel("meter                        ", self)
+			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
 			self.ufsIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
-			# furniture color for edgeband
+			# furniture color
+			# here is different you set description to variable
 			# ############################################################################
 
 			# set line separator
@@ -360,10 +399,10 @@ def showQtGUI():
 			self.fcL.move(10, vLine + 3)
 
 			# options
-			self.fcList = ("gray (no color)","white","black")
+			self.fcList = tuple(sFColorDsc.keys())
 			self.fcO = QtGui.QComboBox(self)
 			self.fcO.addItems(self.fcList)
-			self.fcO.setCurrentIndex(self.fcList.index("gray (no color)"))
+			self.fcO.setCurrentIndex(self.fcList.index(str(sFColorD)))
 			self.fcO.activated[str].connect(self.setFColor)
 			self.fcO.move(10, vLine + vLineNextRow + 3)
 
@@ -378,7 +417,8 @@ def showQtGUI():
 			self.fcti.move(140, vLine + vLineNextRow + 3)
 
 			# ############################################################################
-			# edge color for edgeband
+			# edgeband code
+			# here is different you set description to variable
 			# ############################################################################
 
 			# set line separator
@@ -389,10 +429,10 @@ def showQtGUI():
 			self.ecL.move(10, vLine + 3)
 
 			# options
-			self.ecList = ("PL55 PVC","white","black", "bronze")
+			self.ecList =tuple(sEColorDsc.keys())
 			self.ecO = QtGui.QComboBox(self)
 			self.ecO.addItems(self.ecList)
-			self.ecO.setCurrentIndex(self.ecList.index("PL55 PVC"))
+			self.ecO.setCurrentIndex(self.ecList.index(str(sEColorD)))
 			self.ecO.activated[str].connect(self.setEColor)
 			self.ecO.move(10, vLine + vLineNextRow + 3)
 
@@ -434,55 +474,30 @@ def showQtGUI():
 			self.show()
 
 		# ############################################################################
-		# actions
+		# actions auto define
 		# ############################################################################
 
 		def setLang(self, selectedText):
 			global sLang
-
-			if selectedText == "pl":
-				sLang = "pl"
-				self.LangIS.setText("Polish language")
-			if selectedText == "en":
-				sLang = "en"
-				self.LangIS.setText("English language")
+			sLang = selectedText
+			self.LangIS.setText(str(sLangDsc[sLang]) + sEmptyDsc)
 
 		def setQuality(self, selectedText):
 			global sRPQ
-
-			if selectedText == "hq":
-				sRPQ = "hq"
-				self.rpqIS.setText("high quality mode (good for pdf)")
-			if selectedText == "eco":
-				sRPQ = "eco"
-				self.rpqIS.setText("low ink mode (good for printing)")
+			sRPQ = selectedText
+			self.rpqIS.setText(str(sRPQDsc[sRPQ]) + sEmptyDsc)
 
 		def setVisibility(self, selectedText):
 			global sTVF
-
-			if selectedText == "on":
-				sTVF = "on"
-				self.visibilityIS.setText("skip all hidden objects and groups")
-			if selectedText == "edge":
-				sTVF = "edge"
-				self.visibilityIS.setText("show all hidden objects and groups but not add to the edge size")
-			if selectedText == "off":
-				sTVF = "off"
-				self.visibilityIS.setText("show and calculate all objects and groups")
+			sTVF = selectedText
+			self.visibilityIS.setText(str(sTVFDsc[sTVF]) + sEmptyDsc)
 
 		def setDFO(self, selectedText):
 			global sUnitsMetric
+			sUnitsMetric = selectedText
+			self.ufdIS.setText(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc)
 
-			if selectedText == "mm":
-				sUnitsMetric = "mm"
-				self.ufdIS.setText("millimeter")
-			if selectedText == "m":
-				sUnitsMetric = "m"
-				self.ufdIS.setText("meter")
-			if selectedText == "in":
-				sUnitsMetric = "in"
-				self.ufdIS.setText("inch")
-
+		# submenu for report types
 		def setSubmenu(self, iAction):
 
 			if iAction == "show":
@@ -517,62 +532,22 @@ def showQtGUI():
 
 		def setRC(self, selectedText):
 			global sLTF
+			sLTF = selectedText
+			self.rcIS.setText(str(sLTFDsc[sLTF]) + sEmptyDsc)
 
-			if selectedText == "q":
-				sLTF = "q"
-				self.rcIS.setText("quick, quantity first")
-				self.setSubmenu("show")
-				# edge color
-				self.ecL.hide()
-				self.ecO.hide()
-				self.ectiL.hide()
-				self.ecti.hide()
-
-			if selectedText == "n":
-				sLTF = "n"
-				self.rcIS.setText("name, objects names first (listing)")
-				self.setSubmenu("show")
-				# edge color
-				self.ecL.hide()
-				self.ecO.hide()
-				self.ectiL.hide()
-				self.ecti.hide()
-
-			if selectedText == "g":
-				sLTF = "g"
-				self.rcIS.setText("groups first (grandparent or parent folder)")
-				self.setSubmenu("show")
-				# edge color
-				self.ecL.hide()
-				self.ecO.hide()
-				self.ectiL.hide()
-				self.ecti.hide()
-
-			if selectedText == "e":
-				sLTF = "e"
-				self.rcIS.setText("edge, extended for edgeband")
-				self.setSubmenu("show")
-				# edge color
-				self.ecL.show()
-				self.ecO.show()
-				self.ectiL.show()
-				self.ecti.show()
-
-			if selectedText == "d":
-				sLTF = "d"
-				self.rcIS.setText("detailed, drill holes (holes, countersinks, edgeband)")
-				self.setSubmenu("show")
-				# edge color
-				self.ecL.show()
-				self.ecO.show()
-				self.ectiL.show()
-				self.ecti.show()
-
+			# submenu for report type
 			if selectedText == "c":
-				sLTF = "c"
-				self.rcIS.setText("constraints names, custom (totally custom report)")
 				self.setSubmenu("hide")
-				# edge color
+			else:
+				self.setSubmenu("show")
+
+			# edgeband code
+			if selectedText == "e" or selectedText == "d":
+				self.ecL.show()
+				self.ecO.show()
+				self.ectiL.show()
+				self.ecti.show()
+			else:
 				self.ecL.hide()
 				self.ecO.hide()
 				self.ectiL.hide()
@@ -580,49 +555,27 @@ def showQtGUI():
 
 		def setUFA(self, selectedText):
 			global sUnitsArea
-
-			if selectedText == "mm":
-				sUnitsArea = "mm"
-				self.ufaIS.setText("square millimeter (mm2)")
-			if selectedText == "m":
-				sUnitsArea = "m"
-				self.ufaIS.setText("square meter (m2)")
-			if selectedText == "in":
-				sUnitsArea = "in"
-				self.ufaIS.setText("square inch (in2)")
+			sUnitsArea = selectedText
+			self.ufaIS.setText(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc)
 
 		def setUFS(self, selectedText):
 			global sUnitsEdge
+			sUnitsEdge = selectedText
+			self.ufsIS.setText(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc)
 
-			if selectedText == "mm":
-				sUnitsEdge = "mm"
-				self.ufsIS.setText("millimeter")
-			if selectedText == "m":
-				sUnitsEdge = "m"
-				self.ufsIS.setText("meter")
-			if selectedText == "in":
-				sUnitsEdge = "in"
-				self.ufsIS.setText("inch")
-
+		# here is different you set description to variable
 		def setFColor(self, selectedText):
+			# the varable will be set at OK button click from text form
+			tmpColor = sFColorDsc[str(selectedText)]
+			self.fcti.setText(str(tmpColor))
 
-			if selectedText == "gray (no color)":
-				sFColor = (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0)
-				self.fcti.setText(str(sFColor))
-			if selectedText == "white":
-				sFColor = (1.0, 1.0, 1.0, 0.0)
-				self.fcti.setText(str(sFColor))
-			if selectedText == "black":
-				sFColor = (0.0, 0.0, 0.0, 0.0)
-				self.fcti.setText(str(sFColor))
-
+		# here is different you set description to variable
 		def setEColor(self, selectedText):
 			global sEColor
-
-			sEColor = selectedText
-			self.ecti.setText(str(sEColor))
+			tmpColor = sEColorDsc[str(selectedText)]
+			self.ecti.setText(str(tmpColor))
 		
-
+		# buttons
 		def onCancel(self):
 			self.result = userCancelled
 			self.close()
@@ -647,8 +600,11 @@ def showQtGUI():
 	if form.result == userOK:
 		global sFColor
 		global sEColor
-
+		
+		# set furniture color from text form
 		sFColor = form.fcti.text()
+
+		# set edgeband code from text form
 		sEColor = form.ecti.text()
 		
 		gExecute = "yes"
@@ -1463,18 +1419,12 @@ def setPartDesignMultiTransform(iObj):
 			# calculate number of base elements
 			lenT = (linear * mirror) - 1
 
+			# for number off transformations
 			k = 0
 			while k < lenT:
 
-				# for all objects
-				i = 0
-				for o in iObj.Originals:
-
-					# set reference for object
-					key = iObj.Originals[i]
-					i = i + 1
-
-					# select furniture part
+				# select furniture part for all objects
+				for key in iObj.Originals:
 					selectFurniturePart(key, "transform")
 
 				k = k + 1

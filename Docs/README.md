@@ -55,7 +55,7 @@ If for some reasons would You like to turn off the `Qt Graphical User Interface 
 ___
 # Furniture parts
 
-Furniture parts are base objects for building furniture, base construction element. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as furniture part. Also it needs to have rectangular shape (four edges), to calculate area and edge size. You can consider furniture part as wood board, or even better, the rectangular chipboard. 
+Furniture parts are base objects for building furniture, base construction element. Each object needs to have three dimensions (`Width`, `Height`, `Length`) to be considered as the furniture part. Also it needs to have rectangular shape (four edges), to calculate area and edge size. You can consider furniture part as wood board, or even better, the rectangular chipboard. 
 
 ___
 ## Cube - quickstart
@@ -80,7 +80,7 @@ ___
 
 Pad is not base object. In fact, it is a transformation on the `Sketch` object. However, for the macro purposes it is considered as base element for furniture building, furniture part. Mostly because the `Sketch` is not real-life object, because it has only two dimensions. To start with Pad furniture part, You have to create `Sketch` object first.
 
-* To create `Sketch` compliant with the macro You should use only the drawing object marked with the red border and zoommed below:
+* To create `Sketch` compliant with the macro You should use only the drawing object marked with the red border:
 	
 	![FPartPad001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/FPartPad001.png)
 
@@ -143,6 +143,8 @@ ___
 
 ## Report types
 
+This macro allows You to select the type of report to be displayed. Some types of reports are very complex and can be many pages long for the real-life project. Some types of reports also require special settings in the project. The type of report should be selected according to Your needs and the design of the project. It is best to start with the simplest type of report.
+
 ___
 ### q - report type
 
@@ -155,7 +157,7 @@ This type of report is `default` type of report. It is the shortest one. It can 
 ___
 ### n - report type
 
-This type of report is mostly used by me for documentation purposes. It is simple objects listing. However, it can be very useful for project veryfication. You can list all objects and see if the dimensions are set correctly.
+This type of report is mostly used by me for documentation purposes. It is simple objects listing. However, it can be very useful for project verification. You can list all objects and see if the dimensions are set correctly.
 
 * To create the name report just set `Report type` variable to `n` and run the macro:
 
@@ -164,7 +166,7 @@ This type of report is mostly used by me for documentation purposes. It is simpl
 ___
 ### g - report type
 
-This type of report is very useful to divide furniture parts into categories. It can be used for `grain direction`, `detailed edgeband`, `wood type`, `wood color` or for any other category. Also, the `Thickness` column is just after the `Name` column. This is because if You go to cutting chipboards service, first You give `wood color`, second the `thickness`, next `dimensions` and `quantity` at the end. This aproach simplifies the more detailed ordering process.
+This type of report is very useful to divide furniture parts into categories. It can be used for `grain direction`, `detailed edgeband`, `wood type`, `wood color` or for any other category. Also, the `Thickness` column is just after the `Name` column. This is because if You go to cutting chipboards service, first You give `wood color`, second the `thickness`, next `dimensions` and `quantity` at the end. This approach simplifies the more detailed ordering process.
 
 * To create the group report just set `Report type` variable to `g` and run the macro:
 
@@ -212,7 +214,7 @@ ___
 
 This type of report is totally custom and it is supported only for `Pad` furniture parts. It can be used as additional report for any other type of report. This type of report can provide such information as: offset, radius, doweling, holes, bar codes, reference numbers, detailed edge banding or any other description You add for dimension (`constraints name`).
 
-* To set `constraint` dimension at the desired obejct place, You can move the `Sketch XY` by changing the `Position` of `Sketch`:
+* To set `constraint` dimension at the desired object place, You can move the `Sketch XY` by changing the `Position` of `Sketch`:
 
     ![ReportTypeC001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeC001.png)
 
@@ -222,7 +224,7 @@ This type of report is totally custom and it is supported only for `Pad` furnitu
 
 **Note:**
 
-* Eeach row represents `constraints name` description. 
+* Each row represents `constraints name` description. 
 * The `Length` dimension is the `Length` dimension for `Sketch > Pad` option.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
@@ -241,12 +243,14 @@ ___
 ___
 ## Edge size
 
-* Search `Visibility` part in the [Default Settings](#default-settings).
-* By default the feature `Visibility` is set to `edge` because in the real world the `edge size` that needs to be covered is very often much smaller. For example You can skip any parts to calculate costs better. To do this, just organize Your project tree with exact visibility:
+The `edge size` depends on `Visibility` part in the [Default Settings](#default-settings):
+* If the `Visibility` is set to `off` all edges are calculated.
+* If the `Visibility` is set to `edge` only edges of hidden objects are not calculated but the objects are still visible at the report. This feature has been implemented at a time when extended edgeband report [Edgeband](#edgeband) was not available but still can be useful for quick edgeband approximation.
+* If the `Visibility` is set to `on` only edges of hidden objects are not calculated and the objects are not visible at the report as well.
 
-    ![REdge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge001.png)
-    
-* Hide parts You do not wish to calculate:
+![REdge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge001.png)
+
+* In the real world the `edge size` that needs to be covered is very often much smaller. However, selecting each edge (face of the object) might be too annoying and sometimes pointless if You have elements that will not be covered with veneer entirely. In that case, You can move them all into one directory, hide the entire directory, and set `Visibility` to `edge`:
 
     ![REdge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge002.png)
     
@@ -302,7 +306,7 @@ To start with `Draft :: Array` transformation, You have to create the furniture 
 	
 	![TDraftArray002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray002.png)
 	
-* FreeCAD transformations have hidden base elements. Only the final transformed object is visible. However, it is not the issue, to have the `edge size` calculated as well just e.g. press the `Spacebar` key while on the `Pad` to make it visible and run the macro again:
+* FreeCAD transformations have hidden base elements. Only the final transformed object is visible. However, it is not the issue, to have the `edge size` calculated as well just e.g. press the `spacebar key` while on the `Pad` to make it visible and run the macro again:
 	
 	![TDraftArray003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TDraftArray003.png)
 	
@@ -446,7 +450,7 @@ ___
 
 This macro expects from each furniture part to have three dimensions: `Width`,` Height` and `Length`. `Pad` furniture part has only` Length` dimension, this is the ` Length` of `Sketch > Pad` option. For this dimension macro can be sure. Other two dimensions are hidden at `Sketch` object. Unfortunately, if the `Sketch` has something different than rectangle or square, there is no way to determine which one `constraint` is the correct `Width` or ` Height` or maybe it is offset or something else.
 
-However, You can create pretty useful report with all important `constraints` and the macro will calculate the quantity for You automatically, becuse macro supports all the transformations for custom report of `constraints`, as well.
+However, You can create pretty useful report with all important `constraints` and the macro will calculate the quantity for You automatically, because macro supports all the transformations for custom report of `constraints`, as well.
 
 * To create custom report of `constraints` You have to add `Name` for the `constraint` You want to have listed at report. This is how the macro know which one `constraint` is important for You. All other `constraints` with empty names will be skipped at report:
 
@@ -519,7 +523,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 ___
 ### Edgeband - detailed by selection
 
-* This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparision. To apply veneer for `face` use: 
+* This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparison. To apply veneer for `face` use: 
 	* `Mouse Right Button` click for object.
 	* Choose from submenu `Set colors...`.
 	* Select all needed `faces` using pressed `CTRL` keyboard key with `Mouse Left Button` click.
@@ -540,7 +544,7 @@ ___
 	![PDHole001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole001.png)
 	
 	**Note:** Make sure You added desired `constraints name`. Only constraints with no empty `constraints name` 
-	will be visisble at the final report. Not add `constraints name` for those that should be hidden.
+	will be visible at the final report. Not add `constraints name` for those that should be hidden.
 
 * You can use `PartDesign :: MultiTransform` at this dowel using `DatumPlane` to make more copies:
 
@@ -556,7 +560,7 @@ ___
 	![PDHole005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PDHole005.png)
 	
 	**Note:** Make sure You added desired `constraints name`. Only constraints with no empty `constraints name` 
-	will be visisble at the final report. Not add `constraints name` for those that should be hidden.
+	will be visible at the final report. Not add `constraints name` for those that should be hidden.
 
 * The same for countersink:
 
@@ -579,7 +583,7 @@ ___
 
 You can use [Draft :: Clone](#draft--clone) and [Part :: Mirroring](#part--mirroring) features to create custom furniture part. To do this You can use the whole `Body` content as custom furniture part. 
 
-* To make more copis of the `Body` object use the `Draft :: Clone`:
+* To make more copies of the `Body` object use the `Draft :: Clone`:
 
 	![CustomPart001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/CustomPart001.png)
 
@@ -639,7 +643,7 @@ ___
 	* **Workaround**: FreeCAD has problem with units generally. The units are still available in the spreadsheet `toCut`. To bring them back to the TechDraw report named `toPrint` You have to run the macro again. To keep them forever just save the TechDraw report named `toPrint` to `pdf` file.
 
 * **Issue**: Long report not fits to the TechDraw page `toPrint`.
-	* **Workaround**: FreeCAD not support multipage `pdf` export. Long report can be generated especially for `Constraints` (`Report type` variable set to `c`) or for objects names listing (`Report type` variable set to `n`). 
+	* **Workaround**: FreeCAD not support multi-page `pdf` export. Long report can be generated especially for `Constraints` (`Report type` variable set to `c`) or for objects names listing (`Report type` variable set to `n`). 
 		1. You can change the `Report type` variable to `q` to sum up all the same dimensions and get the shortest possible report. 
 		2. You can use my project created for this purpose here: [sheet2export](https://github.com/dprojects/sheet2export).
 		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.

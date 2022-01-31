@@ -10,12 +10,12 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 * **Languages:** Polish, English.
 * **Units:** millimeters, meters, inches.
-* **Raport types:**
+* **Report types:**
 	* quick, quantity first (q - report type),
-	* names, objcts listing (n - report type),
+	* names, objects listing (n - report type),
 	* group, grandparent or parent folder name first (g - report type),
 	* edgeband, extended edge (e - report type),
-	* detailed, drill holes and countersinks (d - report type),
+	* detailed, edgeband, drill holes, countersinks (d - report type),
 	* constraints names, totally custom report (c - report type).
 * **Woodworking usage:**
 	* wood properties - grain direction, type of wood, color of wood,
@@ -32,10 +32,10 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Draft :: Array,
     * Draft :: Array Polar,
     * Draft :: Clone,
+	* PartDesign :: Hole,
+    * PartDesign :: LinearPattern,
     * PartDesign :: Mirrored,
-    * PartDesign :: MultiTransform,
-    * PartDesign :: Hole,
-    * PartDesign :: LinearPattern.
+    * PartDesign :: MultiTransform.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
 
