@@ -6,6 +6,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en.png)
 
+![en2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en2.png)
+
 # Main features
 
 * **Languages:** Polish, English.

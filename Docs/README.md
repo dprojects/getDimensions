@@ -179,7 +179,7 @@ For more details see: [Wood Properties - grain, type, color, etc.](#wood-propert
 ___
 ### e - report type
 
-This type of report is designed for more advanced edge report. It is mostly used for edgeband. Also You can verify if Your 3D model have correctly applied veneer. This type of report recognize automatically if the covered `face` is `surface` or `edge` type. Also shows the dimension for `edge` type of face and given veneer description.
+This type of report is designed for edgeband. Also You can verify if Your 3D model have correctly applied veneer. This type of report recognize automatically if the covered `face` is `surface` or `edge`. Also shows the dimension for `edge` type of face and given `edgeband code`.
 
 * To create the extended edge report just set `Report type` variable to `e` and run the macro:
 
@@ -188,14 +188,14 @@ This type of report is designed for more advanced edge report. It is mostly used
 **Note:** 
 
 * Each column represents `face` object number at 3D model.
-* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
 ___
 ### d - report type
 
-This type of report is designed for very detailed view of edgeband, holes and countersinks. Also it allow long descriptions based on group names. Regarding edgeband it work like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
+This type of report is designed for very detailed view of edgeband, holes and countersinks. Also it allows for long description based on group names. Regarding edgeband it works like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
 
 * To create the extended edge report just set `Report type` variable to `d` and run the macro:
 
@@ -204,9 +204,9 @@ This type of report is designed for very detailed view of edgeband, holes and co
 **Note:** 
 
 * Each column represents `face` object number at 3D model.
-* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
-* The holes and countersinks are taken from `constraints names` of the base object of the group. So, the `constraints names` can be set only at base object.
+* The holes and countersinks are taken from `constraints names` of the base object of the group. For exampele if You make `MultiTransform` You have to set the `constraints names` at the base object.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
 ___
@@ -243,20 +243,22 @@ ___
 ___
 ## Edge size
 
-The `edge size` depends on `Visibility` part in the [Default Settings](#default-settings):
-* If the `Visibility` is set to `off` all edges are calculated.
-* If the `Visibility` is set to `edge` only edges of hidden objects are not calculated but the objects are still visible at the report. This feature has been implemented at a time when extended edgeband report [Edgeband](#edgeband) was not available but still can be useful for quick edgeband approximation.
-* If the `Visibility` is set to `on` only edges of hidden objects are not calculated and the objects are not visible at the report as well.
+The `edge size` depends on `Visibility` option at the [Default Settings](#default-settings):
+* If the `Visibility` is set to `off` option then all objects are visible at the report and all edges are calculated.
+* If the `Visibility` is set to `edge` option then all objects are visible at the report but only edges of hidden objects are not calculated.
+* If the `Visibility` is set to `on` option then all hidden objects are skipped at report and at the `edge size` calculation.
 
-![REdge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge001.png)
+	![REdge001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge001.png)
 
-* In the real world the `edge size` that needs to be covered is very often much smaller. However, selecting each edge (face of the object) might be too annoying and sometimes pointless if You have elements that will not be covered with veneer entirely. In that case, You can move them all into one directory, hide the entire directory, and set `Visibility` to `edge`:
+**Note:** This `edge` option has been implemented at a time when there was no support for Transformations and even Pads. The Transformations hide base object. For example if You create MultiTransform, the base Pad object is hidden by default. If `Visibility` is set to `edge`, You have to make the base Pad object visible to calculate the `edge size` correctly. So, this `edge` option is no longer default. However, this option still can be very useful for quick edgeband approximation.
+
+* In the real world the `edge size` that needs to be covered with veneer is very often much smaller. However, selecting each edge (face of the object) might be too annoying and sometimes pointless if You have elements that will not be covered with veneer entirely. In that case, You can move them all into one directory, hide the entire directory, and set `Visibility` to `edge`:
 
     ![REdge002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/REdge002.png)
     
 	**Note:** The `Cube` furniture part is hidden, so the `edge size` is different now. Also, the edge of the `Pad` furniture part has no veneer applied, so the extended edgeband info is automatically hidden.
 
-___    
+___
 ## Report - export
 
 * You can generate different reports at the same furniture project. Just copy (`CTRL-C` and `CTRL-V`) and rename the spreadsheet `toCut` to store it and prevent it from an overwrite or export the TechDraw page `toPrint` to `pdf` file.

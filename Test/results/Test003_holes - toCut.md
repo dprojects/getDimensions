@@ -25,7 +25,6 @@
 |   |   Side, countersink offset from the long edge   |   |   |   |   |   50 mm   |
 |   |   Side, countersink offset from the bottom edge   |   |   |   |   |   503 mm   |
 |   |   Side, countersink diameter   |   |   |   |   |   10 mm   |
-|   |   |   |   |   |   |   |
 |   Shelf, bronze, grain along the long edge, chipboard   |   |   |   |   |   |   |
 |   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   350 mm   |   x   |   464 mm   |   18 mm   |   2   |   0.3248   |
@@ -37,7 +36,6 @@
 |   |   Depth   |   |   |   |   |   50 mm   |
 |   |   Shelf, pilot hole from the long edge   |   |   |   |   |   50 mm   |
 |   |   Shelf, pilot hole diameter   |   |   |   |   |   3 mm   |
-|   |   |   |   |   |   |   |
 |   Top, bronze, grain along the long edge, chipboard   |   |   |   |   |   |   |
 |   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   350 mm   |   x   |   500 mm   |   18 mm   |   1   |   0.175   |
@@ -52,7 +50,6 @@
 |   |   Depth   |   |   |   |   |   10 mm   |
 |   |   Top, countersink offset from the front   |   |   |   |   |   50 mm   |
 |   |   Top, countersink diameter   |   |   |   |   |   10 mm   |
-|   |   |   |   |   |   |   |
 |   Back, bronze, no grain, HDF   |   |   |   |   |   |   |
 |   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   200 mm   |   x   |   500 mm   |   3 mm   |   1   |   0.1   |
@@ -60,12 +57,10 @@
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |
 |   Back, bronze, no grain, HDF   |   |   |   |   |   |   |
 |   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   200 mm   |   x   |   500 mm   |   3 mm   |   1   |   0.1   |
 |   5   |   6   |   |   1   |   2   |   3   |   4   |
-|   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
@@ -77,9 +72,7 @@
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |
-|   |   |   |   |   |   |   |
-|   Summary by thickness   |   |   |   |   |   |   |
+|   Summary by thickness   |   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   |   |   |   18 mm   |   5   |   1.0682   |
 |   |   |   |   |   3 mm   |   3   |   0.25   |
 |   |   |   |   |   |   |   |

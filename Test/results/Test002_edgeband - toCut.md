@@ -109,7 +109,7 @@
 |   490 mm   |   490 mm   |   |   310 mm   |   310 mm   |   |   |
 |   black   |   black   |   |   black   |   black   |   |   |
 |   |   |   |   |   |   |   |
-|   Summary by thickness   |   |   |   |   |   |   |
+|   Summary by thickness   |   |   |   |   Thickness   |   Quantity   |   m2   |
 |   |   |   |   |   18 mm   |   18   |   3.2733   |
 |   |   |   |   |   |   |   |
 |   Edge size   |   |   |   |   |   |   31.784 m   |

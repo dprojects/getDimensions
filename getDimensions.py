@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.31
+# Version: 2022.02.01
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -2010,11 +2010,24 @@ def setViewE():
          # ########################################################
 
 	# add summary title for thickness
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, gLang7)
+
+	# header
+	gSheet.set("E" + str(gSheetRow), gLang4)
+	gSheet.set("F" + str(gSheetRow), gLang2)
+	gSheet.set("G" + str(gSheetRow), gLang5)
+
+	# alignment
+	gSheet.setAlignment("A" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+	# decoration
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.setStyle(vCell, "bold", "add")
-	gSheet.setAlignment(vCell, "left", "keep")
 	gSheet.setBackground(vCell, gHeadCS)
 
 	# go to next spreadsheet row
@@ -2201,7 +2214,7 @@ def setViewD():
 		gSheetRow = gSheetRow + 1
 
 		# ########################################################
-		# constraints part
+		# holes constraints part
 		# ########################################################
 		
 		try:
@@ -2288,15 +2301,8 @@ def setViewD():
 		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 		gSheet.mergeCells(vCell)
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
-
-	# merge cells
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-
 	# separator
-	gSheetRow = gSheetRow + 2
+	gSheetRow = gSheetRow + 1
 
          # ########################################################
 	# width part
@@ -2316,11 +2322,24 @@ def setViewD():
          # ########################################################
 
 	# add summary title for thickness
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, gLang7)
+
+	# header
+	gSheet.set("E" + str(gSheetRow), gLang4)
+	gSheet.set("F" + str(gSheetRow), gLang2)
+	gSheet.set("G" + str(gSheetRow), gLang5)
+
+	# alignment
+	gSheet.setAlignment("A" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+	# decoration
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.setStyle(vCell, "bold", "add")
-	gSheet.setAlignment(vCell, "left", "keep")
 	gSheet.setBackground(vCell, gHeadCS)
 
 	# go to next spreadsheet row
