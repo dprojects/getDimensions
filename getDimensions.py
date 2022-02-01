@@ -1989,12 +1989,16 @@ def setViewE():
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
 
-	# merge cells
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
+		# empty line separator
+		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
 
-	# go to next spreadsheet row
-	gSheetRow = gSheetRow + 1
+		# next entry or thickness summary
+		gSheetRow = gSheetRow + 1
+
+         # ########################################################
+	# width part
+         # ########################################################
 
 	# cell sizes
 	gSheet.setColumnWidth("A", 215)
@@ -2297,12 +2301,12 @@ def setViewD():
 		except:
 			skip = 1
 
-		# merge cells
+		# empty line separator
 		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 		gSheet.mergeCells(vCell)
 
-	# separator
-	gSheetRow = gSheetRow + 1
+		# next entry or thickness summary
+		gSheetRow = gSheetRow + 1
 
          # ########################################################
 	# width part

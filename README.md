@@ -6,8 +6,6 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en.png)
 
-![en2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en2.png)
-
 # Main features
 
 * **Languages:** Polish, English.
@@ -40,6 +38,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * PartDesign :: MultiTransform.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
+
+![en2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en2.png)
 
 For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
 
