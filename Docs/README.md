@@ -188,14 +188,17 @@ This type of report is designed for edgeband. Also You can verify if Your 3D mod
 **Note:** 
 
 * Each column represents `face` object number at 3D model.
-* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
-* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
-* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edge`, and `5`, `6` will be `surface`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge`. 
+* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object. You have to change the base object visibility first.
+* If You applied only veneer, leave the furniture color as `gray (no color)`. The `Furniture color` is the reference color for comparison. All faces with other color than given `Furniture color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer. If You apply strange color for furniture, You might have problem to convert it to tuple FreeCAD color. 
+* Report for multi-color furniture can be achieved by making two reports for each color (use [Visibility](#visibility) feature to hide each color).
+* The edgeband color at 3D model does not matter. `Edgeband code` is only text that will be displayed at report. It can represent any veneer tape color at shop, even reference code. The spreadsheet column width is limited, however at HTML export this can be extended.
+* This type of report can exceed a single TechDraw page. To export this type of report, see the [Report - export](#report---export) section.
 
 ___
 ### d - report type
 
-This type of report is designed for very detailed view of edgeband, holes and countersinks. Also it allows for long description based on group names. Regarding edgeband it works like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
+This type of report might be useful for raw wood projects, CNC or very detailed furniture design, because it is designed for very detailed view of edgeband, holes and countersinks. Also it allows for long description based on group name. Regarding edgeband it works like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
 
 * To create the extended edge report just set `Report type` variable to `d` and run the macro:
 
@@ -204,10 +207,14 @@ This type of report is designed for very detailed view of edgeband, holes and co
 **Note:** 
 
 * Each column represents `face` object number at 3D model.
-* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edges`, and `5`, `6` will be `surfaces`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge` type. 
-* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object only. You have to change the base object visibility first.
-* The holes and countersinks are taken from `constraints names` of the base object of the group. For exampele if You make `MultiTransform` You have to set the `constraints names` at the base object.
-* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+* If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edge`, and `5`, `6` will be `surface`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge`. 
+* Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object. You have to change the base object visibility first.
+* If You applied only veneer, leave the furniture color as `gray (no color)`. The `Furniture color` is the reference color for comparison. All faces with other color than given `Furniture color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer. If You apply strange color for furniture, You might have problem to convert it to tuple FreeCAD color. 
+* Report for multi-color furniture can be achieved by making two reports for each color (use [Visibility](#visibility) feature to hide each color).
+* The edgeband color at 3D model does not matter. `Edgeband code` is only text that will be displayed at report. It can represent any veneer tape color at shop, even reference code. The spreadsheet column width is limited, however at HTML export this can be extended.
+* The holes and countersinks are taken from `constraints names` of the base object of the group. For example if You make `MultiTransform` You have to set the `constraints names` at the base object.
+* If the hole is "through all" there is no `Depth`.
+* This type of report can exceed a single TechDraw page. To export this type of report, see the [Report - export](#report---export) section.
 
 ___
 ### c - report type
