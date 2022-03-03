@@ -9,7 +9,7 @@
 	
 ## Demo001_quickstart
 
-This is the quickstart with furniture parts examples. I use this demo for documentation purposes. This is good start for feature testing.
+This is the quickstart with furniture parts examples. I use this demo for documentation purposes. This is good start for feature testing or learning FreeCAD woodworking.
 
 |   |   |
 |---|---|
@@ -17,7 +17,7 @@ This is the quickstart with furniture parts examples. I use this demo for docume
 
 ## Demo002_constraints
 
-This demo example shows how to use dowels, pilot holes and countersinks with  `c - report type`.
+This demo example shows how to create dowels, pilot holes and countersinks at FreeCAD. Also You can generate `c - report type` to see named constraints report.
 
 |   |   |
 |---|---|
@@ -25,7 +25,7 @@ This demo example shows how to use dowels, pilot holes and countersinks with  `c
 
 ## Demo003_multi
 
-This demo example shows how to use `Draft :: Clone` and `Part :: Mirroring` features with `Body` containing dowels, pilot holes and countersinks with `c - report type`. In other words, how to use whole `Body` as the furniture part.
+This demo example shows how to create custom furniture element with dowels, pilot holes and countersinks and use it to create furniture. This demo use such FreeCAD features as: `Draft :: Clone` and `Part :: Mirroring` on whole `Body`. So, You can see how to use whole `Body` as the furniture part.
 
 |   |   |
 |---|---|
@@ -33,7 +33,7 @@ This demo example shows how to use `Draft :: Clone` and `Part :: Mirroring` feat
 
 ## Demo004_pads_mirror
 
-This is sample furniture for Pads but uses FreeCAD Pads transformations features.
+This demo example shows how to use Spreadsheet for furniture resize. You can change top table size, legs offset just by changing values at Spreadsheet. Also if You generate report again You got new dimensions. This demo also shows how to use `PartDesign :: MultiTransform` FreeCAD feature correctly to create legs or top table supporters very quickly.
 
 |   |   |
 |---|---|
@@ -41,7 +41,7 @@ This is sample furniture for Pads but uses FreeCAD Pads transformations features
 
 ## Demo005_edgeband
 
-This is the real-life furniture I made in my garage. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband.
+This demo example shows how to correctly apply edgeband under the FreeCAD. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband. This demo example is the real-life furniture I made in my garage. It is very modular and the structure is very durable because each shelf rests on the sides.
 
 |   |   |
 |---|---|
@@ -49,7 +49,7 @@ This is the real-life furniture I made in my garage. To generate report You have
 
 ## Demo006_holes
 
-This example based on the real-life furniture I made in the past. It has open back part for wires. This example shows how to use detailed report with advanced features in practice.
+This demo example shows how to create furniture with all details. This furniture has applied edgeband. Also there are used custom elements with pilot holes and countersinks and advanced FreeCAD features. You can test detailed report `d - report type` with advanced features in practice here. This example is based on the real-life furniture I made in the past. It has open back part for wires, good for TV set or any media.
 
 |   |   |
 |---|---|
