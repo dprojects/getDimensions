@@ -24,10 +24,12 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* custom furniture part,
 	* 32 mm cabinetmaking system.
 * **Calculations:** quantity, thickness, area, edge size, edgeband.
-* **Supported furniture parts:** 
+* **Supported furniture parts:**
     * Part :: Cube,
     * PartDesign :: Pad.
-* **Supported transformations:** 
+* **Supported transformations:**
+	* App :: Link,
+	* App :: LinkGroup,
     * Part :: Mirroring,
     * Draft :: Array,
     * Draft :: Array Polar,

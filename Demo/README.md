@@ -6,7 +6,10 @@
 4. [Demo004_pads_mirror](#demo004_pads_mirror)
 5. [Demo005_edgeband](#demo005_edgeband)
 6. [Demo006_holes](#demo006_holes)
-	
+7. [Demo007_drawer](#demo007_drawer)
+8. [Demo008_drawer_links](#demo008_drawer_links)
+
+
 ## Demo001_quickstart
 
 This is the quickstart with furniture parts examples. I use this demo for documentation purposes. This is good start for feature testing or learning FreeCAD woodworking.
@@ -54,4 +57,20 @@ This demo example shows how to create furniture with all details. This furniture
 |   |   |
 |---|---|
 | ![Demo006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo006/001.png) | ![Demo006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo006/002.png) |
+
+## Demo007_drawer
+
+This demo example shows how to create drawer driven from spreadsheet at FreeCAD. You can change any size at spreadsheet and the drawer will change dimensions. Also You can generate new report.
+
+|   |   |
+|---|---|
+| ![Demo007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo007/001.png) | ![Demo007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo007/002.png) |
+
+## Demo008_drawer_links
+
+This demo example shows how to quickly make more copies of drawer. This example use such FreeCAD features as: `App :: Link` and `App :: LinkGroup`.
+
+|   |   |
+|---|---|
+| ![Demo008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo008/001.png) | ![Demo008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo008/002.png) |
 
