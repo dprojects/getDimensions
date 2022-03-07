@@ -26,7 +26,8 @@
 	6. [PartDesign :: LinearPattern](#partDesign--linearPattern)
 	7. [PartDesign :: Mirrored](#partdesign--mirrored)
 	8. [PartDesign :: MultiTransform](#partdesign--multitransform)
-	9. [Advanced furniture example](#advanced-furniture-example)
+	9. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
+	10. [Advanced furniture example](#advanced-furniture-example)
 5. [Woodworking - usage examples](#woodworking---usage-examples)
 	1. [Constraints - totally custom report](#constraints---totally-custom-report)
 	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
@@ -431,6 +432,31 @@ The `PartDesign :: MultiTransform` allows for many transformations at the single
 * Now, just run the macro, to get report `toPrint`:
 	
 	![TPartDesignMultiTransform002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignMultiTransform002.png)
+
+___
+## App :: LinkGroup and App :: Link
+* **Supported objects:** `Cube`, `Pad`.
+___
+
+This feature has been designed for [fully parametric furniture examples](https://github.com/dprojects/Woodworking/tree/master/Examples), to make more copies of furniture. 
+
+To make more copies You can use [Draft :: Clone](#draft--clone) on the whole `Body` but the problem with that is that [Draft :: Clone](#draft--clone) not keep face color settings. The new cloned furniture will be all blue color. So, You have to set each face color again manually. Also, I found some difficulties with correct `Sketch` parameterization. Sometimes the `Sketch` loses the expression, keep only final value of the calculated expression, and the furniture was not resized correctly, after changes. So, if You want to use fully parametric furniture with this features I would recommend to use `Cube` objects as base. You can add decorations or accessories with `Pads` but for now `Cubes` are more stable. 
+
+To use the `App :: LinkGroup` and `App :: Link` correctly You have to keep such rules:
+	1. Use `App :: LinkGroup` as folder for base elements only. Do not make more copies with it.
+	2. If You want more copies use `App :: Link` at `App :: LinkGroup` folder.
+	3. If You want to move whole new furniture copy, just change position of `App :: Link` or `App :: LinkGroup`.
+	4. If You want to change color of the furniture or add new element, change the base content, I mean `App :: LinkGroup` content and all linked copies will be updated.
+
+**Note:** The `App :: LinkGroup` is supported only if this is called from `App :: Link`. This is because if You select several `Cubes` and make `App :: LinkGroup` it looks like FreeCAD move them into `App :: LinkGroup` content but in fact, in XML file the unlinked elements still exists additionally. So, if the `App :: LinkGroup` would be calculated from main, all the elements would be calculated twice.
+
+* See the example drawers set how the `Tree` structure is organized. The first bottom element is `App :: LinkGroup` and next two above are just links made with `App :: Link`. If You resize or change the base `App :: LinkGroup` all others will be changed as well. Also the linked copies preserve the face colors:
+
+	![TALink001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TALink001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+	
+	![TALink002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TALink002.png)
 
 ___
 ## Advanced furniture example

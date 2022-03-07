@@ -28,8 +28,6 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Part :: Cube,
     * PartDesign :: Pad.
 * **Supported transformations:**
-	* App :: Link,
-	* App :: LinkGroup,
     * Part :: Mirroring,
     * Draft :: Array,
     * Draft :: Array Polar,
@@ -37,7 +35,9 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* PartDesign :: Hole,
     * PartDesign :: LinearPattern,
     * PartDesign :: Mirrored,
-    * PartDesign :: MultiTransform.
+    * PartDesign :: MultiTransform,
+    * App :: Link,
+	* App :: LinkGroup.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
 
