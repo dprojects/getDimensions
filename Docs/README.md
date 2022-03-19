@@ -440,7 +440,7 @@ ___
 
 This feature has been designed for [fully parametric furniture examples](https://github.com/dprojects/Woodworking/tree/master/Examples), to make more copies of furniture. 
 
-To make more copies You can use [Draft :: Clone](#draft--clone) on the whole `Body` but the problem with that is that [Draft :: Clone](#draft--clone) not keep face color settings. The new cloned furniture will be all blue color. So, You have to set each face color again manually. Also, I found some difficulties with correct `Sketch` parameterization. Sometimes the `Sketch` loses the expression, keep only final value of the calculated expression, and the furniture was not resized correctly, after changes. So, if You want to use fully parametric furniture with this features I would recommend to use `Cube` objects as base. You can add decorations or accessories with `Pads` but for now `Cubes` are more stable. 
+To make more copies You can use [Draft :: Clone](#draft--clone) on the whole `Body` but the problem with that is that [Draft :: Clone](#draft--clone) not keep face color settings. The new cloned furniture will be all blue color. So, You have to set each face color again manually.
 
 To use the `App :: LinkGroup` and `App :: Link` correctly You have to keep such rules:
 1. Use `App :: LinkGroup` as folder for base elements only. Do not make more copies with it.
@@ -679,6 +679,9 @@ ___
 		1. You can change the `Report type` variable to `q` to sum up all the same dimensions and get the shortest possible report. 
 		2. You can use my project created for this purpose here: [sheet2export](https://github.com/dprojects/sheet2export).
 		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
+
+* **Issue**: Special characters (comma and whitespace) for `constraints name` are not supported generally. At Ubuntu the validation not works so You can use `constraints name` as `description` (label from FreeCAD point of view) but if You use expressions the expressions will be removed after file reopen ([FreeCAD bug described here](https://forum.freecadweb.org/viewtopic.php?f=10&t=67042)).
+	* **Workaround**: There is [workaround](https://github.com/dprojects/getDimensions/commit/6a50fef4a8bbb4729ad8960a79f21b91b5712990), that allow to encode and decode comma and whitespace. To encode `", "` (comma and whitespace) in `constraints name` use `00` (zero twice). To encode `" "` (single whitespace) in `constraints name` use `0` (zero once). So, the encoded `constraints name` e.g. `Bottom00Joint0Size01` will be decoded at report as `Bottom, Joint Size 1`. Underscores way of encoding may not be supported for Windows users at FreeCAD. If You want to use underscores way, You have to test it first on Your own.
 
 ___
 # Special thanks
