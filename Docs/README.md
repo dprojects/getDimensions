@@ -14,6 +14,7 @@
 		* [e - report type](#e---report-type)
 		* [d - report type](#d---report-type)
 		* [c - report type](#c---report-type)
+		* [p - report type](#p---report-type)
 	2. [Visibility](#visibility)
 	3. [Edge size](#edge-size)
 	4. [Report - export](#report---export)
@@ -232,11 +233,27 @@ This type of report is totally custom and it is supported only for `Pad` furnitu
 
 **Note:**
 
-* Each row represents `constraints name` description. 
+* Each row represents `constraints name` description and dimension.
 * The `Length` dimension is the `Length` dimension for `Sketch > Pad` option.
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 
 For more details see: [Constraints - totally custom report](#constraints---totally-custom-report) section.
+
+___
+### p - report type
+
+This type of report is designed for projects based only on `Pads`. Especially, if You created project with `Pads`, very detailed, but do not have `constraints names`. If You want to get all the non-zero constraints, even those without names, this report is for You. It can be used as additional report for any other type of report, for example if You have also `Cubes` You can generate other report designed for `Cubes`. 
+
+* To create the pads report just set `Report type` variable to `p` and run the macro:
+
+    ![ReportTypeP001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeP001.png)
+
+**Note:**
+
+* Each row represents `constraints name` description and dimension.
+* The `Length` dimension is the `Length` dimension for `Sketch > Pad` option.
+* This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
+* Zero constraints should be generally avoided, so they are skipped to not overload the report.
 
 ___
 ## Visibility

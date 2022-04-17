@@ -16,7 +16,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* group, grandparent or parent folder name first (g - report type),
 	* edgeband, extended edge (e - report type),
 	* detailed, edgeband, drill holes, countersinks (d - report type),
-	* constraints names, totally custom report (c - report type).
+	* constraints names, totally custom report (c - report type),
+	* pads, all constraints (p - report type).
 * **Woodworking usage:**
 	* wood properties - grain direction, type of wood, color of wood,
 	* edgeband (quick way, described, detailed by selection),
