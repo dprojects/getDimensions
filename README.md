@@ -33,6 +33,7 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Draft :: Array,
     * Draft :: Array Polar,
     * Draft :: Clone,
+    * PartDesign :: Pocket,
 	* PartDesign :: Hole,
     * PartDesign :: LinearPattern,
     * PartDesign :: Mirrored,

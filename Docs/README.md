@@ -23,12 +23,13 @@
 	2. [Draft :: Array](#draft--array)
 	3. [Draft :: Array Polar](#draft--array-polar)
 	4. [Draft :: Clone](#draft--clone)
-	5. [PartDesign :: Hole](#partdesign--hole)
-	6. [PartDesign :: LinearPattern](#partDesign--linearPattern)
-	7. [PartDesign :: Mirrored](#partdesign--mirrored)
-	8. [PartDesign :: MultiTransform](#partdesign--multitransform)
-	9. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
-	10. [Advanced furniture example](#advanced-furniture-example)
+	5. [PartDesign :: Pocket](#partdesign--pocket)
+	6. [PartDesign :: Hole](#partdesign--hole)
+	7. [PartDesign :: LinearPattern](#partDesign--linearPattern)
+	8. [PartDesign :: Mirrored](#partdesign--mirrored)
+	9. [PartDesign :: MultiTransform](#partdesign--multitransform)
+	10. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
+	11. [Advanced furniture example](#advanced-furniture-example)
 5. [Woodworking - usage examples](#woodworking---usage-examples)
 	1. [Constraints - totally custom report](#constraints---totally-custom-report)
 	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
@@ -399,6 +400,25 @@ To start with `PartDesign :: Hole` transformation, You have to create the furnit
     ![TPDHole004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPDHole004.png)
 
 	**Note:** The `PartDesign :: Hole` is supported only by the [c - report type](#c---report-type).
+
+___
+## PartDesign :: Pocket
+**Supported:** `Cube`, `Pad`.
+___
+
+To start with `PartDesign :: Pocket` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Create `Sketch` at the `Pad` furniture part as it is demonstrated below and click `Pocket` icon:
+
+    ![TPartDesignPocket001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignPocket001.png)
+
+	**Note:** You can describe constraints to get better [p - report type](#p---report-type) later. However, for [c - report type](#c---report-type) it is needed.
+
+* Now, just run the macro, to get report `toPrint`:
+
+    ![TPartDesignPocket002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignPocket002.png)
+
+	**Note:** The `PartDesign :: Pocket` is supported only by the [c - report type](#c---report-type) and [p - report type](#p---report-type).
 
 ___
 ## PartDesign :: LinearPattern
