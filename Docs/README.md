@@ -24,12 +24,15 @@
 	3. [Draft :: Array Polar](#draft--array-polar)
 	4. [Draft :: Clone](#draft--clone)
 	5. [PartDesign :: Pocket](#partdesign--pocket)
-	6. [PartDesign :: Hole](#partdesign--hole)
-	7. [PartDesign :: LinearPattern](#partDesign--linearPattern)
-	8. [PartDesign :: Mirrored](#partdesign--mirrored)
-	9. [PartDesign :: MultiTransform](#partdesign--multitransform)
-	10. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
-	11. [Advanced furniture example](#advanced-furniture-example)
+	6. [PartDesign :: Fillet](#partdesign--fillet)
+	7. [PartDesign :: Chamfer](#partdesign--chamfer)
+	8. [PartDesign :: Thickness](#partdesign--thickness)
+	9. [PartDesign :: Hole](#partdesign--hole)
+	10. [PartDesign :: LinearPattern](#partDesign--linearPattern)
+	11. [PartDesign :: Mirrored](#partdesign--mirrored)
+	12. [PartDesign :: MultiTransform](#partdesign--multitransform)
+	13. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
+	14. [Advanced furniture example](#advanced-furniture-example)
 5. [Woodworking - usage examples](#woodworking---usage-examples)
 	1. [Constraints - totally custom report](#constraints---totally-custom-report)
 	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
@@ -403,7 +406,7 @@ To start with `PartDesign :: Hole` transformation, You have to create the furnit
 
 ___
 ## PartDesign :: Pocket
-**Supported:** `Cube`, `Pad`.
+**Supported:** `Pad`.
 ___
 
 To start with `PartDesign :: Pocket` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
@@ -419,6 +422,57 @@ To start with `PartDesign :: Pocket` transformation, You have to create the furn
     ![TPartDesignPocket002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignPocket002.png)
 
 	**Note:** The `PartDesign :: Pocket` is supported only by the [c - report type](#c---report-type) and [p - report type](#p---report-type).
+
+___
+## PartDesign :: Fillet
+**Supported:** `Pad`.
+___
+
+To start with `PartDesign :: Fillet` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Create `Fillet` at the `Pad` furniture part as it is demonstrated below:
+
+    ![TPartDesignFillet001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignFillet001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+
+    ![TPartDesignFillet002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignFillet002.png)
+
+	**Note:** The `PartDesign :: Fillet` is supported only by the [p - report type](#p---report-type).
+
+___
+## PartDesign :: Chamfer
+**Supported:** `Pad`.
+___
+
+To start with `PartDesign :: Chamfer` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Create `Chamfer` at the `Pad` furniture part as it is demonstrated below:
+
+    ![TPartDesignChamfer001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignChamfer001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+
+    ![TPartDesignChamfer002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignChamfer002.png)
+
+	**Note:** The `PartDesign :: Chamfer` is supported only by the [p - report type](#p---report-type).
+
+___
+## PartDesign :: Thickness
+**Supported:** `Pad`.
+___
+
+To start with `PartDesign :: Thickness` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
+
+* Create `Thickness` at the `Pad` furniture part as it is demonstrated below:
+
+    ![TPartDesignThickness001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignThickness001.png)
+
+* Now, just run the macro, to get report `toPrint`:
+
+    ![TPartDesignThickness002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignThickness002.png)
+
+	**Note:** The `PartDesign :: Thickness` is supported only by the [p - report type](#p---report-type).
 
 ___
 ## PartDesign :: LinearPattern
