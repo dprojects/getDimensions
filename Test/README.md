@@ -1,7 +1,3 @@
-# Test platform 
-
-FreeCAD 0.19.3 AppImage under Ubuntu 20.04.2 LTS 64-bit.
-
 # Test procedure
 
 1. `cd ./getDimensions`

@@ -18,6 +18,18 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* detailed, edgeband, drill holes, countersinks (d - report type),
 	* constraints names, totally custom report (c - report type),
 	* pads, all constraints (p - report type).
+* **Additional reports:**
+	* Decoration - decoration elements e.g. drawer handle:
+		* PartDesign :: Fillet, 
+		* PartDesign :: Chamfer, 
+		* Part :: Sphere, 
+		* Part :: Cone, 
+		* Part :: Torus.
+	* Mounting - dowels made from:
+		* Part :: Cylinder.
+	* Profiles - metal contruction elements made from: 
+		* PartDesign :: Thickness, 
+		* Dodo workbench profiles.
 * **Woodworking usage:**
 	* wood properties - grain direction, type of wood, color of wood,
 	* edgeband (quick way, described, detailed by selection),
@@ -34,10 +46,7 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
     * Draft :: Array Polar,
     * Draft :: Clone,
     * PartDesign :: Pocket,
-    * PartDesign :: Fillet,
-    * PartDesign :: Chamfer,
-    * PartDesign :: Thickness,
-	* PartDesign :: Hole,
+    * PartDesign :: Hole,
     * PartDesign :: LinearPattern,
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform,

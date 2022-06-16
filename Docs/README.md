@@ -15,24 +15,25 @@
 		* [d - report type](#d---report-type)
 		* [c - report type](#c---report-type)
 		* [p - report type](#p---report-type)
-	2. [Visibility](#visibility)
-	3. [Edge size](#edge-size)
-	4. [Report - export](#report---export)
+	2. [Additional reports](#additional-reports)
+		* [Decoration](#decoration)
+		* [Mounting](#mounting)
+		* [Profiles](#profiles)
+	3. [Visibility](#visibility)
+	4. [Edge size](#edge-size)
+	5. [Report - export](#report---export)
 4. [Transformations](#transformations)
 	1. [Part :: Mirroring](#part--mirroring)
 	2. [Draft :: Array](#draft--array)
 	3. [Draft :: Array Polar](#draft--array-polar)
 	4. [Draft :: Clone](#draft--clone)
 	5. [PartDesign :: Pocket](#partdesign--pocket)
-	6. [PartDesign :: Fillet](#partdesign--fillet)
-	7. [PartDesign :: Chamfer](#partdesign--chamfer)
-	8. [PartDesign :: Thickness](#partdesign--thickness)
-	9. [PartDesign :: Hole](#partdesign--hole)
-	10. [PartDesign :: LinearPattern](#partDesign--linearPattern)
-	11. [PartDesign :: Mirrored](#partdesign--mirrored)
-	12. [PartDesign :: MultiTransform](#partdesign--multitransform)
-	13. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
-	14. [Advanced furniture example](#advanced-furniture-example)
+	6. [PartDesign :: Hole](#partdesign--hole)
+	7. [PartDesign :: LinearPattern](#partDesign--linearPattern)
+	8. [PartDesign :: Mirrored](#partdesign--mirrored)
+	9. [PartDesign :: MultiTransform](#partdesign--multitransform)
+	10. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
+	11. [Advanced furniture example](#advanced-furniture-example)
 5. [Woodworking - usage examples](#woodworking---usage-examples)
 	1. [Constraints - totally custom report](#constraints---totally-custom-report)
 	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
@@ -259,6 +260,44 @@ This type of report is designed for projects based only on `Pads`. Especially, i
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 * Zero constraints should be generally avoided, so they are skipped to not overload the report.
 
+## Additional reports
+
+There are also additional reports that can be generated. By default if any of those objects exists at Your project the additional report will be shown with the content. However, You can turn off any additional report type and choose the content You want to see there.
+___
+### Decoration
+**Supported:** `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus`.
+___
+
+* With the `decoration` report You can genarate report for some decoration parts like e.g. drawer handle:
+
+	![ARDecoration001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration001.png)
+	![ARDecoration002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration002.png)
+___
+### Mounting
+**Supported:** `Part::Cylinder`.
+___
+
+* With the `mounting` report You can generate report for dowels. Currently, for this type of report only `Part::Cylinder` is supported:
+
+	![ARMounting001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMounting001.png)
+	![ARMounting002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMounting002.png)
+	
+**Note:** You can also create dowels with `Sketch` and `Pad` and generate [c - report type](#c---report-type) or [p - report type](#p---report-type).
+___
+### Profiles
+**Supported:** `PartDesign::Thickness`, `Dodo workbench profiles`.
+___
+
+* With the `profiles` report You can generate report for construction profiles. Using `PartDesign::Thickness` at 2 faces You can create profile and get information about the elements:
+
+	![ARProfiles001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles001.png)
+	![ARProfiles002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles002.png)
+
+* Also You can generate report for `Dodo workbench profiles`:
+	
+	![ARProfiles003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles003.png)
+	![ARProfiles004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles004.png)
+
 ___
 ## Visibility
 
@@ -422,57 +461,6 @@ To start with `PartDesign :: Pocket` transformation, You have to create the furn
     ![TPartDesignPocket002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignPocket002.png)
 
 	**Note:** The `PartDesign :: Pocket` is supported only by the [c - report type](#c---report-type) and [p - report type](#p---report-type).
-
-___
-## PartDesign :: Fillet
-**Supported:** `Pad`.
-___
-
-To start with `PartDesign :: Fillet` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Create `Fillet` at the `Pad` furniture part as it is demonstrated below:
-
-    ![TPartDesignFillet001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignFillet001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-
-    ![TPartDesignFillet002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignFillet002.png)
-
-	**Note:** The `PartDesign :: Fillet` is supported only by the [p - report type](#p---report-type).
-
-___
-## PartDesign :: Chamfer
-**Supported:** `Pad`.
-___
-
-To start with `PartDesign :: Chamfer` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Create `Chamfer` at the `Pad` furniture part as it is demonstrated below:
-
-    ![TPartDesignChamfer001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignChamfer001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-
-    ![TPartDesignChamfer002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignChamfer002.png)
-
-	**Note:** The `PartDesign :: Chamfer` is supported only by the [p - report type](#p---report-type).
-
-___
-## PartDesign :: Thickness
-**Supported:** `Pad`.
-___
-
-To start with `PartDesign :: Thickness` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
-
-* Create `Thickness` at the `Pad` furniture part as it is demonstrated below:
-
-    ![TPartDesignThickness001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignThickness001.png)
-
-* Now, just run the macro, to get report `toPrint`:
-
-    ![TPartDesignThickness002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/TPartDesignThickness002.png)
-
-	**Note:** The `PartDesign :: Thickness` is supported only by the [p - report type](#p---report-type).
 
 ___
 ## PartDesign :: LinearPattern
