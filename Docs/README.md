@@ -268,7 +268,7 @@ ___
 **Supported:** `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus`.
 ___
 
-* With the `decoration` report You can genarate report for some decoration parts like e.g. drawer handle:
+* With the `decoration` report You can generate report for some decoration parts like e.g. drawer handle:
 
 	![ARDecoration001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration001.png)
 	![ARDecoration002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration002.png)
@@ -757,7 +757,7 @@ ___
 	* **Workaround**: FreeCAD not support multi-page `pdf` export. Long report can be generated especially for `Constraints` (`Report type` variable set to `c`) or for objects names listing (`Report type` variable set to `n`). 
 		1. You can change the `Report type` variable to `q` to sum up all the same dimensions and get the shortest possible report. 
 		2. You can use my project created for this purpose here: [sheet2export](https://github.com/dprojects/sheet2export).
-		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and covert it to the table.
+		3. Another way is to copy manually data from spreadsheet `toCut`. For example You can export spreadsheet `toCut` to `.csv` file and open `.csv` file under `LibreOffice Writer` and convert it to the table.
 
 * **Issue**: Special characters (comma and whitespace) for `constraints name` are not supported generally. At Ubuntu the validation not works so You can use `constraints name` as `description` (label from FreeCAD point of view) but if You use expressions the expressions will be removed after file reopen ([FreeCAD bug described here](https://forum.freecadweb.org/viewtopic.php?f=10&t=67042)).
 	* **Workaround**: There is [workaround](https://github.com/dprojects/getDimensions/commit/6a50fef4a8bbb4729ad8960a79f21b91b5712990), that allow to encode and decode comma and whitespace. To encode `", "` (comma and whitespace) in `constraints name` use `00` (zero twice). To encode `" "` (single whitespace) in `constraints name` use `0` (zero once). So, the encoded `constraints name` e.g. `Bottom00Joint0Size01` will be decoded at report as `Bottom, Joint Size 1`. Underscores way of encoding may not be supported for Windows users at FreeCAD. If You want to use underscores way, You have to test it first on Your own.

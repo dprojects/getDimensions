@@ -27,7 +27,7 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 		* Part :: Torus.
 	* Mounting - dowels made from:
 		* Part :: Cylinder.
-	* Profiles - metal contruction elements made from: 
+	* Profiles - metal construction elements made from: 
 		* PartDesign :: Thickness, 
 		* Dodo workbench profiles.
 * **Woodworking usage:**
