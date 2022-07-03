@@ -17,7 +17,8 @@ This FreeCAD macro gets dimensions of furniture parts. It has been designed for 
 	* edgeband, extended edge (e - report type),
 	* detailed, edgeband, drill holes, countersinks (d - report type),
 	* constraints names, totally custom report (c - report type),
-	* pads, all constraints (p - report type).
+	* pads, all constraints (p - report type),
+	* approximation of needed material (a - report type).
 * **Additional reports:**
 	* Decoration - decoration elements e.g. drawer handle:
 		* PartDesign :: Fillet, 

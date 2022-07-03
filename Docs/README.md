@@ -15,6 +15,7 @@
 		* [d - report type](#d---report-type)
 		* [c - report type](#c---report-type)
 		* [p - report type](#p---report-type)
+		* [a - report type](#a---report-type)
 	2. [Additional reports](#additional-reports)
 		* [Decoration](#decoration)
 		* [Mounting](#mounting)
@@ -260,6 +261,33 @@ This type of report is designed for projects based only on `Pads`. Especially, i
 * This type of report can exceed a single TechDraw page. To export this type of report just see the [Report - export](#report---export) section.
 * Zero constraints should be generally avoided, so they are skipped to not overload the report.
 
+___
+### a - report type
+
+This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertex. So, You have to be careful because the dimensions are rounded and given in raw form. It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dprojects/getDimensions/issues/8) issue and can be very useful for irregular shapes, to caclulate needed material. 
+
+* For sample objects:
+
+	![ReportTypeA001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA001.png)
+
+* The calculated report looks like this below:
+
+	![ReportTypeA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA002.png)
+
+	**Note:** This is because all the objects take the same space in 3D. Also the `Circle` object is not supported because it does not have exact vertex information for calculation `(0,0,18)`.
+
+* However, this report can be exported to CSV and directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/):
+	
+	![ReportTypeA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA003.png)
+	
+* For normal `Cube` furniture:
+	
+	![ReportTypeA004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA004.png)
+
+* Works without missing parts and with accurate dimensions:
+
+	![ReportTypeA005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA005.png)
+	
 ## Additional reports
 
 There are also additional reports that can be generated. By default if any of those objects exists at Your project the additional report will be shown with the content. However, You can turn off any additional report type and choose the content You want to see there.
