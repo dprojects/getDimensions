@@ -44,7 +44,7 @@ This demo example shows how to use Spreadsheet for furniture resize. You can cha
 
 ## Demo005_edgeband
 
-This demo example shows how to correctly apply edgeband under the FreeCAD. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband. This demo example is the real-life furniture I made in my garage. It is very modular and the structure is very durable because each shelf rests on the sides.
+This demo example shows how to correctly apply edgeband under the FreeCAD. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband. This demo example is the real-life furniture I made in my garage. It is very modular and the structure is very durable because each shelf rests on the sides. Also it has been updated with screw and dowels via `magicDowels` tool at [Woodworking workbench](https://github.com/dprojects/Woodworking).
 
 |   |   |
 |---|---|
