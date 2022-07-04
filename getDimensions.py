@@ -906,6 +906,29 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 
 
 # ###################################################################################################################
+def switchApproximation(iA, iB, iCaller="switchApproximation"):
+	
+	# solves the problem if an element intersects the coordinate axis
+
+	if iA >= 0 and iB >= 0 and iB > iA:
+		return iB - iA
+	if iB >= 0 and iA >= 0 and iA > iB:
+		return iA - iB
+		
+	if iA < 0 and iB >= 0 and iB > iA:
+		return abs(iA) + iB
+	if iB < 0 and iA >= 0 and iA > iB:
+		return abs(iB) + iA
+
+	if iA < 0 and iB <= 0 and iB > iA:
+		return abs(iA) - abs(iB)
+	if iB < 0 and iA <= 0 and iA > iB:
+		return abs(iB) - abs(iA)
+
+	return 0
+	
+	
+# ###################################################################################################################
 def getApproximation(iObj, iCaller="getApproximation"):
 
 	init = 0
@@ -947,9 +970,13 @@ def getApproximation(iObj, iCaller="getApproximation"):
 		if z < minZ:
 			minZ = z
 		
-	mWidth = round(maxX - minX, 2)
-	mDepth = round(maxY - minY, 2)
-	mHeight = round(maxZ - minZ, 2)
+	s1 = switchApproximation(minX, maxX, iCaller)
+	s2 = switchApproximation(minY, maxY, iCaller)
+	s3 = switchApproximation(minZ, maxZ, iCaller)
+
+	mWidth = round(s1, 2)
+	mDepth = round(s2, 2)
+	mHeight = round(s3, 2)
 	
 	s = [ mWidth, mDepth, mHeight ]
 	s.sort()

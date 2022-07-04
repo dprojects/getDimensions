@@ -264,7 +264,11 @@ This type of report is designed for projects based only on `Pads`. Especially, i
 ___
 ### a - report type
 
-This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertex. So, You have to be careful because the dimensions are rounded and given in raw form. It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dprojects/getDimensions/issues/8) issue and can be very useful for irregular shapes, to caclulate needed material. 
+This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertex. 
+
+You have to be careful because the dimensions are rounded and given in raw form. In fact the dimensions here are not real objects dimensions, they are some kind of occupied space in 3D by the object. You can see the difference for all rotated elements. For rotated elements the occupied space in 3D will not be the same as dimensions. However, this approach might be very useful at furniture designing process if You know how it works. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so You will not notice the difference in this case between real dimensions and occupied space in 3D.
+
+It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dprojects/getDimensions/issues/8) issue and can be very useful for irregular shapes, to caclulate needed material. 
 
 * For sample objects:
 
