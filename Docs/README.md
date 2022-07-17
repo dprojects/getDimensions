@@ -287,10 +287,16 @@ It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dpro
 * For normal `Cube` furniture:
 	
 	![ReportTypeA004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA004.png)
+	
+	**Note:** To have added "grain direction" and "custom label" You have to create exact folder structure. Folder label structure should be: "label, grain". The comma is important and it is separator to split label from grain information.
 
 * Works without missing parts and with accurate dimensions:
 
 	![ReportTypeA005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA005.png)
+
+* Directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/):
+
+	![ReportTypeA006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA006.png)
 	
 ## Additional reports
 
@@ -406,7 +412,7 @@ ___
 
 ___
 ## Draft :: Array
-**Supported:** `Cube`, `Pad`.
+**Supported:** `Cube`, `Pad`, `Array on Array`.
 ___
 
 To start with `Draft :: Array` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
