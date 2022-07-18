@@ -8,7 +8,7 @@
 6. [Demo006_holes](#demo006_holes)
 7. [Demo007_drawer](#demo007_drawer)
 8. [Demo008_drawer_links](#demo008_drawer_links)
-
+9. [Demo009_approximation](#demo009_approximation)
 
 ## Demo001_quickstart
 
@@ -44,7 +44,7 @@ This demo example shows how to use Spreadsheet for furniture resize. You can cha
 
 ## Demo005_edgeband
 
-This demo example shows how to correctly apply edgeband under the FreeCAD. To generate report You have to select `white` for furniture color because the furniture is all white with black edgeband. This demo example is the real-life furniture I made in my garage. It is very modular and the structure is very durable because each shelf rests on the sides. Also it has been updated with screw and dowels via `magicDowels` tool at [Woodworking workbench](https://github.com/dprojects/Woodworking).
+This demo example shows how to correctly apply edgeband under the FreeCAD. To generate detailed report for edgeband [e - report type](https://github.com/dprojects/getDimensions/tree/master/Docs#e---report-type) You have to select `white` for furniture color because the furniture is all white with black edgeband. This demo example is the real-life furniture I made in my garage. It is very modular and the structure is very durable because each shelf rests on the sides. Also it has been updated with screws and dowels via `magicDowels` tool, see at [Woodworking workbench - fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 |   |   |
 |---|---|
@@ -73,4 +73,12 @@ This demo example shows how to quickly make more copies of drawer. This example 
 |   |   |
 |---|---|
 | ![Demo008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo008/001.png) | ![Demo008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo008/002.png) |
+
+## Demo009_approximation
+
+This is the same furniture from my garage but here the Tree structure is adjusted to [a - report type](https://github.com/dprojects/getDimensions/tree/master/Docs#a---report-type). It is real-life project and has correctly applied edgeband, so this can be good testing sample for further approximation report development.
+
+|   |   |
+|---|---|
+| ![Demo009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo009/001.png) | ![Demo009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Demo/Screenshots/Demo009/002.png) |
 

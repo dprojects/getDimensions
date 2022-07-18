@@ -264,11 +264,13 @@ This type of report is designed for projects based only on `Pads`. Especially, i
 ___
 ### a - report type
 
-This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertex. 
+This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. 
 
-You have to be careful because the dimensions are rounded and given in raw form. In fact the dimensions here are not real objects dimensions, they are some kind of occupied space in 3D by the object. You can see the difference for all rotated elements. For rotated elements the occupied space in 3D will not be the same as dimensions. However, this approach might be very useful at furniture designing process if You know how it works. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so You will not notice the difference in this case between real dimensions and occupied space in 3D.
+You have to be careful because the dimensions are rounded and given in raw form. In fact the dimensions here are not real objects dimensions, they are some kind of occupied space in 3D by the object. You can see the difference for all rotated elements. For rotated elements the occupied space in 3D will not be the same as dimensions. 
 
-It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dprojects/getDimensions/issues/8) issue and can be very useful for irregular shapes, to caclulate needed material. 
+However, this approach might be very useful at furniture designing process if You know how it works. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so You will not see the difference in this case between real dimensions and occupied space in 3D.
+
+It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dprojects/getDimensions/issues/8) issue and can be very useful for irregular shapes, to caclulate needed material. Also, You can use it if You cut wood on Your own and You do not have waste material. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 
 * For sample objects:
 
@@ -278,24 +280,22 @@ It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dpro
 
 	![ReportTypeA002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA002.png)
 
-	**Note:** This is because all the objects take the same space in 3D. Also the `Circle` object is not supported because it does not have exact vertex information for calculation `(0,0,18)`.
+	**Note:** This is because all the objects take the same space in 3D. Also the `Circle` object is not supported because it does not have exact vertices information for calculation `(0, 0, 18)`.
 
 * However, this report can be exported to CSV and directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/):
 	
 	![ReportTypeA003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA003.png)
 	
-* For normal `Cube` furniture:
-	
+* For normal `Cube` furniture, works without missing parts and with accurate dimensions:
+
 	![ReportTypeA004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA004.png)
-	
-	**Note:** To have added "grain direction" and "custom label" You have to create exact folder structure. Folder label structure should be: "label, grain". The comma is important and it is separator to split label from grain information.
-
-* Works without missing parts and with accurate dimensions:
-
-	![ReportTypeA005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA005.png)
 
 * Directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/):
 
+	![ReportTypeA005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA005.png)
+
+* To have added automatically "grain direction" and "custom label" You have to create exact folder structure. Folder label structure should be: `label, grain`. The comma and space is important and it is separator to split label from grain information. For more details see: [Demo009_approximation](https://github.com/dprojects/getDimensions/tree/master/Demo#demo009_approximation).
+	
 	![ReportTypeA006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeA006.png)
 	
 ## Additional reports
