@@ -1,8 +1,10 @@
 # Description
 
-<img align="left" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This FreeCAD macro gets dimensions of furniture parts. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed furniture parts to cut for woodworking project. This tool is also part of [Woodworking workbench](https://github.com/dprojects/Woodworking).
+<img align="left" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This FreeCAD macro gets dimensions of furniture parts. It has been designed for my private woodworking projects (hobby), especially for chipboards 18 mm of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed furniture parts to cut for woodworking project. 
 
-<br>
+**Note:** This tool is also part of [Woodworking workbench](https://github.com/dprojects/Woodworking).
+
+<br><br>
 
 ![pl](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_pl.png)
 
