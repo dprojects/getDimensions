@@ -13,7 +13,6 @@
     * Test edgeband and extended edge report.
     * **Settings:** 
         * `Report type` to `e`, 
-        * `Furniture color` to `white`, 
         * `Edgeband code` to `black`.
 2. **Test003_holes:** 
     * Test detailed report with edgeband, holes and countersinks and advanced features like Mirrored on Body, Clone, multi object MultiTransform.

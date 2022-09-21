@@ -198,7 +198,7 @@ This type of report is designed for edgeband. Also You can verify if Your 3D mod
 * Each column represents `face` object number at 3D model.
 * If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edge`, and `5`, `6` will be `surface`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge`. 
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object. You have to change the base object visibility first.
-* If You applied only veneer, leave the furniture color as `gray (no color)`. The `Furniture color` is the reference color for comparison. All faces with other color than given `Furniture color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer. If You apply strange color for furniture, You might have problem to convert it to tuple FreeCAD color. 
+* All faces with other color than `object color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer. 
 * Report for multi-color furniture can be achieved by making two reports for each color (use [Visibility](#visibility) feature to hide each color).
 * The edgeband color at 3D model does not matter. `Edgeband code` is only text that will be displayed at report. It can represent any veneer tape color at shop, even reference code. The spreadsheet column width is limited, however at HTML export this can be extended.
 * This type of report can exceed a single TechDraw page. To export this type of report, see the [Report - export](#report---export) section.
@@ -217,7 +217,7 @@ This type of report might be useful for raw wood projects, CNC or very detailed 
 * Each column represents `face` object number at 3D model.
 * If Your furniture part `Height` is `Thickness` the `1`, `2`, `3`, `4` will be recognized as `edge`, and `5`, `6` will be `surface`. If Your 3D model is designed differently the columns `5`, `6` may be covered with veneer but this will be recognized as `edge`. 
 * Some transformations can have more than 6 faces. To apply veneer correctly for transformation make sure You add `face color` at base object. You have to change the base object visibility first.
-* If You applied only veneer, leave the furniture color as `gray (no color)`. The `Furniture color` is the reference color for comparison. All faces with other color than given `Furniture color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer. If You apply strange color for furniture, You might have problem to convert it to tuple FreeCAD color. 
+* All faces with other color than `object color` will be considered as edgeband. If You want to use the edgeband feature, the best way is to leave the furniture without color and apply only color for faces that need to be covered with veneer.
 * Report for multi-color furniture can be achieved by making two reports for each color (use [Visibility](#visibility) feature to hide each color).
 * The edgeband color at 3D model does not matter. `Edgeband code` is only text that will be displayed at report. It can represent any veneer tape color at shop, even reference code. The spreadsheet column width is limited, however at HTML export this can be extended.
 * The holes and countersinks are taken from `constraints names` of the base object of the group. For example if You make `MultiTransform` You have to set the `constraints names` at the base object.
@@ -683,7 +683,7 @@ If You want more detailed report about the edgeband You should consider [Constra
 ___
 ### Edgeband - detailed by selection
 
-* This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. Also You have to provide Your furniture color for edgeband color comparison. To apply veneer for `face` use: 
+* This way use `e - report type`. For this type of report You need to have the veneer applied correctly for each `face` at 3D model that needs to be covered. To apply veneer for `face` use: 
 	* `Mouse Right Button` click for object.
 	* Choose from submenu `Set colors...`.
 	* Select all needed `faces` using pressed `CTRL` keyboard key with `Mouse Left Button` click.
@@ -694,7 +694,7 @@ ___
 
     ![Edgeband007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband007.png)
 
-	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with given `furniture color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
+	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with `object color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
 
 ___
 ## Dowels, pilot holes, countersinks
