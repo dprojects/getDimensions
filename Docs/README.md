@@ -1,13 +1,13 @@
 # Table of Contents
 
-1. [Default Settings](#default-settings)
-2. [Furniture parts](#furniture-parts)
-	1. [Cube - quickstart](#cube---quickstart)
-	2. [Pad - quickstart](#pad---quickstart)
-	3. [Design furniture not the furniture parts](#design-furniture-not-the-furniture-parts)
-	4. [Basic furniture example](#basic-furniture-example)
-3. [Report customization](#report-customization)
-	1. [Report types](#report-types)
+* [Default Settings](#default-settings)
+* [Furniture parts](#furniture-parts)
+	* [Cube - quickstart](#cube---quickstart)
+	* [Pad - quickstart](#pad---quickstart)
+	* [Design furniture not the furniture parts](#design-furniture-not-the-furniture-parts)
+	* [Basic furniture example](#basic-furniture-example)
+* [Report customization](#report-customization)
+	* [Report types](#report-types)
 		* [q - report type](#q---report-type)
 		* [n - report type](#n---report-type)
 		* [g - report type](#g---report-type)
@@ -16,38 +16,39 @@
 		* [c - report type](#c---report-type)
 		* [p - report type](#p---report-type)
 		* [a - report type](#a---report-type)
-	2. [Additional reports](#additional-reports)
+	* [Additional reports](#additional-reports)
+		* [Custom measurements](#custom-measurements)
+		* [Dowels and Screws](#dowels-and-screws)
+		* [Construction profiles](#construction-profiles)
 		* [Decoration](#decoration)
-		* [Mounting](#mounting)
-		* [Profiles](#profiles)
-	3. [Visibility](#visibility)
-	4. [Edge size](#edge-size)
-	5. [Report - export](#report---export)
-4. [Transformations](#transformations)
-	1. [Part :: Mirroring](#part--mirroring)
-	2. [Draft :: Array](#draft--array)
-	3. [Draft :: Array Polar](#draft--array-polar)
-	4. [Draft :: Clone](#draft--clone)
-	5. [PartDesign :: Pocket](#partdesign--pocket)
-	6. [PartDesign :: Hole](#partdesign--hole)
-	7. [PartDesign :: LinearPattern](#partDesign--linearPattern)
-	8. [PartDesign :: Mirrored](#partdesign--mirrored)
-	9. [PartDesign :: MultiTransform](#partdesign--multitransform)
-	10. [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
-	11. [Advanced furniture example](#advanced-furniture-example)
-5. [Woodworking - usage examples](#woodworking---usage-examples)
-	1. [Constraints - totally custom report](#constraints---totally-custom-report)
-	2. [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
-	3. [Edgeband](#edgeband)
+	* [Visibility](#visibility)
+	* [Edge size](#edge-size)
+	* [Report - export](#report---export)
+* [Transformations](#transformations)
+	* [Part :: Mirroring](#part--mirroring)
+	* [Draft :: Array](#draft--array)
+	* [Draft :: Array Polar](#draft--array-polar)
+	* [Draft :: Clone](#draft--clone)
+	* [PartDesign :: Hole](#partdesign--hole)
+	* [PartDesign :: Pocket](#partdesign--pocket)
+	* [PartDesign :: LinearPattern](#partdesign--linearpattern)
+	* [PartDesign :: Mirrored](#partdesign--mirrored)
+	* [PartDesign :: MultiTransform](#partdesign--multitransform)
+	* [App :: LinkGroup and App :: Link](#app--linkgroup-and-app--link)
+	* [Advanced furniture example](#advanced-furniture-example)
+* [Woodworking - usage examples](#woodworking---usage-examples)
+	* [Constraints - totally custom report](#constraints---totally-custom-report)
+	* [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc)
+	* [Edgeband](#edgeband)
 		* [Edgeband - quick way](#edgeband---quick-way)
 		* [Edgeband - described](#edgeband---described)
 		* [Edgeband - detailed by selection](#edgeband---detailed-by-selection)
-	4. [Dowels, pilot holes, countersinks](#dowels-pilot-holes-countersinks)
-	5. [Custom furniture part](#custom-furniture-part)
-	6. [32 mm cabinetmaking system](#32-mm-cabinetmaking-system)
-6. [Known issues](#known-issues)
-7. [Special thanks](#special-thanks)
-8. [Feature requests](#feature-requests)
+	* [Dowels, pilot holes, countersinks](#dowels-pilot-holes-countersinks)
+	* [Custom furniture part](#custom-furniture-part)
+	* [32 mm cabinetmaking system](#32-mm-cabinetmaking-system)
+* [Known issues](#known-issues)
+* [Special thanks](#special-thanks)
+* [Feature requests](#feature-requests)
 
 ___
 # Default Settings
@@ -302,24 +303,23 @@ It has been inspired by [Dimensions of not-rectangle #8](https://github.com/dpro
 
 There are also additional reports that can be generated. By default if any of those objects exists at Your project the additional report will be shown with the content. However, You can turn off any additional report type and choose the content You want to see there.
 
+### Custom measurements
+**Supported:** `App::MeasureDistance`.
 ___
-### Decoration
-**Supported:** `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus`.
-___
 
 
-* With the `decoration` report You can generate report for some decoration parts like e.g. drawer handle:
+* With the `Custom measurements` report You can generate report for measurements objects. The custom measurements can be easily added via [magicMeasure](https://github.com/dprojects/Woodworking/tree/master/Docs#magicmeasure) tool from [Woodworking workbench](https://github.com/dprojects/Woodworking):
 
-	![ARDecoration001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration001.png)
-	![ARDecoration002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration002.png)
+	![ARMeasurements001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMeasurements001.png)
+	![ARMeasurements002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMeasurements002.png)
 
 ___
-### Mounting
+### Dowels and Screws
 **Supported:** `Part::Cylinder`.
 ___
 
 
-* With the `mounting` report You can generate report for screws, dowels and any other mounting points. It is recommended to use `magicDowels` tool from [Woodworking workbench](https://github.com/dprojects/Woodworking), because it takes only a while to add all the visible mounting points:
+* With the `Dowels and Screws` report You can generate report for screws, dowels and any other mounting points. It is recommended to use [magicDowels](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdowels) tool from [Woodworking workbench](https://github.com/dprojects/Woodworking), because it takes only a while to add all the visible mounting points:
 
 	![ARMounting001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMounting001.png)
 	
@@ -332,12 +332,12 @@ ___
 	![ARMounting003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARMounting003.png)
 
 ___
-### Profiles
+### Construction profiles
 **Supported:** `PartDesign::Thickness`, `Dodo workbench profiles`.
 ___
 
 
-* With the `profiles` report You can generate report for construction profiles. Using `PartDesign::Thickness` at 2 faces You can create profile and get information about the elements:
+* With the `Construction profiles` report You can generate report for construction profiles. Using `PartDesign::Thickness` at 2 faces You can create profile and get information about the elements:
 
 	![ARProfiles001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles001.png)
 	![ARProfiles002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles002.png)
@@ -346,6 +346,17 @@ ___
 	
 	![ARProfiles003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles003.png)
 	![ARProfiles004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARProfiles004.png)
+
+___
+### Decoration
+**Supported:** `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus`.
+___
+
+
+* With the `Decoration` report You can generate report for some decoration parts like e.g. drawer handle:
+
+	![ARDecoration001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration001.png)
+	![ARDecoration002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration002.png)
 
 ___
 ## Visibility

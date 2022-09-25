@@ -24,17 +24,19 @@
 	* pads, all constraints (p - report type),
 	* approximation of needed material (a - report type).
 * **Additional reports:**
+	* Custom measurements:
+		* App :: MeasureDistance.
+	* Dowels and Screws - dowels made from:
+		* Part :: Cylinder.
+	* Profiles - metal construction elements made from: 
+		* PartDesign :: Thickness, 
+		* Dodo workbench profiles.
 	* Decoration - decoration elements e.g. drawer handle:
 		* PartDesign :: Fillet, 
 		* PartDesign :: Chamfer, 
 		* Part :: Sphere, 
 		* Part :: Cone, 
 		* Part :: Torus.
-	* Mounting - dowels made from:
-		* Part :: Cylinder.
-	* Profiles - metal construction elements made from: 
-		* PartDesign :: Thickness, 
-		* Dodo workbench profiles.
 * **Woodworking usage:**
 	* wood properties - grain direction, type of wood, color of wood,
 	* edgeband (quick way, described, detailed by selection),
