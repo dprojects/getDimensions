@@ -58,7 +58,8 @@
     * PartDesign :: Mirrored,
     * PartDesign :: MultiTransform,
     * App :: Link,
-	* App :: LinkGroup.
+	* App :: LinkGroup,
+	* Part :: Compound.
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
 

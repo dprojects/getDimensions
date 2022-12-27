@@ -423,7 +423,7 @@ ___
 
 ___
 ## Draft :: Array
-**Supported:** `Cube`, `Pad`, `Array on Array`.
+**Supported:** `Cube`, `Pad`, `Array on Array`, `Part :: Compound`.
 ___
 
 To start with `Draft :: Array` transformation, You have to create the furniture part for transformation first. In this case this will be `Pad` furniture part. If You already have the `Pad` created, just follow steps: 
