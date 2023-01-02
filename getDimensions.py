@@ -1990,6 +1990,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		# support for LinkGroup but called only from transformations
 		if iObj.isDerivedFrom("App::LinkGroup"):
 			setAppLinkGroup(iObj, iCaller)
+			
+		# support for Cut but called only from transformations
+		if iObj.isDerivedFrom("Part::Cut"):
+			setPartCut(iObj, iCaller)
 
 		# support for Mirror on Body
 		if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
@@ -2070,6 +2074,29 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 			
 			# if there is wrong structure
 			showError(iCaller, iObj, "setAppLinkGroup", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setPartCut(iObj, iCaller="setPartCut"):
+
+	# support for Cut
+	if iObj.isDerivedFrom("Part::Cut"):
+
+		try:
+			
+			# set reference point to the objects list
+			key = iObj.OutList
+
+			# call scan for each object at the list
+			scanObjects(key, iCaller)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iCaller, iObj, "setPartCut", "wrong structure")
 			return -1
 	
 	return 0
