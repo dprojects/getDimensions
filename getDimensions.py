@@ -45,9 +45,12 @@ sRPQDsc = {
 # Visibility (Toggle Visibility Feature):
 sTVF = "off"
 sTVFDsc = {
+	"off" : translate("getDimensions", "show and calculate all objects and groups"),
 	"on" : translate("getDimensions", "skip all hidden objects and groups"),
 	"edge" : translate("getDimensions", "show all hidden objects and groups but not add to the edge size"),
-	"off" : translate("getDimensions", "show and calculate all objects and groups")
+	"Cut Base" : translate("getDimensions", "for Cut objects show only Base objects"),
+	"Cut Tool" : translate("getDimensions", "for Cut objects show only Tool objects"),
+	"on inherit" : translate("getDimensions", "Inherit visibility from container and not parse hidden containers")
 }
 
 # Units for dimensions:
@@ -135,6 +138,9 @@ gAD = ""
 
 # objects to parse init
 gOBs = ""
+
+# currently parsed object called from main loop
+gCurrentOB = ""
 
 # spreadsheet result init
 gSheet = gAD
@@ -388,7 +394,7 @@ def showQtGUI():
 
 			# info screen
 			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
-			self.visibilityIS.move(80, vLine + vLineNextRow + 3)
+			self.visibilityIS.move(120, vLine + vLineNextRow + 3)
 			
 			# ############################################################################
 			# units for dimensions
@@ -2063,7 +2069,7 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 	if iObj.isDerivedFrom("App::LinkGroup"):
 
 		try:
-			
+
 			# set reference point to the objects list
 			key = iObj.ElementList
 
@@ -2086,10 +2092,10 @@ def setPartCut(iObj, iCaller="setPartCut"):
 	if iObj.isDerivedFrom("Part::Cut"):
 
 		try:
-			
+
 			# set reference point to the objects list
 			key = iObj.OutList
-
+			
 			# call scan for each object at the list
 			scanObjects(key, iCaller)
 		
@@ -2389,18 +2395,98 @@ def setPartDesignMultiTransform(iObj, iCaller="setPartDesignMultiTransform"):
 # Scan objects (MAIN CALCULATIONS LOOP)
 # ###################################################################################################################
 
+# ###################################################################################################################
+def getCutAssign(iObj, iCaller="getCutAssign"):
+
+	assign = ""
+	try:
+		
+		if not iObj.isDerivedFrom("Part::Cut"):
+			
+			if str(iObj.Name) == str(iObj.InList[0].Base.Name):
+				assign = "Base"
+		
+			if str(iObj.Name) == str(iObj.InList[0].Tool.Name):
+				assign = "Tool"
+
+	except:
+		skip = 1
+
+	return assign
+
+
+# ###################################################################################################################
+def getCutContentVisibility(iObj, iCaller="getCutContentVisibility"):
+
+	visibility = True
+	
+	assign = getCutAssign(iObj, iCaller)
+	
+	if sTVF == "Cut Base" and assign == "Tool":
+		visibility = False
+	
+	if sTVF == "Cut Tool" and assign == "Base":
+		visibility = False
+
+	return visibility
+
+
+# ###################################################################################################################
+def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
+
+	v = True
+	
+	for o in iObj.InListRecursive:
+		
+		if (
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Compound") or 
+			o.isDerivedFrom("Part::Cut") or 
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") 
+			):
+			
+			if o.Visibility == False:
+				v = False
+			else:
+				v = True
+
+	return v
+
 
 # ###################################################################################################################
 def scanObjects(iOBs, iCaller="main"):
-
+	
+	global gCurrentOB
+	
 	# search all objects in document and set database for correct ones
 	for obj in iOBs:
 
-		# if feature is on, just skip all hidden elements
+		# set currently parsed object called from main loop
+		if iCaller == "main":
+			gCurrentOB = obj
+
+		# check visibility
+		
+		if sTVF == "on inherit":
+
+			iv = getInheritedVisibility(obj, iCaller)
+			cv = gCurrentOB.Visibility 
+
+			if iv == True or cv == True:
+				parse = True
+			else:
+				continue
+		
+		if sTVF == "Cut Base" or sTVF == "Cut Tool":
+			if getCutContentVisibility(obj, iCaller) == False:
+				continue
+
 		if sTVF == "on":
 			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 				continue
 
+		# check copy listing special property
 		if hasattr(obj, "BOM"):
 			if obj.BOM == False:
 				continue

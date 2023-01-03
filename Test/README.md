@@ -8,7 +8,9 @@
 
 1. **Test001_features:** 
 	* Test all the basic features supported by the macro.
-	* **Settings:** `Report type` to `n`.
+	* **Settings:** 
+        * `Report type` to `n`.
+        * `Visibility` to `on inherit`
 2. **Test002_edgeband:** 
     * Test edgeband and extended edge report.
     * **Settings:** 
