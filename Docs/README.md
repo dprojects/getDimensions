@@ -363,35 +363,36 @@ ___
 
 The `Visibility` option is related to visibility feature functionality. This feature have several options:
 
-* `off` - by default this feature is set to `off` allowing hidden content to be listed. 
-* `on` - option is mostly dedicated to simple `Cube` objects not `Part :: Cut` hidden behind deeply nested containers. This option turn on the feature and You can create report by toggle visibility items or group of items:
+* `off` - by default this feature is set to `off` allowing hidden content to be listed. For example this is useful if you use [magicCut](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccut) to create quick Dado joints. Also you can list complicated PartDesign objects, where the Pad objects are hidden.
+* `on` - option is mostly dedicated to simple `Cube` objects not `Part :: Cut` hidden behind deeply nested containers. This option turn on the feature basic functionality and You can create report by toggle visibility items or group of items. It can be useful especially for simple grouping object via `Group`, or `LinkGroup`:
 
     ![RVisibility001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility001.png)
     ![RVisibility002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility002.png)
 
-* `edge` - show all hidden objects and groups but not add to the edge size. See the [Edge size](#edge-size) section for more details.
-* `Cut Base` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements:
-	
-	![PartCutBase001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase001.png)
-    ![PartCutBase002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase002.png)
-
-* `Cut Tool` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements:
-
-	![PartCutTool001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool001.png)
-    ![PartCutTool002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool002.png)
-
-* `on inherit` - in this mode the feature is `on` and also inherits the visibility from the containers. 
+* `edge` - show all hidden objects and groups but not add hidden objects to the edge size. See the [Edge size](#edge-size) section for more details.
+* `inherit` - in this mode the feature inherits the visibility from the highest containers in the structure.
 	* If the highest container is hidden the content will not be listed:
 	![PartCutInherit001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit001.png)
 	
-	* If the highest container is visible but the lower container is visible the content will inherit the visibility from the highest container and the content will be listed:
+	* If the highest container is visible but the lower container is not visible the content will inherit the visibility from the highest container and the content will be listed:
 	![PartCutInherit002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit002.png)
 	
 	* This might be strange but this apparoach allows for content linking inside hidden container. So the base objects will be hidden and not calculated and only links will be visible and calculated:
 	![PartCutInherit003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit003.png)
 	
-	* This allows to merge realistic screw and link all mounting points to the base middle container. If you hide the highest container from the base screw the base screw will not be calculted and the mounting points will be calculated correctly only using links:
+	* This allows to merge realistic screw and link all mounting points to the base middle container. If you hide the highest container from the base screw the base screw will not be calculted and visible but the mounting points will be calculated correctly only using visible links:
 	![PartCutInherit004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit004.png)
+
+* `Cut Base` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements. This option has embedded `inherit` mode:
+	
+	![PartCutBase001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase001.png)
+    ![PartCutBase002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase002.png)
+
+* `Cut Tool` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements. This option has embedded `inherit` mode:
+
+	![PartCutTool001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool001.png)
+    ![PartCutTool002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool002.png)
+
 
 ___
 ## Edge size

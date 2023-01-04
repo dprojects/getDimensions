@@ -45,12 +45,12 @@ sRPQDsc = {
 # Visibility (Toggle Visibility Feature):
 sTVF = "off"
 sTVFDsc = {
-	"off" : translate("getDimensions", "show and calculate all objects and groups"),
-	"on" : translate("getDimensions", "skip all hidden objects and groups"),
-	"edge" : translate("getDimensions", "show all hidden objects and groups but not add to the edge size"),
-	"Cut Base" : translate("getDimensions", "for Cut objects show only Base objects"),
-	"Cut Tool" : translate("getDimensions", "for Cut objects show only Tool objects"),
-	"on inherit" : translate("getDimensions", "Inherit visibility from container and not parse hidden containers")
+	"off" : translate("getDimensions", "normal mode, show and calculate all objects and groups"),
+	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
+	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
+	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container"),
+	"Cut Base" : translate("getDimensions", "for Cut objects, show only Base structure and inherit visibility"),
+	"Cut Tool" : translate("getDimensions", "for Cut objects, show only Tool structure and inherit visibility")
 }
 
 # Units for dimensions:
@@ -394,7 +394,7 @@ def showQtGUI():
 
 			# info screen
 			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
-			self.visibilityIS.move(120, vLine + vLineNextRow + 3)
+			self.visibilityIS.move(110, vLine + vLineNextRow + 3)
 			
 			# ############################################################################
 			# units for dimensions
@@ -2416,7 +2416,7 @@ def getCutAssign(iObj, iCaller="getCutAssign"):
 
 
 # ###################################################################################################################
-def getCutContentVisibility(iObj, iCaller="getCutContentVisibility"):
+def getCutContentPath(iObj, iCaller="getCutContentPath"):
 
 	visibility = True
 	
@@ -2466,30 +2466,44 @@ def scanObjects(iOBs, iCaller="main"):
 		if iCaller == "main":
 			gCurrentOB = obj
 
-		# check visibility
+		# ##################################################################
+		# check if parsing is allowed
+		# ##################################################################
 		
-		if sTVF == "on inherit":
+		# check copy listing special property
+		if hasattr(obj, "BOM"):
+			if obj.BOM == False:
+				continue
+
+		# simple object visibility
+		if sTVF == "on":
+			if obj.Visibility == False:
+				continue
+
+		# try inherit visibility from highest container
+		# also linking from middle visible container in highest hidden container
+		if (
+			sTVF == "inherit" or 
+			sTVF == "Cut Base" or 
+			sTVF == "Cut Tool" 
+			):
 
 			iv = getInheritedVisibility(obj, iCaller)
-			cv = gCurrentOB.Visibility 
+			cv = gCurrentOB.Visibility
 
 			if iv == True or cv == True:
 				parse = True
 			else:
 				continue
-		
-		if sTVF == "Cut Base" or sTVF == "Cut Tool":
-			if getCutContentVisibility(obj, iCaller) == False:
-				continue
 
-		if sTVF == "on":
-			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-				continue
+			# choose content listing way of Part :: Cut
+			if sTVF == "Cut Base" or sTVF == "Cut Tool":
+				if getCutContentPath(obj, iCaller) == False:
+					continue
 
-		# check copy listing special property
-		if hasattr(obj, "BOM"):
-			if obj.BOM == False:
-				continue
+		# ##################################################################
+		# run functions and time travel machine ;-)
+		# ##################################################################
 
 		# select and set furniture part
 		selectFurniturePart(obj, iCaller)
