@@ -22,6 +22,16 @@
 		* [Construction profiles](#construction-profiles)
 		* [Decoration](#decoration)
 	* [Visibility](#visibility)
+		* [Visibility: off](#visibility-off)
+		* [Visibility: on](#visibility-on)
+		* [Visibility: edge](#visibility-edge)
+		* [Visibility: parent](#visibility-parent)
+		* [Visibility: inherit](#visibility-inherit)
+		* [special BOM attribute](#special-bom-attribute)
+	* [Part :: Cut content visibility](#part--cut-content-visibility)
+		* [Part :: Cut content visibility: all](#part--cut-content-visibility-all)
+		* [Part :: Cut content visibility: base](#part--cut-content-visibility-base)
+		* [Part :: Cut content visibility: tool](#part--cut-content-visibility-tool)
 	* [Edge size](#edge-size)
 	* [Report - export](#report---export)
 * [Transformations](#transformations)
@@ -363,36 +373,92 @@ ___
 
 The `Visibility` option is related to visibility feature functionality. This feature have several options:
 
-* `off` - by default this feature is set to `off` allowing hidden content to be listed. For example this is useful if you use [magicCut](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccut) to create quick Dado joints. Also you can list complicated PartDesign objects, where the Pad objects are hidden.
-* `on` - option is mostly dedicated to simple `Cube` objects not `Part :: Cut` hidden behind deeply nested containers. This option turn on the feature basic functionality and You can create report by toggle visibility items or group of items. It can be useful especially for simple grouping object via `Group`, or `LinkGroup`:
+### Visibility: off
 
-    ![RVisibility001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility001.png)
-    ![RVisibility002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility002.png)
+* By default this feature is set to `off` allowing hidden content to be calculated and listed at the report. This option has been set to default because FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
 
-* `edge` - show all hidden objects and groups but not add hidden objects to the edge size. See the [Edge size](#edge-size) section for more details.
-* `inherit` - in this mode the feature inherits the visibility from the highest containers in the structure.
-	* If the highest container is hidden the content will not be listed:
-	![PartCutInherit001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit001.png)
+	![RVisibility001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility001.png)
+
+### Visibility: on
+
+* This option is mostly dedicated to simple `Cube` objects not `Part :: Cut` hidden behind deeply nested containers. This option turn on the feature basic functionality and You can create report by toggle visibility items or group of items. It can be useful especially for simple costs calculation. You can quickly calculate different types of wood by grouping them inside `Group`, or `LinkGroup` and toggle visibility of `Group` or `LinkGroup`:
+
+	![RVisibility002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility002.png)
+	![RVisibility003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility003.png)
+
+### Visibility: edge
+
+* This option allows to show all hidden objects and groups but not add hidden objects to the edge size. This is useful if You want to calculate edgeband for different types of wood or colors. As You see below, all the objects are listed at the report but the edge size is calculated only for visible HDF element.
+
+	![RVisibility004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility004.png)
+
+	**Note:** See the [Edge size](#edge-size) section for more details.
+
+### Visibility: parent
+
+* This option allows to inherit visibility from nearest container. You can hide only part of the sctructure. Even if the content is hidden by the higher container, the content from lower level will be listed if the nearest container is visible. This approach is more closer to those what FreeCAD user see at 3D view, but You need to know that FreeCAD 3D view, Grey object at Tree, and Visibility option not match with each other. 
+
+	![RVisibility005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility005.png)
+	![RVisibility006](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility006.png)
+
+* This option can be used for Cut direct elements linking where Link is inside the Cut structure but the Base parametric element is outside the Cut structure. Also all Cubes the Base outside the Cut and Link are invisible. Only the Cut container is visible. In this case you can show all elements, Base or Tool.
+
+	![RVisibility006a](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility006a.png)
+	![RVisibility006b](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility006b.png)
+	![RVisibility006c](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility006c.png)
+
+### Visibility: inherit
+
+* This is the most advanced option and in my opinion the most powerful and useful for parametric modeling in practice. In this mode the feature inherits the visibility from the highest containers in the structure. If the highest container is hidden the content will not be listed, even if the nearest container and content is visible.
 	
-	* If the highest container is visible but the lower container is not visible the content will inherit the visibility from the highest container and the content will be listed:
-	![PartCutInherit002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit002.png)
+	![RVisibility007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility007.png)
 	
-	* This might be strange but this apparoach allows for content linking inside hidden container. So the base objects will be hidden and not calculated and only links will be visible and calculated:
-	![PartCutInherit003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit003.png)
+* If the highest container is visible but the lower container is not visible the content will inherit the visibility from the highest container and the content will be listed.
+
+	![RVisibility008](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility008.png)
+
+* This might be strange but this apparoach allows for visible content linking inside hidden container. So the base objects will be hidden and not calculated and only links will be visible and calculated.
+
+	![RVisibility009](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility009.png)
+
+* This option should be used with `LinkGroup` as a container not `Group`. This feature not inherit visibility from `Group` container to allow group more complicated parametric structures to be grouped in folder and have clear Tree structure. For example you can put all merged realistic screws in `Group` and link the base middle container. If you hide the highest container from the base screw the base screw will not be calculted and visible but the mounting points will be calculated correctly only using visible links. All structure will be well organized, clean, parametric and correctly calculated at the report.
 	
-	* This allows to merge realistic screw and link all mounting points to the base middle container. If you hide the highest container from the base screw the base screw will not be calculted and visible but the mounting points will be calculated correctly only using visible links:
-	![PartCutInherit004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutInherit004.png)
+	![RVisibility010](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility010.png)
+	![RVisibility011](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RVisibility011.png)
 
-* `Cut Base` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements. This option has embedded `inherit` mode:
-	
-	![PartCutBase001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase001.png)
-    ![PartCutBase002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutBase002.png)
+### special BOM attribute
 
-* `Cut Tool` - this option is dedicated to `Part :: Cut` objects and allows to list only `Base` structure. You can also use `App :: Link` to create more elements. This option has embedded `inherit` mode:
+* If object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccut) and [magicKnife](https://github.com/dprojects/Woodworking/tree/master/Docs#magicknife) tools to skip copies at the report.
 
-	![PartCutTool001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool001.png)
-    ![PartCutTool002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/PartCutTool002.png)
+For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 
+___
+## Part :: Cut content visibility
+
+This option is related to `Part :: Cut` structures. It allows to choose parsing method for the content of `Part :: Cut`.
+
+### Part :: Cut content visibility: all
+
+* This option allows to show all the `Part :: Cut` structure.
+
+	![RPartCut001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut001.png)
+
+* For example this is useful if You use [magicCut](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccut) to create quick Dado joints. This tool creates copies of the objects, so the structure can be listed even if it is hidden. Only the common part is removed so the elements not change places.
+
+	![RPartCut002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut002.png)
+	![RPartCut003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut003.png)
+
+### Part :: Cut content visibility: base
+
+* This option allows to show only `Base` elements from the `Part :: Cut` structure. This is FreeCAD Part Boolean Cut default apparoach, where the `Base` is the object after `Tool` operation.
+
+	![RPartCut004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut004.png)
+
+### Part :: Cut content visibility: tool
+
+* This option allows to show only `Tool` elements from the `Part :: Cut` structure.
+
+	![RPartCut005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut005.png)
 
 ___
 ## Edge size

@@ -22,7 +22,7 @@ for line in data:
 			link = link.replace("# ","")
 			link = link.replace(" ","-")
 			link = link.replace(",","")
-			link = link.replace("::","")
+			link = link.replace(":","")
 			link = link.replace(".","")
 			
 			head = line.replace("\n","")
@@ -39,7 +39,7 @@ for line in data:
 			link = link.replace("## ","")
 			link = link.replace(" ","-")
 			link = link.replace(",","")
-			link = link.replace("::","")
+			link = link.replace(":","")
 			link = link.replace(".","")
 			
 			head = line.replace("\n","")
@@ -56,7 +56,7 @@ for line in data:
 			link = link.replace("### ","")
 			link = link.replace(" ","-")
 			link = link.replace(",","")
-			link = link.replace("::","")
+			link = link.replace(":","")
 			link = link.replace(".","")
 			
 			head = line.replace("\n","")
@@ -73,7 +73,7 @@ for line in data:
 			link = link.replace("#### ","")
 			link = link.replace(" ","-")
 			link = link.replace(",","")
-			link = link.replace("::","")
+			link = link.replace(":","")
 			link = link.replace(".","")
 			
 			head = line.replace("\n","")
@@ -90,7 +90,7 @@ for line in data:
 			link = link.replace("##### ","")
 			link = link.replace(" ","-")
 			link = link.replace(",","")
-			link = link.replace("::","")
+			link = link.replace(":","")
 			link = link.replace(".","")
 			
 			head = line.replace("\n","")
