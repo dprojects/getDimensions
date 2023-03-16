@@ -21,6 +21,7 @@
 		* [Dowels and Screws](#dowels-and-screws)
 		* [Construction profiles](#construction-profiles)
 		* [Decoration](#decoration)
+		* [Grain Direction](#grain-direction)
 	* [Visibility](#visibility)
 		* [Visibility: off](#visibility-off)
 		* [Visibility: on](#visibility-on)
@@ -367,6 +368,17 @@ ___
 
 	![ARDecoration001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration001.png)
 	![ARDecoration002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARDecoration002.png)
+
+___
+### Grain Direction
+**Supported:** `Horizontal`, `Vertical`
+___
+
+
+* With the `Grain Direction` report You can generate report for each face:
+
+	![ARGrain001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARGrain001.png)
+	![ARGrain002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ARGrain002.png)
 
 ___
 ## Visibility
