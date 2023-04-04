@@ -192,7 +192,7 @@ This type of report is very useful to divide furniture parts into categories. It
 
     ![ReportTypeG001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeG001.png)
 
-**Note:** For this report type, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder or also grandparent folder. First the grandparent folder is getting and if there is no grandparent folder there will be parent folder name at the report. For the `Pad` furniture part, the `Body` object is considered as parent folder. To add grandparent folder for `Pad` it needs to be in the parent folder (e.g. named `Furniture_pad`) together with its `Body`. 
+**Note:** For this report type, You need to have exact folder tree structure in Your furniture project. The idea behind this is that each element needs to have parent folder or also grandparent folder. First the grandparent folder is getting and if there is no grandparent folder there will be parent folder name at the report. For the `Pad` furniture part, the `Body` object is considered as parent folder. To add grandparent folder for `Pad` it needs to be in the parent folder (e.g. named `Furniture_pad`) together with its `Body`. This type of report supports `Group` and `LinkGroup`.
 	
 For more details see: [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc) section.
 
