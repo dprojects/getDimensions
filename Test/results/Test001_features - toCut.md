@@ -51,16 +51,17 @@
 |   panel Compound 1   |   30 mm   |   x   |   600 mm   |   30 mm   |   1   |   0.018   |
 |   nested 1 link   |   80 mm   |   x   |   600 mm   |   20 mm   |   4   |   0.192   |
 |   nested 2 link   |   80 mm   |   x   |   600 mm   |   20 mm   |   4   |   0.192   |
+|   nested 1 clone   |   80 mm   |   x   |   600 mm   |   20 mm   |   4   |   0.192   |
 |   Summary by thickness   |   |   |   |   |   |   |
 |   |   |   |   |   3 mm   |   1   |   0.06   |
 |   |   |   |   |   18 mm   |   55   |   5.056   |
 |   |   |   |   |   80 mm   |   14   |   0.784   |
 |   |   |   |   |   100 mm   |   5   |   0.3   |
-|   |   |   |   |   20 mm   |   9   |   0.408   |
+|   |   |   |   |   20 mm   |   13   |   0.6   |
 |   |   |   |   |   9 mm   |   4   |   0.00168   |
 |   |   |   |   |   30 mm   |   2   |   0.036   |
 |   |   |   |   |   |   |   |
-|   Edge size   |   |   |   |   |   |   109.412 m   |
+|   Edge size   |   |   |   |   |   |   114.852 m   |
 |   |   |   |   |   |   |   |
 |   4 x    |   Mounting points, Screw, bit PZ2, 4.0 x 40   |   |   |   |   |   |
 |   |   Diameter   |   |   |   4.0 mm   |   |   |
