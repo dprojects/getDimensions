@@ -33,6 +33,7 @@
 		* [Part :: Cut content visibility: all](#part--cut-content-visibility-all)
 		* [Part :: Cut content visibility: base](#part--cut-content-visibility-base)
 		* [Part :: Cut content visibility: tool](#part--cut-content-visibility-tool)
+	* [Precision](#precision)
 	* [Edge size](#edge-size)
 	* [Report - export](#report---export)
 * [Transformations](#transformations)
@@ -471,6 +472,21 @@ This option is related to `Part :: Cut` structures. It allows to choose parsing 
 * This option allows to show only `Tool` elements from the `Part :: Cut` structure.
 
 	![RPartCut005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/RPartCut005.png)
+
+___
+## Precision
+
+By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1` is rather not possible in real life. 
+
+* So the value `500.65 mm` will be rounded to `501 mm` at the report:
+
+	![Precision001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision001.png)
+	![Precision002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision002.png)
+
+* However, in some cases (see issue: [Dimensions in fractions of a millimeter #17](https://github.com/dprojects/getDimensions/tree/master/Docs#report---export) you may want to have more detailed values at report to decide later about rounding values. In this case you can change the default precision values to get more detailed report:
+
+	![Precision003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision003.png)
+	![Precision004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision004.png)
 
 ___
 ## Edge size
