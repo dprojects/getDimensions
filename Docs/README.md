@@ -59,8 +59,6 @@
 	* [Custom furniture part](#custom-furniture-part)
 	* [32 mm cabinetmaking system](#32-mm-cabinetmaking-system)
 * [Known issues](#known-issues)
-* [Special thanks](#special-thanks)
-* [Feature requests](#feature-requests)
 
 ___
 # Default Settings
@@ -483,7 +481,7 @@ By default the values at report are rounded to have more clear listing. Rounding
 	![Precision001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision001.png)
 	![Precision002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision002.png)
 
-* However, in some cases (see issue: [Dimensions in fractions of a millimeter #17](https://github.com/dprojects/getDimensions/tree/master/Docs#report---export) you may want to have more detailed values at report to decide later about rounding values. In this case you can change the default precision values to get more detailed report:
+* However, in some cases (see issue: [Dimensions in fractions of a millimeter #17](https://github.com/dprojects/getDimensions/tree/master/Docs#report---export)) you may want to have more detailed values at report to decide later about rounding values. In this case you can change the default precision values to get more detailed report:
 
 	![Precision003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision003.png)
 	![Precision004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision004.png)
@@ -942,20 +940,6 @@ ___
 * **Issue**: Special characters (comma and whitespace) for `constraints name` are not supported generally. At Ubuntu the validation not works so You can use `constraints name` as `description` (label from FreeCAD point of view) but if You use expressions the expressions will be removed after file reopen ([FreeCAD bug described here](https://forum.freecadweb.org/viewtopic.php?f=10&t=67042)).
 	* **Workaround**: There is [workaround](https://github.com/dprojects/getDimensions/commit/6a50fef4a8bbb4729ad8960a79f21b91b5712990), that allow to encode and decode comma and whitespace. To encode `", "` (comma and whitespace) in `constraints name` use `00` (zero twice). To encode `" "` (single whitespace) in `constraints name` use `0` (zero once). So, the encoded `constraints name` e.g. `Bottom00Joint0Size01` will be decoded at report as `Bottom, Joint Size 1`. Underscores way of encoding may not be supported for Windows users at FreeCAD. If You want to use underscores way, You have to test it first on Your own.
 
-___
-# Special thanks
 
-* [jaisejames](https://forum.freecadweb.org/viewtopic.php?p=164072#p164072): for the `Array` suggestion.
-* [acousticguy](https://forum.freecadweb.org/viewtopic.php?p=286030#p286030): for the `Inches` suggestion.
-* [Petert](https://forum.freecadweb.org/viewtopic.php?p=547453#p547453): for the `Pads` suggestion.
-* [zohozer](https://forum.freecadweb.org/viewtopic.php?p=560407#p560407): for the `edgeband` suggestion.
-* [kisolre](https://forum.freecadweb.org/viewtopic.php?p=565403#p565403): for the `Body Clone` suggestion.
-
-___
-# Feature requests
-
-Best way to ask for new feature is [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127). 
-
-**Note:** However, You need to be convincing and provide an argument and concrete examples of the use of this functionality in the furniture design process. You have to keep in mind that FreeCAD has a lot of possibilities and not everything has to be implemented. 
 ___
 **Note:** For more details see the [Demo folder](https://github.com/dprojects/getDimensions/tree/master/Demo).

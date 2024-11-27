@@ -78,10 +78,15 @@ For more details see documentation page: [in Docs folder](https://github.com/dpr
 | [![c1r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png) |
 | [![c1r5](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r5.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r5.png) | [![c2r5](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r5.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r5.png) |
 
+# Feature requests
+
+Best way to ask for new feature is to open new issue at: [github.com/dprojects/getDimensions/issues](https://github.com/dprojects/getDimensions/issues)
+
+**Note:** However, you need to provide good argument, woodworking example in real life. You have to keep in mind that FreeCAD has a lot of possibilities and not everything has to be implemented.
+
 # Contact
 
-Please add all comments and questions to the dedicated
-[FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127).
+Please add all comments and questions to the dedicated: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127).
 
 # License
 
