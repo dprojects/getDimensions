@@ -476,15 +476,17 @@ ___
 
 By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1` is rather not possible in real life. 
 
-* So the value `500.65 mm` will be rounded to `501 mm` at the report:
+* By default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report:
 
 	![Precision001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision001.png)
 	![Precision002](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision002.png)
 
-* However, in some cases (see issue: [Dimensions in fractions of a millimeter #17](https://github.com/dprojects/getDimensions/tree/master/Docs#report---export)) you may want to have more detailed values at report to decide later about rounding values. In this case you can change the default precision values to get more detailed report:
+* However, in some cases (see issue: [Dimensions in fractions of a millimeter #17](https://github.com/dprojects/getDimensions/tree/master/Docs#report---export)) you may want to have more detailed values at report to decide later about rounding values. In this case you can change the default precision value `0` to `2` to get more detailed report:
 
 	![Precision003](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision003.png)
 	![Precision004](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Precision004.png)
+
+For more details see video tutorial: [New precision option, BOM, cut-list](https://www.youtube.com/watch?v=UhOpI5we-_8)
 
 ___
 ## Edge size
