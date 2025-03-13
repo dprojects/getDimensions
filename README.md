@@ -10,6 +10,8 @@
 
 ![en](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en.png)
 
+![en2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en2.png)
+
 # Main features
 
 * **Languages:** Polish, English.
@@ -61,14 +63,26 @@
 	* App :: LinkGroup,
 	* Part :: Compound,
 	* Part :: Cut.
+* **Support for Assembly workbench:**
+	* Assembly :: AssemblyObject
+	* Assembly :: AssemblyLink
+	* tested with Assembly4 and FreeCAD 1.0
 * **Settings by:** Qt Graphical User Interface (GUI), code variables.
 * **Outputs:** Spreadsheet, TechDraw page, Spreadsheet multi-page export by [sheet2export](https://github.com/dprojects/sheet2export).
 
-![en2](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/lang_en2.png)
+# Documentation
 
-For more details see documentation page: [in Docs folder](https://github.com/dprojects/getDimensions/tree/master/Docs).
+* **Documentation for getDimensions macro:** [getDimensions/Docs](https://github.com/dprojects/getDimensions/tree/master/Docs)
+* **Woodworking workbench documentation:** [Woodworking/Docs](https://github.com/dprojects/Woodworking/tree/master/Docs)
+* **YouTube playlist:** [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
 
-# Screenshots
+# License
+
+[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content, so it is more free than FreeCAD.
+
+# Contact
+
+For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
 
 |   |   |
 |---|---|
@@ -78,16 +92,3 @@ For more details see documentation page: [in Docs folder](https://github.com/dpr
 | [![c1r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r4.png) |
 | [![c1r5](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r5.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c1r5.png) | [![c2r5](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r5.png)](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/matrix/c2r5.png) |
 
-# Feature requests
-
-Best way to ask for new feature is to open new issue at: [github.com/dprojects/getDimensions/issues](https://github.com/dprojects/getDimensions/issues)
-
-**Note:** However, you need to provide good argument, woodworking example in real life. You have to keep in mind that FreeCAD has a lot of possibilities and not everything has to be implemented.
-
-# Contact
-
-Please add all comments and questions to the dedicated: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=21127).
-
-# License
-
-MIT
