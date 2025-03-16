@@ -86,7 +86,7 @@ Unfortunately, in FreeCAD 1.0 there is no way to solve this problem at macro or 
 
 In the example below, the returned color value for the entire object is black, and it should be white. The white color is not available anywhere.
 
-![edgeband_issue](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edgeband_issue.png.png)
+![edgeband_issue](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edgeband_issue.png)
 
 For more details about FreeCAD 1.0+ support see: [Support for FreeCAD 1.0 and later](https://github.com/dprojects/Woodworking/issues/49)
 
