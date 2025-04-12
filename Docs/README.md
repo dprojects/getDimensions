@@ -779,6 +779,9 @@ The edgeband is a very problematic matter. Mainly because the edge You want to c
 
 From the other side, during the furniture production process, there are always some leftover veneers for edge banding. But it is always better to have more than less veneer. If You buy a veneer for the entire edge, You can be sure that this veneer is enough for edge banding.
 
+> [!IMPORTANT]
+> In FreeCAD 1.0 the color structure has been changed. Unfortunately, the color information of the entire object `.ViewObject.ShapeColor` is no longer available. So user have to select face and get the reference furniture color for comparision.
+
 ___
 ### Edgeband - quick way
 
@@ -826,6 +829,9 @@ ___
     ![Edgeband007](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/Edgeband007.png)
 
 	**Note:** This feature not working for multi-color furniture. To determine the edgeband color the macro compare the `face` color with `object color`. If You want to generate report for multi-color furniture just organize You furniture parts in folders and use `Visibility` to generate report for each color. 
+
+> [!IMPORTANT]
+> You have to add face color for PartDesign::Pad not to the final object. 
 
 ___
 ## Dowels, pilot holes, countersinks

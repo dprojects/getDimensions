@@ -76,20 +76,6 @@
 * **Woodworking workbench documentation:** [Woodworking/Docs](https://github.com/dprojects/Woodworking/tree/master/Docs)
 * **YouTube playlist:** [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
 
-# FreeCAD 1.0+ issues
-
-In FreeCAD 1.0 the color structure has been changed. Unfortunately, the color information of the entire object `.ViewObject.ShapeColor`, has also been broken. This tool uses this information to automatically determine the color of the edgeband.
-
-In FreeCAD 0.21.2, it is enough to change the color of the selected edge that you want to cover with veneer, and this tool will automatically compare the colors of all edges with the color of the entire object from `.ViewObject.ShapeColor` and create raport for edgeband and needed veneer size.
-
-Unfortunately, in FreeCAD 1.0 there is no way to solve this problem at macro or workbench level, because the information about the color of the object is returned incorrectly, and the correct value is not available anywhere. This problem occurs only for some panels, which causes incorrect data in the report.
-
-In the example below, the returned color value for the entire object is black, and it should be white. The white color is not available anywhere.
-
-![edgeband_issue](https://raw.githubusercontent.com/dprojects/getDimensions/master/Screenshots/edgeband_issue.png)
-
-For more details about FreeCAD 1.0+ support see: [Support for FreeCAD 1.0 and later](https://github.com/dprojects/Woodworking/issues/49)
-
 # License
 
 [MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content, so it is more free than FreeCAD.
