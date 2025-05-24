@@ -124,7 +124,9 @@ Pad is not base object. In fact, it is a transformation on the `Sketch` object. 
 	**Note:** Normally, when You are creating Pad object, the related Sketch object should be in the "Pad folder" (object content). If You do not have such tree structure, please make sure each Pad object has the correct reference in the `Profile` structure. Sketch dimensions are getting from Pad, exactly from `.Profile[0].Shape.OrderedEdges[0].Length` and `.Profile[0].Shape.OrderedEdges[1].Length`. The last dimension is getting from Pad as well, but this time, exactly from `.Length.Value`. So, the key point it that, the values need to be accessible and correct to get it to work.
 
 > [!NOTE]
-> There is also support for `Part :: Extrusion` object.
+> There is also support for:
+> * `Part :: Extrusion` objects
+> * custom objects with Width, Height and Length attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
 
 ___
 ## Design furniture not the furniture parts

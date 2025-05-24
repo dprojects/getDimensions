@@ -56,6 +56,7 @@
 |   Extrude   |   150 mm   |   x   |   1000 mm   |   100 mm   |   1   |   0.15   |
 |   Part Mirror on Extrude   |   150 mm   |   x   |   1000 mm   |   100 mm   |   2   |   0.3   |
 |   Mirror LinkGroup on Extrude   |   150 mm   |   x   |   1000 mm   |   100 mm   |   2   |   0.3   |
+|   Custom object   |   89 mm   |   x   |   2438 mm   |   38 mm   |   1   |   0.216774   |
 |   Summary by thickness   |   |   |   |   |   |   |
 |   |   |   |   |   3 mm   |   1   |   0.06   |
 |   |   |   |   |   18 mm   |   57   |   5.416   |
@@ -64,8 +65,9 @@
 |   |   |   |   |   20 mm   |   13   |   0.6   |
 |   |   |   |   |   9 mm   |   4   |   0.00168   |
 |   |   |   |   |   30 mm   |   2   |   0.036   |
+|   |   |   |   |   38 mm   |   1   |   0.216774   |
 |   |   |   |   |   |   |   |
-|   Edge size   |   |   |   |   |   |   129.952 m   |
+|   Edge size   |   |   |   |   |   |   135.007 m   |
 |   |   |   |   |   |   |   |
 |   4 x    |   Mounting points, Screw, bit PZ2, 4.0 x 40   |   |   |   |   |   |
 |   |   Diameter   |   |   |   4 mm   |   |   |

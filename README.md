@@ -49,7 +49,8 @@
 * **Supported furniture parts:**
     * Part :: Cube,
     * PartDesign :: Pad,
-    * Part :: Extrusion.
+    * Part :: Extrusion, 
+    * custom objects with Width, Height and Length attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
 * **Supported transformations:**
     * Part :: Mirroring,
     * Draft :: Array,
