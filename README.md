@@ -48,7 +48,8 @@
 * **Calculations:** quantity, thickness, area, edge size, edgeband.
 * **Supported furniture parts:**
     * Part :: Cube,
-    * PartDesign :: Pad.
+    * PartDesign :: Pad,
+    * Part :: Extrusion.
 * **Supported transformations:**
     * Part :: Mirroring,
     * Draft :: Array,
