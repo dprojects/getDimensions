@@ -6,16 +6,15 @@
 	* [Pad - quickstart](#pad---quickstart)
 	* [Design furniture not the furniture parts](#design-furniture-not-the-furniture-parts)
 	* [Basic furniture example](#basic-furniture-example)
-* [Report customization](#report-customization)
-	* [Report types](#report-types)
-		* [q - report type](#q---report-type)
-		* [n - report type](#n---report-type)
-		* [g - report type](#g---report-type)
-		* [e - report type](#e---report-type)
-		* [d - report type](#d---report-type)
-		* [c - report type](#c---report-type)
-		* [p - report type](#p---report-type)
-		* [a - report type](#a---report-type)
+* [Report type](#report-type)
+	* [q - report type](#q---report-type)
+	* [n - report type](#n---report-type)
+	* [g - report type](#g---report-type)
+	* [e - report type](#e---report-type)
+	* [d - report type](#d---report-type)
+	* [c - report type](#c---report-type)
+	* [p - report type](#p---report-type)
+	* [a - report type](#a---report-type)
 	* [Additional reports](#additional-reports)
 		* [Custom measurements](#custom-measurements)
 		* [Dowels and Screws](#dowels-and-screws)
@@ -163,14 +162,12 @@ ___
     ![exB005](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/exB005.png)
 
 ___
-# Report customization
-
-## Report types
+# Report type
 
 This macro allows You to select the type of report to be displayed. Some types of reports are very complex and can be many pages long for the real-life project. Some types of reports also require special settings in the project. The type of report should be selected according to Your needs and the design of the project. It is best to start with the simplest type of report.
 
 ___
-### q - report type
+## q - report type
 
 This type of report is `default` type of report. It is the shortest one. It can be used for huge projects to make simple short report. Also if You do not need to take care of something like `grain direction`, `detailed edgeband`, `wood type`, `wood color`, this type of report is just for You. Personally, I prefer this type of report the most. Also this type of report has space at the left side, so You can add extra notes later after print.
 
@@ -179,7 +176,7 @@ This type of report is `default` type of report. It is the shortest one. It can 
     ![ReportTypeQ001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeQ001.png)
 
 ___
-### n - report type
+## n - report type
 
 This type of report is mostly used by me for documentation purposes. It is simple objects listing. However, it can be very useful for project verification. You can list all objects and see if the dimensions are set correctly.
 
@@ -188,7 +185,7 @@ This type of report is mostly used by me for documentation purposes. It is simpl
     ![ReportTypeN001](https://raw.githubusercontent.com/dprojects/getDimensions/master/Docs/Screenshots/ReportTypeN001.png)
 
 ___
-### g - report type
+## g - report type
 
 This type of report is very useful to divide furniture parts into categories. It can be used for `grain direction`, `detailed edgeband`, `wood type`, `wood color` or for any other category. Also, the `Thickness` column is just after the `Name` column. This is because if You go to cutting chipboards service, first You give `wood color`, second the `thickness`, next `dimensions` and `quantity` at the end. This approach simplifies the more detailed ordering process.
 
@@ -201,7 +198,7 @@ This type of report is very useful to divide furniture parts into categories. It
 For more details see: [Wood Properties - grain, type, color, etc.](#wood-properties---grain-type-color-etc) section.
 
 ___
-### e - report type
+## e - report type
 
 This type of report is designed for edgeband. Also You can verify if Your 3D model have correctly applied veneer. This type of report recognize automatically if the covered `face` is `surface` or `edge`. Also shows the dimension for `edge` type of face and given `edgeband code`.
 
@@ -220,7 +217,7 @@ This type of report is designed for edgeband. Also You can verify if Your 3D mod
 * This type of report can exceed a single TechDraw page. To export this type of report, see the [Report - export](#report---export) section.
 
 ___
-### d - report type
+## d - report type
 
 This type of report might be useful for raw wood projects, CNC or very detailed furniture design, because it is designed for very detailed view of edgeband, holes and countersinks. Also it allows for long description based on group name. Regarding edgeband it works like [e - report type](#e---report-type) but has also additional part for holes and countersinks.
 
@@ -241,7 +238,7 @@ This type of report might be useful for raw wood projects, CNC or very detailed 
 * This type of report can exceed a single TechDraw page. To export this type of report, see the [Report - export](#report---export) section.
 
 ___
-### c - report type
+## c - report type
 
 This type of report is totally custom and it is supported only for `Pad` furniture parts. It can be used as additional report for any other type of report. This type of report can provide such information as: offset, radius, doweling, holes, bar codes, reference numbers, detailed edge banding or any other description You add for dimension (`constraints name`).
 
@@ -262,7 +259,7 @@ This type of report is totally custom and it is supported only for `Pad` furnitu
 For more details see: [Constraints - totally custom report](#constraints---totally-custom-report) section.
 
 ___
-### p - report type
+## p - report type
 
 This type of report is designed for projects based only on `Pads`. Especially, if You created project with `Pads`, very detailed, but do not have `constraints names`. If You want to get all the non-zero constraints, even those without names, this report is for You. It can be used as additional report for any other type of report, for example if You have also `Cubes` You can generate other report designed for `Cubes`. 
 
@@ -278,7 +275,7 @@ This type of report is designed for projects based only on `Pads`. Especially, i
 * Zero constraints should be generally avoided, so they are skipped to not overload the report.
 
 ___
-### a - report type
+## a - report type
 
 This report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. 
 
